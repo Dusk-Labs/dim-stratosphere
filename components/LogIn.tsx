@@ -1,12 +1,89 @@
+import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
-import { View, Text } from "react-native";
 
-const Login = () => {
+const LogIn = ({ navigation }: any) => {
   return (
-    <View>
-      <Text>Login</Text>
+    <View style={styles.login}>
+      <View style={styles.top}>
+        <Image
+          style={styles.logo}
+          resizeMode="contain"
+          source={require("../assets/logo.png")}
+        />
+        <Text style={styles.title}>Dim</Text>
+        <Text style={styles.subtitle}>Self-hosted media manager</Text>
+      </View>
+      <View style={styles.bottom}>
+        <View style={styles.buttons}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("SignIn", { title: "Sign In" })}
+          >
+            <Text style={styles.buttonTop}>Sign in</Text>
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Text style={styles.buttonBottom}>Sign up</Text>
+          </TouchableOpacity>
+        </View>
+      </View>
     </View>
   );
 };
-
-export default Login;
+const styles = StyleSheet.create({
+  top: {
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
+    flex: 1,
+  },
+  logo: {
+    height: 100,
+    width: 100,
+    marginBottom: 24,
+  },
+  title: {
+    color: "#fff",
+    marginBottom: 8,
+    fontWeight: "bold",
+  },
+  login: {
+    color: "#fff",
+    flexDirection: "column",
+    flex: 1,
+    justifyContent: "center",
+    backgroundColor: "black",
+  },
+  subtitle: {
+    color: "#fff",
+    opacity: 0.5,
+  },
+  bottom: {
+    flexDirection: "column",
+    justifyContent: "flex-end",
+    alignContent: "flex-end",
+    flex: 1,
+    padding: 16,
+    width: "100%",
+  },
+  buttons: {
+    color: "#fff",
+    alignSelf: "center",
+    flexDirection: "column",
+    width: "100%",
+  },
+  buttonTop: {
+    color: "#fff",
+    backgroundColor: "#353433",
+    padding: 8,
+    borderRadius: 10,
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  buttonBottom: {
+    color: "#fff",
+    backgroundColor: "#EA963E",
+    padding: 8,
+    borderRadius: 10,
+    textAlign: "center",
+  },
+});
+export default LogIn;
