@@ -1,7 +1,11 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackParams } from "../App";
 
-const LogIn = ({ navigation }: any) => {
+type LoginProps = NativeStackScreenProps<StackParams, "LogIn">;
+
+const LogIn = ({ navigation }: LoginProps) => {
   return (
     <View style={styles.login}>
       <View style={styles.top}>
@@ -20,7 +24,9 @@ const LogIn = ({ navigation }: any) => {
           >
             <Text style={styles.buttonTop}>Sign in</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("SignUp", { title: "Sign Up" })}
+          >
             <Text style={styles.buttonBottom}>Sign up</Text>
           </TouchableOpacity>
         </View>
