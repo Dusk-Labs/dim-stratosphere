@@ -62,7 +62,7 @@ const SignIn = ({ navigation, route }: SignInProps) => {
         <View style={styles.footer}>
           <TouchableOpacity
             style={styles.signInBtn}
-            onPress={() => navigation.navigate("LogIn", { title: "Log In" })}
+            onPress={() => alert("Signed In!")}
           >
             <Text style={{ color: "white", textAlign: "center" }}>Sign in</Text>
           </TouchableOpacity>

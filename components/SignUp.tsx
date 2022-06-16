@@ -57,7 +57,7 @@ const SignUp = ({ navigation, route }: any) => {
         <View style={styles.footer}>
           <TouchableOpacity
             style={styles.signInBtn}
-            onPress={() => navigation.navigate("LogIn", { title: "Log In" })}
+            onPress={() => alert("Signed Up!")}
           >
             <Text style={{ color: "white", textAlign: "center" }}>Sign Up</Text>
           </TouchableOpacity>

@@ -12,7 +12,7 @@ export const Navbar = ({ navigation, title }: NavProps) => {
       <View style={styles.nav}>
         <TouchableOpacity
           style={styles.backBtn}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate("LogIn", { title: "Log in" })}
         >
           <Image
             resizeMode="contain"
