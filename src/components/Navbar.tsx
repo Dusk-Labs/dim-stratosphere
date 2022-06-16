@@ -16,7 +16,7 @@ export const Navbar = ({ navigation, title }: NavProps) => {
         >
           <Image
             resizeMode="contain"
-            source={require("./../assets/arrowleft.png")}
+            source={require("./../../assets/arrowleft.png")}
           />
           <Text style={styles.back}>Back</Text>
         </TouchableOpacity>
