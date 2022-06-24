@@ -11,7 +11,6 @@ import Input from "../components/Input";
 import { User, UserFormErrors } from "../types";
 
 const SignUp = ({ navigation, route }: any) => {
-  const [hidePassword, setHidePassword] = useState(true);
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
@@ -88,11 +87,7 @@ const SignUp = ({ navigation, route }: any) => {
             onFocus={() => handleError("", "username")}
           />
           <Input
-            secureTextEntry={hidePassword}
             placeholder="Create a Password"
-            setHidePassword={() => {
-              setHidePassword(!hidePassword);
-            }}
             showAndHidePassword={true}
             handleOnChangeText={(text) => {
               handleOnChangeText(text, "password");
@@ -100,7 +95,7 @@ const SignUp = ({ navigation, route }: any) => {
             error={errors.password}
             onFocus={() => handleError("", "password")}
           />
-          <Text style={{ marginBottom: 8, color: "white", fontSize: 14 }}>
+          <Text style={{ marginBottom: 8, color: "#FFF", fontSize: 14 }}>
             Connect to host
           </Text>
           <Input
@@ -110,7 +105,7 @@ const SignUp = ({ navigation, route }: any) => {
             onFocus={() => handleError("", "host")}
           />
           {errors.host === "" && (
-            <Text style={{ color: "white", opacity: 0.5, fontSize: 14 }}>
+            <Text style={{ color: "#FFF", opacity: 0.5, fontSize: 14 }}>
               Enter host IP or address to connect
             </Text>
           )}
@@ -121,7 +116,7 @@ const SignUp = ({ navigation, route }: any) => {
               style={styles.signInBtn}
               onPress={() => validate()}
             >
-              <Text style={{ color: "white", textAlign: "center" }}>
+              <Text style={{ color: "#FFF", textAlign: "center" }}>
                 Sign Up
               </Text>
             </TouchableOpacity>
@@ -137,7 +132,7 @@ const SignUp = ({ navigation, route }: any) => {
               By signing up you are agreeing to our Terms of Service
             </Text>
             <View style={styles.finalText}>
-              <Text style={{ color: "white", opacity: 0.5 }}>
+              <Text style={{ color: "#FFF", opacity: 0.5 }}>
                 Already have an account?
               </Text>
               <TouchableOpacity

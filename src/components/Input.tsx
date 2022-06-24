@@ -11,8 +11,6 @@ import React, { useState } from "react";
 interface InputProps {
   placeholder: string;
   secureTextEntry?: boolean;
-  setHidePassword?: (hidePassword: boolean) => void;
-  hidePassword?: boolean;
   showAndHidePassword?: boolean;
   handleOnChangeText?: (text: string) => void;
   error?: string;
@@ -21,15 +19,15 @@ interface InputProps {
 
 const Input = ({
   placeholder,
-  setHidePassword,
-  secureTextEntry,
-  hidePassword,
   showAndHidePassword,
   handleOnChangeText,
   error,
   onFocus,
   ...props
 }: InputProps) => {
+  const [hidePassword, setHidePassword] = useState<boolean>(
+    showAndHidePassword || false
+  );
   return (
     <>
       <View>
@@ -40,7 +38,7 @@ const Input = ({
             styles.input,
             { borderWidth: 1, borderColor: error ? "#FF4D4D" : "transparent" },
           ]}
-          secureTextEntry={secureTextEntry}
+          secureTextEntry={hidePassword}
           onChangeText={
             (text) => handleOnChangeText && handleOnChangeText(text) //?
           }
@@ -70,7 +68,7 @@ export default Input;
 
 const styles = StyleSheet.create({
   input: {
-    color: "white",
+    color: "#FFF",
     backgroundColor: "#353433",
     padding: 8,
     marginBottom: 16,

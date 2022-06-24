@@ -15,7 +15,6 @@ import { User, UserFormErrors } from "../types";
 type SignInProps = NativeStackScreenProps<StackParams, "SignIn">;
 
 const SignIn = ({ navigation, route }: SignInProps) => {
-  const [hidePassword, setHidePassword] = useState(true);
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
@@ -92,16 +91,12 @@ const SignIn = ({ navigation, route }: SignInProps) => {
           />
           <Input
             placeholder="Password"
-            secureTextEntry={hidePassword}
-            setHidePassword={() => {
-              setHidePassword(!hidePassword);
-            }}
             showAndHidePassword={true}
             handleOnChangeText={(text) => handleOnChangeText(text, "password")}
             error={errors.password}
             onFocus={() => handleError("", "password")}
           />
-          <Text style={{ marginBottom: 16, color: "white", fontSize: 14 }}>
+          <Text style={{ marginBottom: 16, color: "#FFF", fontSize: 14 }}>
             Connect to host
           </Text>
           <Input
@@ -111,7 +106,7 @@ const SignIn = ({ navigation, route }: SignInProps) => {
             onFocus={() => handleError("", "host")}
           />
           {errors.host === "" && (
-            <Text style={{ color: "white", opacity: 0.5, fontSize: 14 }}>
+            <Text style={{ color: "#FFF", opacity: 0.5, fontSize: 14 }}>
               Enter host IP or address to connect
             </Text>
           )}
@@ -122,12 +117,12 @@ const SignIn = ({ navigation, route }: SignInProps) => {
               style={styles.signInBtn}
               onPress={() => validate()}
             >
-              <Text style={{ color: "white", textAlign: "center" }}>
+              <Text style={{ color: "#FFF", textAlign: "center" }}>
                 Sign in
               </Text>
             </TouchableOpacity>
             <View style={styles.finalText}>
-              <Text style={{ color: "white", opacity: 0.5 }}>
+              <Text style={{ color: "#FFF", opacity: 0.5 }}>
                 Don't have an account yet?
               </Text>
               <TouchableOpacity
