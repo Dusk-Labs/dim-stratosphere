@@ -109,36 +109,45 @@ const SignUp = ({ navigation, route }: any) => {
             error={errors.host}
             onFocus={() => handleError("", "host")}
           />
-          <Text style={{ color: "white", opacity: 0.5, fontSize: 14 }}>
-            Enter host IP or address to connect
-          </Text>
-        </View>
-        <View style={styles.footer}>
-          <TouchableOpacity style={styles.signInBtn} onPress={() => validate()}>
-            <Text style={{ color: "white", textAlign: "center" }}>Sign Up</Text>
-          </TouchableOpacity>
-          <Text
-            style={{
-              color: "white",
-              opacity: 0.5,
-              fontSize: 10,
-              marginBottom: 18,
-              textAlign: "center",
-            }}
-          >
-            By signing up you are agreeing to our Terms of Service
-          </Text>
-          <View style={styles.finalText}>
-            <Text style={{ color: "white", opacity: 0.5 }}>
-              Already have an account?
+          {errors.host === "" && (
+            <Text style={{ color: "white", opacity: 0.5, fontSize: 14 }}>
+              Enter host IP or address to connect
             </Text>
+          )}
+        </View>
+        <View style={styles.bottomFromBottom}>
+          <View style={styles.footer}>
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("SignIn", { title: "Sign In" })
-              }
+              style={styles.signInBtn}
+              onPress={() => validate()}
             >
-              <Text style={{ color: "#EA963E" }}> Sign in</Text>
+              <Text style={{ color: "white", textAlign: "center" }}>
+                Sign Up
+              </Text>
             </TouchableOpacity>
+            <Text
+              style={{
+                color: "white",
+                opacity: 0.5,
+                fontSize: 10,
+                marginBottom: 18,
+                textAlign: "center",
+              }}
+            >
+              By signing up you are agreeing to our Terms of Service
+            </Text>
+            <View style={styles.finalText}>
+              <Text style={{ color: "white", opacity: 0.5 }}>
+                Already have an account?
+              </Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("SignIn", { title: "Sign In" })
+                }
+              >
+                <Text style={{ color: "#EA963E" }}> Sign in</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -155,6 +164,10 @@ const styles = StyleSheet.create({
     paddingRight: "1%",
     paddingLeft: "1%",
   },
+  bottomFromBottom: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
   finalText: {
     flexDirection: "row",
     width: "100%",
@@ -162,7 +175,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: "relative",
-    bottom: "-5%",
+    marginBottom: 16,
   },
   signInBtn: {
     backgroundColor: "#EA963E",

@@ -38,7 +38,7 @@ const Input = ({
           placeholder={placeholder}
           style={[
             styles.input,
-            { borderWidth: 1, borderColor: error ? "red" : "transparent" },
+            { borderWidth: 1, borderColor: error ? "#FF4D4D" : "transparent" },
           ]}
           secureTextEntry={secureTextEntry}
           onChangeText={
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     color: "white",
     backgroundColor: "#353433",
     padding: 8,
-    marginBottom: 5,
+    marginBottom: 16,
     borderRadius: 10,
   },
   eye: {
@@ -82,7 +82,9 @@ const styles = StyleSheet.create({
     top: "20%",
   },
   error: {
-    color: "red",
-    marginBottom: 4,
+    color: "#FF4D4D",
+    marginTop: -8,
+    marginBottom: 8,
+    fontSize: 12,
   },
 });

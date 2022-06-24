@@ -110,9 +110,11 @@ const SignIn = ({ navigation, route }: SignInProps) => {
             error={errors.host}
             onFocus={() => handleError("", "host")}
           />
-          <Text style={{ color: "white", opacity: 0.5, fontSize: 14 }}>
-            Enter host IP or address to connect
-          </Text>
+          {errors.host === "" && (
+            <Text style={{ color: "white", opacity: 0.5, fontSize: 14 }}>
+              Enter host IP or address to connect
+            </Text>
+          )}
         </View>
         <View style={styles.bottomFromBottom}>
           <View style={styles.footer}>
