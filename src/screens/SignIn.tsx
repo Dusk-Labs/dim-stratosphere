@@ -34,7 +34,6 @@ const SignIn = ({ navigation, route }: SignInProps) => {
   const validate = () => {
     Keyboard.dismiss();
     let valid = true;
-
     if (!user.username) {
       handleError("Username is required", "username");
       valid = false;
@@ -115,21 +114,28 @@ const SignIn = ({ navigation, route }: SignInProps) => {
             Enter host IP or address to connect
           </Text>
         </View>
-        <View style={styles.footer}>
-          <TouchableOpacity style={styles.signInBtn} onPress={() => validate()}>
-            <Text style={{ color: "white", textAlign: "center" }}>Sign in</Text>
-          </TouchableOpacity>
-          <View style={styles.finalText}>
-            <Text style={{ color: "white", opacity: 0.5 }}>
-              Don't have an account yet?
-            </Text>
+        <View style={styles.bottomFromBottom}>
+          <View style={styles.footer}>
             <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("SignUp", { title: "Sign Up" })
-              }
+              style={styles.signInBtn}
+              onPress={() => validate()}
             >
-              <Text style={{ color: "#EA963E" }}> Sign up here</Text>
+              <Text style={{ color: "white", textAlign: "center" }}>
+                Sign in
+              </Text>
             </TouchableOpacity>
+            <View style={styles.finalText}>
+              <Text style={{ color: "white", opacity: 0.5 }}>
+                Don't have an account yet?
+              </Text>
+              <TouchableOpacity
+                onPress={() =>
+                  navigation.navigate("SignUp", { title: "Sign Up" })
+                }
+              >
+                <Text style={{ color: "#EA963E" }}> Sign up here</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
@@ -147,6 +153,10 @@ const styles = StyleSheet.create({
     paddingRight: "1%",
     paddingLeft: "1%",
   },
+  bottomFromBottom: {
+    flex: 1,
+    justifyContent: "flex-end",
+  },
   finalText: {
     flexDirection: "row",
     width: "100%",
@@ -154,7 +164,7 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: "relative",
-    bottom: "-15%",
+    marginBottom: 16,
   },
   signInBtn: {
     backgroundColor: "#EA963E",

@@ -41,8 +41,8 @@ const Input = ({
             { borderWidth: 1, borderColor: error ? "red" : "transparent" },
           ]}
           secureTextEntry={secureTextEntry}
-          onChangeText={(text) =>
-            handleOnChangeText && handleOnChangeText(text)
+          onChangeText={
+            (text) => handleOnChangeText && handleOnChangeText(text) //?
           }
           onFocus={onFocus}
           {...props}
@@ -61,7 +61,7 @@ const Input = ({
           </TouchableOpacity>
         )}
       </View>
-      <Text style={styles.error}>{error}</Text>
+      {error !== "" && <Text style={styles.error}>{error}</Text>}
     </>
   );
 };
