@@ -6,13 +6,13 @@ import {
   Keyboard,
 } from "react-native";
 import React, { useState } from "react";
-import { Navbar } from "../components/Navbar";
+import { Navbar } from "../../components/Navbar";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParams } from "../../App";
-import Input from "../components/Input";
-import { User, UserFormErrors } from "../types";
+import { AuthStackParams } from "../../../App";
+import Input from "../../components/Input";
+import { User, UserFormErrors } from "../../types";
 
-type SignInProps = NativeStackScreenProps<StackParams, "SignIn">;
+type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
 const SignIn = ({ navigation, route }: SignInProps) => {
   const [user, setUser] = useState<User>({
