@@ -8,11 +8,12 @@ import {
 import React, { useState } from "react";
 import { Navbar } from "../../components/Navbar";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AuthStackParams } from "../../../App";
+import { StackParams } from "../../../App";
 import Input from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
+import { AuthContext } from "../../context/AuthContext";
 
-type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
+type SignInProps = NativeStackScreenProps<StackParams, "SignIn">;
 
 const SignIn = ({ navigation, route }: SignInProps) => {
   const [user, setUser] = useState<User>({
@@ -60,12 +61,14 @@ const SignIn = ({ navigation, route }: SignInProps) => {
       valid = false;
     }
 
-    if (valid) signIn();
+    if (valid) signInFunc();
   };
 
-  const signIn = () => {
-    // here comes the API call
-    alert("Sign In Success! " + JSON.stringify(user));
+  const context = React.useContext(AuthContext);
+
+  // rename better
+  const signInFunc = () => {
+    context?.signIn({ username: user.username, password: user.password });
   };
 
   const handleOnChangeText = (text: string, input: string) => {
