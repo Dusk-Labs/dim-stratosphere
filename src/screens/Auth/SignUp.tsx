@@ -10,9 +10,9 @@ import { Navbar } from "../../components/Navbar";
 import Input from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AuthStackParams } from "../../../App";
+import { StackParams } from "../../../App";
 
-type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
+type SignInProps = NativeStackScreenProps<StackParams, "SignIn">;
 
 const SignUp = ({ navigation, route }: SignInProps) => {
   const [user, setUser] = useState<User>({
@@ -65,7 +65,33 @@ const SignUp = ({ navigation, route }: SignInProps) => {
   };
 
   const signUp = () => {
+    // TODO to be replaced with context
+
     // here comes the API call
+    const singUpUrl = `http://localhost:8080/api/v1/register`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: user.username,
+        password: user.password,
+      }),
+    };
+    fetch(singUpUrl, options)
+      .then((response) => {
+        if (response.status === 200) {
+          navigation.navigate("SignIn", { title: "Sign In" });
+          console.log(response);
+        } else {
+          alert("Error signing up");
+        }
+      })
+      .catch((error) => {
+        alert("Error signing up: " + error);
+      });
+
     alert("Sign Up Success! " + JSON.stringify(user));
   };
 

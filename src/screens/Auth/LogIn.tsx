@@ -1,9 +1,9 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AuthStackParams } from "../../../App";
+import { StackParams } from "../../../App";
 
-type LoginProps = NativeStackScreenProps<AuthStackParams, "LogIn">;
+type LoginProps = NativeStackScreenProps<StackParams, "LogIn">;
 
 const LogIn = ({ navigation }: LoginProps) => {
   return (
