@@ -18,10 +18,6 @@ export type StackParams = {
   SignIn: { title: string };
   SignUp: { title: string };
 };
-<<<<<<< HEAD
-const Stack = createNativeStackNavigator<StackParams>();
-=======
->>>>>>> 3df128b965c76ce484e4863e1cc7c112fbde545b
 
 const AuthStack = createNativeStackNavigator<AuthStackParams>();
 
