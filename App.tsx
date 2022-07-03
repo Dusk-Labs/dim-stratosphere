@@ -1,6 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import LogIn from "./src/screens/Auth/LogIn";
 import * as React from "react";
+import { useReducer, useMemo } from "react";
 import SignIn from "./src/screens/Auth/SignIn";
 import SignUp from "./src/screens/Auth/SignUp";
 import { NavigationContainer } from "@react-navigation/native";
