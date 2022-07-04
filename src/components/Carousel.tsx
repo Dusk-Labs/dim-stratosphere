@@ -4,8 +4,9 @@ import MovieConteiner from "./MovieConteiner";
 import { movies } from "../movies";
 interface props {
   sectionTitle?: string;
+  nav: boolean;
 }
-const Carousel: FC<props> = ({ sectionTitle }) => {
+const Carousel: FC<props> = ({ sectionTitle, nav }) => {
   interface movieInterface {
     title: string;
     reference: string;
@@ -14,7 +15,15 @@ const Carousel: FC<props> = ({ sectionTitle }) => {
   return (
     <View style={styles.conteiner}>
       <View style={styles.titleSection}>
-        <Text style={styles.sectionTitle}>{sectionTitle}</Text>
+        <Text
+          style={
+            nav
+              ? { ...styles.sectionTitle, height: 16 * 1.5 }
+              : styles.sectionTitle
+          }
+        >
+          {sectionTitle}
+        </Text>
       </View>
       <ScrollView style={styles.moviesSection} horizontal={true}>
         {movies.map((element) => {

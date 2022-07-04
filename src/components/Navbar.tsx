@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
   },
   nav: {
     flexDirection: "row",
-    marginTop: "10%",
+    marginTop: 2 * 16,
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",

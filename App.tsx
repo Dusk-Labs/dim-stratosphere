@@ -29,6 +29,7 @@ const AuthStackScreen = () => {
     <AuthStack.Navigator
       screenOptions={{
         headerShown: false,
+        animation: "none",
       }}
     >
       <AuthStack.Screen name="Home" component={Home} />
@@ -41,6 +42,7 @@ const StackScreen = () => {
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
+        animation: "none",
       }}
     >
       <Stack.Screen name="LogIn" component={LogIn} />
