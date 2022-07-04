@@ -5,9 +5,9 @@ export const movies = [
     picture: require("../assets/babyDone.png"),
   },
   {
-    title: "Eternals",
-    reference: "2021",
-    picture: require("../assets/eternals.png"),
+    title: "Silicon Cowboys",
+    reference: "2016",
+    picture: require("../assets/siliconCowboys.png"),
   },
   {
     title: "Silicon Valley",
@@ -25,8 +25,8 @@ export const movies = [
     picture: require("../assets/theContractor.png"),
   },
   {
-    title: "Vivarium",
-    reference: "2019",
-    picture: require("../assets/vivarium.png"),
+    title: "Eternals",
+    reference: "2021",
+    picture: require("../assets/eternals.png"),
   },
 ];
