@@ -22,15 +22,20 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: "black",
     flex: 1,
-    padding: 16,
+    padding: 8,
   },
   title: {
-    fontSize: 16,
+    marginTop: 8,
+    marginBottom: 2,
+    fontSize: 12,
     color: "white",
+    fontWeight: "400",
+    width: 120,
   },
   reference: {
-    fontSize: 16,
+    fontSize: 14,
     color: "white",
+    opacity: 0.7,
   },
   movieImage: {
     aspectRatio: 0.63,

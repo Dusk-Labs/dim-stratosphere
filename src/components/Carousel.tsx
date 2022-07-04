@@ -36,7 +36,7 @@ export default Carousel;
 
 const styles = StyleSheet.create({
   conteiner: {
-    height: 300,
+    flex: 1,
     alignItems: "baseline",
     justifyContent: "flex-start",
   },
@@ -48,6 +48,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: "white",
     fontWeight: "700",
-    fontSize: 22,
+    fontSize: 16,
+    marginBottom: 16,
+    marginLeft: 8,
   },
 });

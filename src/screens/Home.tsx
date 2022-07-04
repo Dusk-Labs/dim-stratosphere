@@ -30,7 +30,8 @@ export default Home;
 
 const styles = StyleSheet.create({
   HomePage: {
-    justifyContent: "center",
+    paddingTop: "10%",
+    justifyContent: "space-evenly",
     alignContent: "center",
     flex: 1,
     alignItems: "center",
