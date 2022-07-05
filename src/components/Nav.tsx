@@ -1,6 +1,10 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 const userImage = require("../../assets/logo.png");
+const configIcon = require("../../assets/configIcon.png");
+const logOutIcon = require("../../assets/logOutIcon.png");
+const moviesIcon = require("../../assets/moviesIcon.png");
+const showsIcon = require("../../assets/showsIcon.png");
 const Nav = () => {
   const timeWatched = 2;
   const userName = "Rodrigo";
@@ -20,7 +24,31 @@ const Nav = () => {
             <Text style={styles.timeWatched}>Watched {timeWatched}h</Text>
           </View>
         </View>
-        <View style={styles.rigth}></View>
+        <View style={styles.rigth}>
+          <TouchableOpacity style={styles.configBtn}>
+            <Image source={configIcon} style={styles.configIcon} />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.logOutBtn}>
+            <Image source={logOutIcon} style={styles.logOutIcon} />
+          </TouchableOpacity>
+        </View>
+      </View>
+      <View style={styles.body}>
+        <Text style={styles.libraries}>LIBRARIES</Text>
+        <View style={styles.section}>
+          <View style={styles.iconAndText}>
+            <Image source={moviesIcon} />
+            <Text style={styles.sectionTitle}>Movies</Text>
+          </View>
+          <Text style={styles.itemsNumber}>132</Text>
+        </View>
+        <View style={{ ...styles.section, marginTop: 16 * 1.5 }}>
+          <View style={styles.iconAndText}>
+            <Image source={showsIcon} />
+            <Text style={styles.sectionTitle}>Movies</Text>
+          </View>
+          <Text style={styles.itemsNumber}>80</Text>
+        </View>
       </View>
     </View>
   );
@@ -29,6 +57,52 @@ const Nav = () => {
 export default Nav;
 
 const styles = StyleSheet.create({
+  configIcon: {
+    height: 20,
+    width: 20,
+  },
+  itemsNumber: {
+    backgroundColor: "rgba(234, 150, 62, 0.5)",
+    borderRadius: 30,
+    paddingTop: 2,
+    paddingHorizontal: 8,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    color: "white",
+    fontSize: 12,
+  },
+  sectionTitle: {
+    fontWeight: "400",
+    marginLeft: 16,
+    fontSize: 14,
+    color: "white",
+  },
+  iconAndText: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  section: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignContent: "center",
+    alignItems: "center",
+  },
+  body: {
+    padding: 16,
+    paddingTop: 16 * 2,
+  },
+  libraries: {
+    color: "#EA963E",
+    fontWeight: "500",
+    fontSize: 12,
+    marginBottom: 16 * 2,
+  },
+  logOutIcon: {
+    height: 20,
+    width: 20,
+  },
   nav: {
     width: "80%",
     position: "absolute",
@@ -64,7 +138,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingLeft: 16,
   },
-  rigth: {},
+  rigth: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignContent: "center",
+    alignItems: "center",
+  },
   userImage: {
     borderRadius: 50,
     width: 40,
@@ -76,8 +156,16 @@ const styles = StyleSheet.create({
   userName: {
     color: "white",
     fontWeight: "600",
+    fontSize: 12,
   },
   timeWatched: {
     color: "gray",
+    fontSize: 12,
+  },
+  configBtn: {
+    marginRight: 16,
+  },
+  logOutBtn: {
+    marginRight: 16,
   },
 });
