@@ -8,7 +8,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Home from "./src/screens/Home";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext } from "./src/context/AuthContext";
+import { AuthContextProvider } from "./src/context/AuthContext";
 
 export type AuthStackParams = {
   Home: { title: string };
@@ -169,10 +169,10 @@ export default function App() {
 
   return (
     <>
-      <AuthContext.Provider value={authContext}>
+      <AuthContextProvider>
         <StatusBar style="light" />
         <NavigationContainer>{renderStack()}</NavigationContainer>
-      </AuthContext.Provider>
+      </AuthContextProvider>
     </>
   );
 }
