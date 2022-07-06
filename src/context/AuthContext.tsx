@@ -1,14 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 
-interface AuthContextProps {
-  signIn: ({
-    username,
-    password,
-  }: {
-    username: string;
-    password: string;
-  }) => Promise<void>;
+export interface AuthContextProps {
+  signIn: ({ token }: { token: string }) => Promise<void>;
   signOut: () => void;
   signUp: ({
     username,
@@ -21,83 +15,35 @@ interface AuthContextProps {
   userToken: string | null;
 }
 
-const AuthContext = React.createContext<AuthContextProps | null>(null);
+export const AuthContext = React.createContext<AuthContextProps>(
+  {} as AuthContextProps
+);
 
 export const AuthContextProvider: React.FC = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
-  const [userToken, setUserToken] = React.useState<string | null>(null);
-  // const [state, dispatch] = React.useReducer(
-  //   (prevState: any, action: any) => {
-  //     switch (action.type) {
-  //       case "RESTORE_TOKEN":
-  //         return {
-  //           ...prevState,
-  //           userToken: action.token,
-  //           isLoading: false,
-  //         };
-  //       case "SIGN_IN":
-  //         console.log("entro al switch");
-  //         return {
-  //           ...prevState,
-  //           isLoggedIn: true,
-  //           userToken: action.token,
-  //         };
-  //       case "SIGN_OUT":
-  //         return {
-  //           ...prevState,
-  //           isLoggedIn: false,
-  //           userToken: null,
-  //         };
-  //     }
-  //   },
-  //   {
-  //     isLoading: true,
-  //     isLoggedIn: true,
-  //     userToken: null,
-  //   }
-  // );
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userToken, setUserToken] = useState<string | null>(null);
 
-  const signIn = async ({
-    username,
-    password,
-  }: {
-    username: string;
-    password: string;
-  }) => {
-    setIsLoggedIn(true);
-    // marchesitos wifi;
-    const signInUrl = "http:/192.168.1.117:8000/api/v1/auth/login";
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: username,
-        password: password,
-      }),
-    };
-    fetch(signInUrl, options)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        } else {
-          throw new Error("Something went wrong");
-        }
-      })
-      .then(async (data) => {
-        setUserToken(data.token);
-        await AsyncStorage.setItem("token", data.token);
-        // dispatch({ type: "SIGN_IN", token: data.token });
-      })
-      .catch((error) => {
-        alert("Error signing up: " + error);
-      });
+  useEffect(() => {
+    AsyncStorage.getItem("token").then((token) => {
+      if (token) {
+        setIsLoggedIn(true);
+        setUserToken(token);
+      }
+    });
+  }, []);
+
+  const signIn = async ({ token }: { token: string }) => {
+    await AsyncStorage.setItem("token", token).then(() => {
+      setUserToken(token);
+      setIsLoggedIn(true);
+    });
   };
 
   const signOut = async () => {
-    setIsLoggedIn(false);
-    await AsyncStorage.removeItem("token");
+    await AsyncStorage.removeItem("token").then(() => {
+      setIsLoggedIn(false);
+      setUserToken(null);
+    });
   };
 
   // TODO
@@ -125,4 +71,9 @@ export const AuthContextProvider: React.FC = ({ children }) => {
       {children}
     </AuthContext.Provider>
   );
+};
+
+// hook to get the AuthContext
+export const useAuthContext = () => {
+  return useContext(AuthContext) as AuthContextProps;
 };

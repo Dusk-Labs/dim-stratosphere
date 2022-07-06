@@ -1,29 +1,23 @@
-import {
-  Button,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ScrollView,
-  Dimensions,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Carousel from "../components/Carousel";
 import React, { useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext } from "../context/AuthContext";
+import { useAuthContext } from "../context/AuthContext";
 import AuthNavBar from "../components/AuthNavBar";
 import Nav from "../components/Nav";
 import TabMenu from "../components/TabMenu";
 const Home = () => {
-  const context = React.useContext(AuthContext);
+  const authContext = useAuthContext();
   const [nav, setNav] = useState(false);
   const signOutFunc = async () => {
-    context?.signOut();
+    authContext.signOut();
   };
 
   return (
     <>
       <View style={nav ? styles.HomePageNav : styles.HomePage}>
+        <TouchableOpacity onPress={() => signOutFunc()}>
+          <Text style={styles.signOut}>Sign Out</Text>
+        </TouchableOpacity>
         <AuthNavBar title={"Dashboard"} setNav={setNav} nav={nav} />
         <View style={styles.body}>
           <Carousel sectionTitle="Continue Watching" nav={nav} />
@@ -60,5 +54,11 @@ const styles = StyleSheet.create({
     backgroundColor: "black",
     paddingRight: "0%",
     paddingLeft: "2%",
+  },
+  signOut: {
+    color: "white",
+    fontSize: 20,
+    marginTop: "10%",
+    marginBottom: "10%",
   },
 });
