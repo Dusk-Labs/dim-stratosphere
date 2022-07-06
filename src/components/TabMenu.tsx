@@ -4,24 +4,27 @@ const dashboardIcon = require("../../assets/dashBoardIcon.png");
 const searchIcon = require("../../assets/searchIcon.png");
 const downloadIcon = require("../../assets/downloadIcon.png");
 const settingIcon = require("../../assets/configIcon.png");
-
+import DashboardIcon from "./icons/DashdoardIcon";
+import SettingsIcon from "./icons/SettingsIcon";
+import SearchIcon from "./icons/SearchIcon";
+import DownloadIcon from "./icons/DownloadIcon";
 const TabMenu = () => {
   return (
     <View style={styles.tabManu}>
       <TouchableOpacity style={styles.button}>
-        <Image source={dashboardIcon} />
+        <DashboardIcon color={"#7E7E7E"} />
         <Text style={styles.text}>DashBoard</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}>
-        <Image source={searchIcon} />
+        <SearchIcon color={"#7E7E7E"} />
         <Text style={styles.text}>Search</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}>
-        <Image source={downloadIcon} />
+        <DownloadIcon color={"#7E7E7E"} />
         <Text style={styles.text}>Downloads</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}>
-        <Image source={settingIcon} />
+        <SettingsIcon color={"#7E7E7E"} />
         <Text style={styles.text}>Settings</Text>
       </TouchableOpacity>
     </View>
@@ -38,11 +41,12 @@ const styles = StyleSheet.create({
     marginTop: 16,
     flexDirection: "row",
     justifyContent: "space-evenly",
+    alignItems: "center",
+    padding: 8,
   },
   text: {
     color: "rgba(126, 126, 126, 1)",
     fontSize: 12,
-    marginTop: 4,
   },
   button: {
     justifyContent: "center",
