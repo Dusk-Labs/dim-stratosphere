@@ -5,9 +5,9 @@ interface props {
   picture: HTMLImageElement;
   reference: string;
 }
-const MovieConteiner: FC<props> = ({ title, picture, reference }: props) => {
+const MovieContainer: FC<props> = ({ title, picture, reference }: props) => {
   return (
-    <View style={styles.movieConteiner}>
+    <View style={styles.movieContainer}>
       <Image source={picture} style={styles.movieImage} />
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.reference}>{reference}</Text>
@@ -15,10 +15,10 @@ const MovieConteiner: FC<props> = ({ title, picture, reference }: props) => {
   );
 };
 
-export default MovieConteiner;
+export default MovieContainer;
 
 const styles = StyleSheet.create({
-  movieConteiner: {
+  movieContainer: {
     position: "relative",
     backgroundColor: "black",
     flex: 1,

@@ -6,12 +6,12 @@ import SignIn from "./src/screens/Auth/SignIn";
 import SignUp from "./src/screens/Auth/SignUp";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Home from "./src/screens/Home";
+import Dashboard from "./src/screens/Dashboard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "./src/context/AuthContext";
 
 export type AuthStackParams = {
-  Home: { title: string };
+  Dashboard: { title: string };
 };
 
 export type StackParams = {
@@ -32,7 +32,7 @@ const AuthStackScreen = () => {
         animation: "none",
       }}
     >
-      <AuthStack.Screen name="Home" component={Home} />
+      <AuthStack.Screen name="Dashboard" component={Dashboard} />
     </AuthStack.Navigator>
   );
 };

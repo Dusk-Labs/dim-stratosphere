@@ -8,13 +8,13 @@ import {
   Dimensions,
 } from "react-native";
 import Carousel from "../components/Carousel";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../context/AuthContext";
 import AuthNavBar from "../components/AuthNavBar";
 import Nav from "../components/Nav";
 import TabMenu from "../components/TabMenu";
-const Home = () => {
+const Dashboard = () => {
   const context = React.useContext(AuthContext);
   const [nav, setNav] = useState(false);
   const signOutFunc = async () => {
@@ -29,14 +29,14 @@ const Home = () => {
           <Carousel sectionTitle="Continue Watching" nav={nav} />
           <Carousel sectionTitle="Freshly Added" nav={nav} />
         </View>
-        <TabMenu />
+        <TabMenu nav={nav} />
       </View>
       {nav && <Nav />}
     </>
   );
 };
 
-export default Home;
+export default Dashboard;
 
 const styles = StyleSheet.create({
   HomePage: {

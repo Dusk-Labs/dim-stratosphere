@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import React, { FC, useEffect, useState } from "react";
-import MovieConteiner from "./MovieConteiner";
+import MovieContainer from "./MovieContainer";
 import { movies } from "../movies";
 interface props {
   sectionTitle?: string;
@@ -13,7 +13,7 @@ const Carousel: FC<props> = ({ sectionTitle, nav }) => {
     picture: HTMLImageElement;
   }
   return (
-    <View style={styles.conteiner}>
+    <View style={styles.container}>
       <View style={styles.titleSection}>
         <Text
           style={
@@ -28,7 +28,7 @@ const Carousel: FC<props> = ({ sectionTitle, nav }) => {
       <ScrollView style={styles.moviesSection} horizontal={true}>
         {movies.map((element) => {
           return (
-            <MovieConteiner
+            <MovieContainer
               key={element.title}
               title={element.title}
               picture={element.picture}
@@ -44,7 +44,7 @@ const Carousel: FC<props> = ({ sectionTitle, nav }) => {
 export default Carousel;
 
 const styles = StyleSheet.create({
-  conteiner: {
+  container: {
     flex: 1,
     alignItems: "baseline",
     justifyContent: "flex-start",

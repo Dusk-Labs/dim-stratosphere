@@ -15,7 +15,7 @@ interface props {
 }
 const AuthNavBar: FC<props> = ({ title, setNav, nav }) => {
   return (
-    <View style={styles.conteiner}>
+    <View style={styles.container}>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
@@ -32,7 +32,7 @@ const AuthNavBar: FC<props> = ({ title, setNav, nav }) => {
 export default AuthNavBar;
 
 const styles = StyleSheet.create({
-  conteiner: {
+  container: {
     marginTop: 16 * 2,
     padding: 8,
     position: "relative",

@@ -8,24 +8,24 @@ import DashboardIcon from "./icons/DashdoardIcon";
 import SettingsIcon from "./icons/SettingsIcon";
 import SearchIcon from "./icons/SearchIcon";
 import DownloadIcon from "./icons/DownloadIcon";
-const TabMenu = () => {
+const TabMenu = ({ nav }: { nav: boolean }) => {
   return (
-    <View style={styles.tabManu}>
-      <TouchableOpacity style={styles.button}>
+    <View style={nav ? styles.tabManuNav : styles.tabManu}>
+      <TouchableOpacity style={nav ? styles.buttonNav : styles.button}>
         <DashboardIcon color={"#7E7E7E"} />
-        <Text style={styles.text}>DashBoard</Text>
+        <Text style={nav ? styles.textNav : styles.text}>DashBoard</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={nav ? styles.buttonNav : styles.button}>
         <SearchIcon color={"#7E7E7E"} />
-        <Text style={styles.text}>Search</Text>
+        <Text style={nav ? styles.textNav : styles.text}>Search</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={nav ? styles.buttonNav : styles.button}>
         <DownloadIcon color={"#7E7E7E"} />
-        <Text style={styles.text}>Downloads</Text>
+        <Text style={nav ? styles.textNav : styles.text}>Downloads</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={nav ? styles.buttonNav : styles.button}>
         <SettingsIcon color={"#7E7E7E"} />
-        <Text style={styles.text}>Settings</Text>
+        <Text style={nav ? styles.textNav : styles.text}>Settings</Text>
       </TouchableOpacity>
     </View>
   );
@@ -43,6 +43,27 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     alignItems: "center",
     padding: 8,
+  },
+  textNav: {
+    height: 16,
+    overflow: "hidden",
+    color: "rgba(126, 126, 126, 1)",
+    fontSize: 12,
+  },
+  tabManuNav: {
+    height: 16 * 4,
+    backgroundColor: "rgba(37, 37, 37, 1)",
+    width: "100%",
+    marginTop: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 8,
+  },
+  buttonNav: {
+    marginLeft: 16 * 2,
+    justifyContent: "center",
+    alignContent: "center",
+    alignItems: "center",
   },
   text: {
     color: "rgba(126, 126, 126, 1)",
