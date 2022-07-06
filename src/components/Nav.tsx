@@ -12,7 +12,7 @@ const Nav = () => {
     <View style={styles.nav}>
       <View style={styles.header}>
         <View style={styles.left}>
-          <View style={styles.imageConteiner}>
+          <View style={styles.imageContainer}>
             <Image
               source={userImage}
               style={styles.userImage}
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     height: "100%",
     zIndex: 9,
   },
-  imageConteiner: {
+  imageContainer: {
     borderColor: "white",
     borderRadius: 50,
     borderWidth: 2,
