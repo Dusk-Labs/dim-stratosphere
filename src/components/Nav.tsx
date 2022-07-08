@@ -5,7 +5,6 @@ const configIcon = require("../../assets/configIcon.png");
 const logOutIcon = require("../../assets/logOutIcon.png");
 const moviesIcon = require("../../assets/moviesIcon.png");
 const showsIcon = require("../../assets/showsIcon.png");
-import DashdoardIcon from "./DashdoardIcon";
 const Nav = () => {
   const timeWatched = 2;
   const userName = "Rodrigo";
