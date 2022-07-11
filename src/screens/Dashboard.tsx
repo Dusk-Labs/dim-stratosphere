@@ -14,6 +14,7 @@ import { AuthContext } from "../context/AuthContext";
 import AuthNavBar from "../components/AuthNavBar";
 import Nav from "../components/Nav";
 import TabMenu from "../components/TabMenu";
+
 const Dashboard = () => {
   const context = React.useContext(AuthContext);
   const [nav, setNav] = useState(false);
@@ -59,6 +60,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black",
     paddingRight: "0%",
-    paddingLeft: "2%",
+    paddingLeft: 8,
   },
 });

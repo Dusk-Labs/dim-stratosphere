@@ -9,3 +9,7 @@ export interface UserFormErrors {
   password: string;
   host: string;
 }
+
+export interface IconInteface {
+  color: string;
+}

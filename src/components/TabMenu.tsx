@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React from "react";
-const dashboardIcon = require("../../assets/dashBoardIcon.png");
-const searchIcon = require("../../assets/searchIcon.png");
-const downloadIcon = require("../../assets/downloadIcon.png");
-const settingIcon = require("../../assets/configIcon.png");
+import React, { FC } from "react";
 import DashboardIcon from "./icons/DashdoardIcon";
 import SettingsIcon from "./icons/SettingsIcon";
 import SearchIcon from "./icons/SearchIcon";
 import DownloadIcon from "./icons/DownloadIcon";
-const TabMenu = ({ nav }: { nav: boolean }) => {
+interface TabMenuProps {
+  nav: boolean;
+}
+
+const TabMenu: FC<TabMenuProps> = ({ nav }) => {
   return (
     <View style={nav ? styles.tabManuNav : styles.tabManu}>
       <TouchableOpacity style={nav ? styles.buttonNav : styles.button}>
