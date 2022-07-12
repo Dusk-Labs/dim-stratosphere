@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
+import SettingsIcon from "./icons/SettingsIcon";
 const userImage = require("../../assets/logo.png");
 const configIcon = require("../../assets/configIcon.png");
 const logOutIcon = require("../../assets/logOutIcon.png");
@@ -27,7 +28,7 @@ const Nav = () => {
         </View>
         <View style={styles.rigth}>
           <TouchableOpacity style={styles.configBtn}>
-            <Image source={configIcon} style={styles.configIcon} />
+            <SettingsIcon color={"#7E7E7E"} />
           </TouchableOpacity>
           <TouchableOpacity style={styles.logOutBtn}>
             <Image source={logOutIcon} style={styles.logOutIcon} />
@@ -58,10 +59,6 @@ const Nav = () => {
 export default Nav;
 
 const styles = StyleSheet.create({
-  configIcon: {
-    height: 20,
-    width: 20,
-  },
   itemsNumber: {
     backgroundColor: "rgba(234, 150, 62, 0.5)",
     borderRadius: 30,
