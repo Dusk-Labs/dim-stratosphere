@@ -1,58 +1,63 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SettingsIcon from "./icons/SettingsIcon";
 const userImage = require("../../assets/logo.png");
-const configIcon = require("../../assets/configIcon.png");
 const logOutIcon = require("../../assets/logOutIcon.png");
 const moviesIcon = require("../../assets/moviesIcon.png");
 const showsIcon = require("../../assets/showsIcon.png");
 
 const Nav = () => {
+  const [testState, setTestState] = useState(true);
+  useEffect(() => {
+    alert("hola");
+  }, [testState]);
   const timeWatched = 2;
   const userName = "Rodrigo";
   return (
-    <View style={styles.nav}>
-      <View style={styles.header}>
-        <View style={styles.left}>
-          <View style={styles.imageContainer}>
-            <Image
-              source={userImage}
-              style={styles.userImage}
-              resizeMode="contain"
-            ></Image>
+    <>
+      <View style={styles.nav}>
+        <View style={styles.header}>
+          <View style={styles.left}>
+            <View style={styles.imageContainer}>
+              <Image
+                source={userImage}
+                style={styles.userImage}
+                resizeMode="contain"
+              ></Image>
+            </View>
+            <View style={styles.useInfo}>
+              <Text style={styles.userName}>{userName}</Text>
+              <Text style={styles.timeWatched}>Watched {timeWatched}h</Text>
+            </View>
           </View>
-          <View style={styles.useInfo}>
-            <Text style={styles.userName}>{userName}</Text>
-            <Text style={styles.timeWatched}>Watched {timeWatched}h</Text>
+          <View style={styles.rigth}>
+            <TouchableOpacity style={styles.configBtn}>
+              <SettingsIcon color={"#7E7E7E"} />
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.logOutBtn}>
+              <Image source={logOutIcon} style={styles.logOutIcon} />
+            </TouchableOpacity>
           </View>
         </View>
-        <View style={styles.rigth}>
-          <TouchableOpacity style={styles.configBtn}>
-            <SettingsIcon color={"#7E7E7E"} />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.logOutBtn}>
-            <Image source={logOutIcon} style={styles.logOutIcon} />
-          </TouchableOpacity>
+        <View style={styles.body}>
+          <Text style={styles.libraries}>LIBRARIES</Text>
+          <View style={styles.section}>
+            <View style={styles.iconAndText}>
+              <Image source={moviesIcon} />
+              <Text style={styles.sectionTitle}>Movies</Text>
+            </View>
+            <Text style={styles.itemsNumber}>132</Text>
+          </View>
+          <View style={{ ...styles.section, marginTop: 16 * 1.5 }}>
+            <View style={styles.iconAndText}>
+              <Image source={showsIcon} />
+              <Text style={styles.sectionTitle}>Movies</Text>
+            </View>
+            <Text style={styles.itemsNumber}>80</Text>
+          </View>
         </View>
       </View>
-      <View style={styles.body}>
-        <Text style={styles.libraries}>LIBRARIES</Text>
-        <View style={styles.section}>
-          <View style={styles.iconAndText}>
-            <Image source={moviesIcon} />
-            <Text style={styles.sectionTitle}>Movies</Text>
-          </View>
-          <Text style={styles.itemsNumber}>132</Text>
-        </View>
-        <View style={{ ...styles.section, marginTop: 16 * 1.5 }}>
-          <View style={styles.iconAndText}>
-            <Image source={showsIcon} />
-            <Text style={styles.sectionTitle}>Movies</Text>
-          </View>
-          <Text style={styles.itemsNumber}>80</Text>
-        </View>
-      </View>
-    </View>
+    </>
   );
 };
 

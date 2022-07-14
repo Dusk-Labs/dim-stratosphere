@@ -9,6 +9,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Dashboard from "./src/screens/Dashboard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "./src/context/AuthContext";
+import "react-native-gesture-handler";
 
 export type AuthStackParams = {
   Dashboard: { title: string };
