@@ -28,6 +28,7 @@ const Input = ({
   const [hidePassword, setHidePassword] = useState<boolean>(
     showAndHidePassword || false
   );
+
   return (
     <>
       <View>

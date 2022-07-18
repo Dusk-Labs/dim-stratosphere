@@ -1,0 +1,67 @@
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import React, { FC, useEffect, useState } from "react";
+import MovieContainer from "./MovieContainer";
+import { movies } from "../movies";
+
+interface props {
+  sectionTitle?: string;
+  nav: boolean;
+}
+
+interface movieInterface {
+  title: string;
+  reference: string;
+  picture: HTMLImageElement;
+}
+
+const Carousel: FC<props> = ({ sectionTitle, nav }) => {
+  return (
+    <View style={styles.container}>
+      <View style={styles.titleSection}>
+        <Text
+          style={
+            nav
+              ? { ...styles.sectionTitle, height: 16 * 1.5 }
+              : styles.sectionTitle
+          }
+        >
+          {sectionTitle}
+        </Text>
+      </View>
+      <ScrollView style={styles.moviesSection} horizontal={true}>
+        {movies.map((element) => {
+          return (
+            <MovieContainer
+              key={element.title}
+              title={element.title}
+              picture={element.picture}
+              reference={element.reference}
+            />
+          );
+        })}
+      </ScrollView>
+    </View>
+  );
+};
+
+export default Carousel;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "baseline",
+    justifyContent: "flex-start",
+  },
+  titleSection: {},
+  moviesSection: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  sectionTitle: {
+    color: "white",
+    fontWeight: "700",
+    fontSize: 16,
+    marginBottom: 16,
+    marginLeft: 8,
+  },
+});

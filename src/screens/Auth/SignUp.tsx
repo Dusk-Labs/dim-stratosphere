@@ -6,19 +6,22 @@ import {
   Keyboard,
 } from "react-native";
 import React, { useState } from "react";
-import { Navbar } from "../components/Navbar";
+import { Navbar } from "../../components/Navbar";
+import Input from "../../components/Input";
+import { User, UserFormErrors } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParams } from "../../App";
-import Input from "../components/Input";
-import { User, UserFormErrors } from "../types";
+import { StackParams } from "../../../App";
+import { PostSignUp } from "../../../api/auth/Auth";
 
 type SignInProps = NativeStackScreenProps<StackParams, "SignIn">;
 
-const SignIn = ({ navigation, route }: SignInProps) => {
+const SignUp = ({ navigation, route }: SignInProps) => {
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
     host: "",
+    // hardcoded for now. will be replaced with input?
+    inviteToken: "cc23092e-484c-4ef9-a40b-75e0829ebbea",
   });
 
   const [errors, setErrors] = useState<UserFormErrors>({
@@ -33,6 +36,7 @@ const SignIn = ({ navigation, route }: SignInProps) => {
   const validate = () => {
     Keyboard.dismiss();
     let valid = true;
+
     if (!user.username) {
       handleError("Username is required", "username");
       valid = false;
@@ -60,12 +64,33 @@ const SignIn = ({ navigation, route }: SignInProps) => {
       valid = false;
     }
 
-    if (valid) signIn();
+    if (valid) signUpMethod();
   };
 
-  const signIn = () => {
-    // here comes the API call
-    alert("Sign In Success! " + JSON.stringify(user));
+  const signUpMethod = async () => {
+    const signUpUrl = `http://${user.host}/api/v1/auth/register`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: user.username,
+        password: user.password,
+        invite_token: user.inviteToken,
+      }),
+    };
+
+    await PostSignUp({
+      signUpUrl: signUpUrl,
+      options: options,
+    }).then((res) => {
+      console.log(res);
+      if (res === user.username) {
+        alert("Successfully registered");
+        // TODO login automatically when registered successfully
+      }
+    });
   };
 
   const handleOnChangeText = (text: string, input: string) => {
@@ -84,19 +109,21 @@ const SignIn = ({ navigation, route }: SignInProps) => {
       <View style={styles.bottom}>
         <View style={styles.form}>
           <Input
-            placeholder="Username"
+            placeholder="Choose a Username"
             handleOnChangeText={(text) => handleOnChangeText(text, "username")}
             error={errors.username}
             onFocus={() => handleError("", "username")}
           />
           <Input
-            placeholder="Password"
+            placeholder="Create a Password"
             showAndHidePassword={true}
-            handleOnChangeText={(text) => handleOnChangeText(text, "password")}
+            handleOnChangeText={(text) => {
+              handleOnChangeText(text, "password");
+            }}
             error={errors.password}
             onFocus={() => handleError("", "password")}
           />
-          <Text style={{ marginBottom: 16, color: "#FFF", fontSize: 14 }}>
+          <Text style={{ marginBottom: 8, color: "#FFF", fontSize: 14 }}>
             Connect to host
           </Text>
           <Input
@@ -118,19 +145,30 @@ const SignIn = ({ navigation, route }: SignInProps) => {
               onPress={() => validate()}
             >
               <Text style={{ color: "#FFF", textAlign: "center" }}>
-                Sign in
+                Sign Up
               </Text>
             </TouchableOpacity>
+            <Text
+              style={{
+                color: "white",
+                opacity: 0.5,
+                fontSize: 10,
+                marginBottom: 18,
+                textAlign: "center",
+              }}
+            >
+              By signing up you are agreeing to our Terms of Service
+            </Text>
             <View style={styles.finalText}>
               <Text style={{ color: "#FFF", opacity: 0.5 }}>
-                Don't have an account yet?
+                Already have an account?
               </Text>
               <TouchableOpacity
                 onPress={() =>
-                  navigation.navigate("SignUp", { title: "Sign Up" })
+                  navigation.navigate("SignIn", { title: "Sign In" })
                 }
               >
-                <Text style={{ color: "#EA963E" }}> Sign up here</Text>
+                <Text style={{ color: "#EA963E" }}> Sign in</Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -139,7 +177,6 @@ const SignIn = ({ navigation, route }: SignInProps) => {
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   SignInPage: {
     justifyContent: "center",
@@ -168,7 +205,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: "100%",
     padding: 8,
-    marginBottom: 16,
+    marginBottom: 6,
   },
   form: {
     width: "100%",
@@ -184,5 +221,4 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
-
-export default SignIn;
+export default SignUp;
