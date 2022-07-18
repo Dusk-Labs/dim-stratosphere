@@ -51,8 +51,9 @@ const StackScreen = () => {
 
 export function App() {
   const { isLoggedIn } = useAuthContext();
+  // console.log("isLoggedIn ", isLoggedIn);
   const renderStack = () => {
-    console.log("isLoggedIn in App: ", isLoggedIn);
+    // console.log("isLoggedIn in App: ", isLoggedIn);
     return isLoggedIn ? <AuthStackScreen /> : <StackScreen />;
   };
 

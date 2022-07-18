@@ -2,16 +2,19 @@ import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import React, { FC, useEffect, useState } from "react";
 import MovieContainer from "./MovieContainer";
 import { movies } from "../movies";
+
 interface props {
   sectionTitle?: string;
   nav: boolean;
 }
+
+interface movieInterface {
+  title: string;
+  reference: string;
+  picture: HTMLImageElement;
+}
+
 const Carousel: FC<props> = ({ sectionTitle, nav }) => {
-  interface movieInterface {
-    title: string;
-    reference: string;
-    picture: HTMLImageElement;
-  }
   return (
     <View style={styles.container}>
       <View style={styles.titleSection}>

@@ -11,6 +11,7 @@ import Input from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParams } from "../../../App";
+import { PostSignUp } from "../../../api/auth/Auth";
 
 type SignInProps = NativeStackScreenProps<StackParams, "SignIn">;
 
@@ -19,6 +20,8 @@ const SignUp = ({ navigation, route }: SignInProps) => {
     username: "",
     password: "",
     host: "",
+    // hardcoded for now. will be replaced with input?
+    inviteToken: "cc23092e-484c-4ef9-a40b-75e0829ebbea",
   });
 
   const [errors, setErrors] = useState<UserFormErrors>({
@@ -61,14 +64,11 @@ const SignUp = ({ navigation, route }: SignInProps) => {
       valid = false;
     }
 
-    if (valid) signUp();
+    if (valid) signUpMethod();
   };
 
-  const signUp = () => {
-    // TODO to be replaced with context
-
-    // here comes the API call
-    const singUpUrl = `http://localhost:8080/api/v1/register`;
+  const signUpMethod = async () => {
+    const signUpUrl = `http://${user.host}/api/v1/auth/register`;
     const options = {
       method: "POST",
       headers: {
@@ -77,22 +77,20 @@ const SignUp = ({ navigation, route }: SignInProps) => {
       body: JSON.stringify({
         username: user.username,
         password: user.password,
+        invite_token: user.inviteToken,
       }),
     };
-    fetch(singUpUrl, options)
-      .then((response) => {
-        if (response.status === 200) {
-          navigation.navigate("SignIn", { title: "Sign In" });
-          console.log(response);
-        } else {
-          alert("Error signing up");
-        }
-      })
-      .catch((error) => {
-        alert("Error signing up: " + error);
-      });
 
-    alert("Sign Up Success! " + JSON.stringify(user));
+    await PostSignUp({
+      signUpUrl: signUpUrl,
+      options: options,
+    }).then((res) => {
+      console.log(res);
+      if (res === user.username) {
+        alert("Successfully registered");
+        // TODO login automatically when registered successfully
+      }
+    });
   };
 
   const handleOnChangeText = (text: string, input: string) => {

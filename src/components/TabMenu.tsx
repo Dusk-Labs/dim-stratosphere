@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
+
 const dashboardIcon = require("../../assets/dashBoardIcon.png");
 const searchIcon = require("../../assets/searchIcon.png");
 const downloadIcon = require("../../assets/downloadIcon.png");

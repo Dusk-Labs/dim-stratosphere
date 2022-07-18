@@ -1,13 +1,16 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
+
 const userImage = require("../../assets/logo.png");
 const configIcon = require("../../assets/configIcon.png");
 const logOutIcon = require("../../assets/logOutIcon.png");
 const moviesIcon = require("../../assets/moviesIcon.png");
 const showsIcon = require("../../assets/showsIcon.png");
+
 const Nav = () => {
   const timeWatched = 2;
   const userName = "Rodrigo";
+
   return (
     <View style={styles.nav}>
       <View style={styles.header}>

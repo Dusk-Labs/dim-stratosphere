@@ -1,18 +1,14 @@
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React, { FC, useState, Dispatch, SetStateAction } from "react";
+
 const navIcon = require("../../assets/navIcon.png");
+
 interface props {
   title: string;
   setNav: Dispatch<SetStateAction<boolean>>;
   nav: boolean;
 }
+
 const AuthNavBar: FC<props> = ({ title, setNav, nav }) => {
   return (
     <View style={styles.container}>

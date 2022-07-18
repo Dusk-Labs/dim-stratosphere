@@ -12,6 +12,7 @@ import { StackParams } from "../../../App";
 import Input from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
 import { useAuthContext } from "../../context/AuthContext";
+import { PostSignIn } from "../../../api/auth/Auth";
 
 type SignInProps = NativeStackScreenProps<StackParams, "SignIn">;
 
@@ -66,9 +67,8 @@ const SignIn = ({ navigation, route }: SignInProps) => {
     if (valid) signInMethod();
   };
 
-  const signInMethod = () => {
-    // marchesitos wifi;
-    const signInUrl = "http:/192.168.1.112:8000/api/v1/auth/login";
+  const signInMethod = async () => {
+    const signInUrl = `http://${user.host}/api/v1/auth/login`;
     const options = {
       method: "POST",
       headers: {
@@ -80,20 +80,12 @@ const SignIn = ({ navigation, route }: SignInProps) => {
       }),
     };
 
-    fetch(signInUrl, options)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        } else {
-          throw new Error("Something went wrong");
-        }
-      })
-      .then(async (data) => {
-        signIn({ token: data.token });
-      })
-      .catch((error) => {
-        alert("Error signing up: " + error);
-      });
+    const userToken = await PostSignIn({
+      signInUrl: signInUrl,
+      options: options,
+    });
+
+    userToken && signIn({ userToken: userToken });
   };
 
   const handleOnChangeText = (text: string, input: string) => {

@@ -5,9 +5,11 @@ import { useAuthContext } from "../context/AuthContext";
 import AuthNavBar from "../components/AuthNavBar";
 import Nav from "../components/Nav";
 import TabMenu from "../components/TabMenu";
+
 const Home = () => {
   const authContext = useAuthContext();
   const [nav, setNav] = useState(false);
+
   const signOutFunc = async () => {
     authContext.signOut();
   };

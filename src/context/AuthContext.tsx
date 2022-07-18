@@ -2,15 +2,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { useContext, useEffect, useState } from "react";
 
 export interface AuthContextProps {
-  signIn: ({ token }: { token: string }) => Promise<void>;
+  signIn: ({ userToken }: { userToken: string }) => Promise<void>;
   signOut: () => void;
-  signUp: ({
-    username,
-    password,
-  }: {
-    username: string;
-    password: string;
-  }) => Promise<void>;
   isLoggedIn: boolean;
   userToken: string | null;
 }
@@ -24,38 +17,27 @@ export const AuthContextProvider: React.FC = ({ children }) => {
   const [userToken, setUserToken] = useState<string | null>(null);
 
   useEffect(() => {
-    AsyncStorage.getItem("token").then((token) => {
-      if (token) {
+    AsyncStorage.getItem("userToken").then((userToken) => {
+      if (userToken) {
         setIsLoggedIn(true);
-        setUserToken(token);
+        setUserToken(userToken);
       }
     });
   }, []);
 
-  const signIn = async ({ token }: { token: string }) => {
-    await AsyncStorage.setItem("token", token).then(() => {
-      setUserToken(token);
+  const signIn = async ({ userToken }: { userToken: string }) => {
+    console.log("2 userToken", userToken);
+    await AsyncStorage.setItem("userToken", userToken).then(() => {
+      setUserToken(userToken);
       setIsLoggedIn(true);
     });
   };
 
   const signOut = async () => {
-    await AsyncStorage.removeItem("token").then(() => {
+    await AsyncStorage.removeItem("userToken").then(() => {
       setIsLoggedIn(false);
       setUserToken(null);
     });
-  };
-
-  // TODO
-  const signUp = async ({
-    username,
-    password,
-  }: {
-    username: string;
-    password: string;
-  }) => {
-    setIsLoggedIn(true);
-    setUserToken("token");
   };
 
   return (
@@ -63,7 +45,6 @@ export const AuthContextProvider: React.FC = ({ children }) => {
       value={{
         signIn,
         signOut,
-        signUp,
         isLoggedIn,
         userToken,
       }}
