@@ -18,9 +18,6 @@ const Dashboard = () => {
   return (
     <>
       <View style={nav ? styles.HomePageNav : styles.HomePage}>
-        <TouchableOpacity onPress={() => signOutFunc()}>
-          <Text style={styles.signOut}>Sign Out</Text>
-        </TouchableOpacity>
         <AuthNavBar title={"Dashboard"} setNav={setNav} nav={nav} />
         <View style={styles.body}>
           <Carousel sectionTitle="Continue Watching" nav={nav} />
