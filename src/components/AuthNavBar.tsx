@@ -1,15 +1,15 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React, { FC, useState, Dispatch, SetStateAction } from "react";
+import React, { FC, Dispatch, SetStateAction } from "react";
 
 const navIcon = require("../../assets/navIcon.png");
 
-interface props {
+interface AuthNavBarProps {
   title: string;
   setNav: Dispatch<SetStateAction<boolean>>;
   nav: boolean;
 }
 
-const AuthNavBar: FC<props> = ({ title, setNav, nav }) => {
+const AuthNavBar: FC<AuthNavBarProps> = ({ title, setNav, nav }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -24,9 +24,7 @@ const AuthNavBar: FC<props> = ({ title, setNav, nav }) => {
     </View>
   );
 };
-
 export default AuthNavBar;
-
 const styles = StyleSheet.create({
   container: {
     marginTop: 16 * 2,

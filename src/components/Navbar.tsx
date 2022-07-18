@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import React from "react";
+import React, { FC } from "react";
 
-interface NavProps {
+interface NavBarProps {
   navigation: any;
   title: string;
 }
 
-export const Navbar = ({ navigation, title }: NavProps) => {
+export const Navbar: FC<NavBarProps> = ({ navigation, title }) => {
   return (
     <>
       <View style={styles.nav}>

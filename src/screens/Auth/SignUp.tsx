@@ -177,6 +177,7 @@ const SignUp = ({ navigation, route }: SignInProps) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   SignInPage: {
     justifyContent: "center",

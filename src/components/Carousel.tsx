@@ -1,32 +1,24 @@
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import MovieContainer from "./MovieContainer";
 import { movies } from "../movies";
 
-interface props {
+interface CarouselProps {
   sectionTitle?: string;
   nav: boolean;
 }
 
-interface movieInterface {
-  title: string;
-  reference: string;
-  picture: HTMLImageElement;
-}
-
-const Carousel: FC<props> = ({ sectionTitle, nav }) => {
+const Carousel: FC<CarouselProps> = ({ sectionTitle, nav }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.titleSection}>
-        <Text
-          style={
-            nav
-              ? { ...styles.sectionTitle, height: 16 * 1.5 }
-              : styles.sectionTitle
-          }
-        >
-          {sectionTitle}
-        </Text>
+      <View
+        style={
+          nav
+            ? { ...styles.titleSection, flexWrap: "wrap" }
+            : styles.titleSection
+        }
+      >
+        <Text style={styles.sectionTitle}>{sectionTitle}</Text>
       </View>
       <ScrollView style={styles.moviesSection} horizontal={true}>
         {movies.map((element) => {

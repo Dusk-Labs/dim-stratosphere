@@ -1,13 +1,17 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React, { FC } from "react";
 
-interface Props {
+interface MovieContainerProps {
   title: string;
   picture: HTMLImageElement;
   reference: string;
 }
 
-const MovieContainer: FC<Props> = ({ title, picture, reference }: Props) => {
+const MovieContainer: FC<MovieContainerProps> = ({
+  title,
+  picture,
+  reference,
+}) => {
   return (
     <View style={styles.movieContainer}>
       <Image source={picture} style={styles.movieImage} />

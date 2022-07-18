@@ -4,24 +4,23 @@ import SignIn from "./src/screens/Auth/SignIn";
 import SignUp from "./src/screens/Auth/SignUp";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Home from "./src/screens/Home";
+import Dashboard from "./src/screens/Dashboard";
 import { AuthContextProvider, useAuthContext } from "./src/context/AuthContext";
 
-export type AuthStackParams = {
-  Home: { title: string };
+export type MainStackParams = {
+  Dashboard: { title: string };
 };
 
-export type StackParams = {
+export type AuthStackParams = {
   LogIn: { title: string };
   SignIn: { title: string };
   SignUp: { title: string };
 };
 
 const AuthStack = createNativeStackNavigator<AuthStackParams>();
+const MainStack = createNativeStackNavigator<MainStackParams>();
 
-const Stack = createNativeStackNavigator<StackParams>();
-
-const AuthStackScreen = () => {
+const AuthStackScreens = () => {
   return (
     <AuthStack.Navigator
       screenOptions={{
@@ -29,32 +28,31 @@ const AuthStackScreen = () => {
         animation: "none",
       }}
     >
-      <AuthStack.Screen name="Home" component={Home} />
+      <AuthStack.Screen name="LogIn" component={LogIn} />
+      <AuthStack.Screen name="SignIn" component={SignIn} />
+      <AuthStack.Screen name="SignUp" component={SignUp} />
     </AuthStack.Navigator>
   );
 };
 
-const StackScreen = () => {
+const MainStackScreens = () => {
   return (
-    <Stack.Navigator
+    <MainStack.Navigator
       screenOptions={{
         headerShown: false,
         animation: "none",
       }}
     >
-      <Stack.Screen name="LogIn" component={LogIn} />
-      <Stack.Screen name="SignIn" component={SignIn} />
-      <Stack.Screen name="SignUp" component={SignUp} />
-    </Stack.Navigator>
+      <MainStack.Screen name="Dashboard" component={Dashboard} />
+    </MainStack.Navigator>
   );
 };
 
 export function App() {
   const { isLoggedIn } = useAuthContext();
-  // console.log("isLoggedIn ", isLoggedIn);
+
   const renderStack = () => {
-    // console.log("isLoggedIn in App: ", isLoggedIn);
-    return isLoggedIn ? <AuthStackScreen /> : <StackScreen />;
+    return isLoggedIn ? <MainStackScreens /> : <AuthStackScreens />;
   };
 
   return (

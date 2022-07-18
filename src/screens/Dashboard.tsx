@@ -1,17 +1,18 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Carousel from "../components/Carousel";
-import React, { useState } from "react";
-import { useAuthContext } from "../context/AuthContext";
+import React, { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthContext } from "../context/AuthContext";
 import AuthNavBar from "../components/AuthNavBar";
 import Nav from "../components/Nav";
 import TabMenu from "../components/TabMenu";
 
-const Home = () => {
-  const authContext = useAuthContext();
+const Dashboard = () => {
+  const context = React.useContext(AuthContext);
   const [nav, setNav] = useState(false);
 
   const signOutFunc = async () => {
-    authContext.signOut();
+    context?.signOut();
   };
 
   return (
@@ -25,14 +26,14 @@ const Home = () => {
           <Carousel sectionTitle="Continue Watching" nav={nav} />
           <Carousel sectionTitle="Freshly Added" nav={nav} />
         </View>
-        <TabMenu />
+        <TabMenu nav={nav} />
       </View>
       {nav && <Nav />}
     </>
   );
 };
 
-export default Home;
+export default Dashboard;
 
 const styles = StyleSheet.create({
   HomePage: {
@@ -55,7 +56,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "black",
     paddingRight: "0%",
-    paddingLeft: "2%",
+    paddingLeft: 8,
   },
   signOut: {
     color: "white",
