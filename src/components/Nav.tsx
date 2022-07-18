@@ -13,6 +13,7 @@ const Nav = () => {
   }, [testState]);
   const timeWatched = 2;
   const userName = "Rodrigo";
+
   return (
     <>
       <View style={styles.nav}>

@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 import MovieContainer from "./MovieContainer";
 import { movies } from "../movies";
+
 interface CarouselProps {
   sectionTitle?: string;
   nav: boolean;

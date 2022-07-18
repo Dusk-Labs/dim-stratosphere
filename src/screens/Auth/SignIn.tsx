@@ -11,7 +11,8 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParams } from "../../../App";
 import Input from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
-import { AuthContext } from "../../context/AuthContext";
+import { useAuthContext } from "../../context/AuthContext";
+import { PostSignIn } from "../../../api/auth/Auth";
 
 type SignInProps = NativeStackScreenProps<StackParams, "SignIn">;
 
@@ -27,6 +28,8 @@ const SignIn = ({ navigation, route }: SignInProps) => {
     password: "",
     host: "",
   });
+
+  const { signIn } = useAuthContext();
 
   const hostRegex =
     /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -61,14 +64,28 @@ const SignIn = ({ navigation, route }: SignInProps) => {
       valid = false;
     }
 
-    if (valid) signInFunc();
+    if (valid) signInMethod();
   };
 
-  const context = React.useContext(AuthContext);
+  const signInMethod = async () => {
+    const signInUrl = `http://${user.host}/api/v1/auth/login`;
+    const options = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: user.username,
+        password: user.password,
+      }),
+    };
 
-  // rename better
-  const signInFunc = () => {
-    context?.signIn({ username: user.username, password: user.password });
+    const userToken = await PostSignIn({
+      signInUrl: signInUrl,
+      options: options,
+    });
+
+    userToken && signIn({ userToken: userToken });
   };
 
   const handleOnChangeText = (text: string, input: string) => {

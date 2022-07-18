@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React, { FC } from "react";
+
 interface MovieContainerProps {
   title: string;
   picture: HTMLImageElement;
