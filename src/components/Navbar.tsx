@@ -1,12 +1,12 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React, { FC } from "react";
 
-interface NavBarProps {
+type NavBarProps = {
   navigation: any;
   title: string;
-}
+};
 
-export const Navbar: FC<NavBarProps> = ({ navigation, title }) => {
+export const Navbar = ({ navigation, title }: NavBarProps) => {
   return (
     <>
       <View style={styles.nav}>
@@ -25,8 +25,6 @@ export const Navbar: FC<NavBarProps> = ({ navigation, title }) => {
     </>
   );
 };
-
-export default Navbar;
 
 const styles = StyleSheet.create({
   back: {

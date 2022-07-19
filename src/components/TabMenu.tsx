@@ -5,11 +5,11 @@ import SettingsIcon from "./icons/SettingsIcon";
 import SearchIcon from "./icons/SearchIcon";
 import DownloadIcon from "./icons/DownloadIcon";
 
-interface TabMenuProps {
+type TabMenuProps = {
   nav: boolean;
-}
+};
 
-const TabMenu: FC<TabMenuProps> = ({ nav }) => {
+export const TabMenu = ({ nav }: TabMenuProps) => {
   return (
     <View style={nav ? styles.tabManuNav : styles.tabManu}>
       <TouchableOpacity style={nav ? styles.buttonNav : styles.button}>
@@ -31,8 +31,6 @@ const TabMenu: FC<TabMenuProps> = ({ nav }) => {
     </View>
   );
 };
-
-export default TabMenu;
 
 const styles = StyleSheet.create({
   tabManu: {

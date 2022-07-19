@@ -1,11 +1,11 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParams } from "../../../App";
+import { AuthStackParams } from "../../../App";
 
-type LoginProps = NativeStackScreenProps<StackParams, "LogIn">;
+type LoginProps = NativeStackScreenProps<AuthStackParams, "LogIn">;
 
-const LogIn = ({ navigation }: LoginProps) => {
+export const LogIn = ({ navigation }: LoginProps) => {
   return (
     <View style={styles.login}>
       <View style={styles.top}>
@@ -34,6 +34,7 @@ const LogIn = ({ navigation }: LoginProps) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   top: {
     justifyContent: "center",
@@ -92,4 +93,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-export default LogIn;
