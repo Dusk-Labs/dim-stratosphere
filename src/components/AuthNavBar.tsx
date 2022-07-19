@@ -7,20 +7,26 @@ interface AuthNavBarProps {
   title: string;
   setNav: Dispatch<SetStateAction<boolean>>;
   nav: boolean;
+  navigation: any;
 }
 
-const AuthNavBar: FC<AuthNavBarProps> = ({ title, setNav, nav }) => {
+const AuthNavBar: FC<AuthNavBarProps> = ({
+  title,
+  setNav,
+  nav,
+  navigation,
+}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          setNav(!nav);
+          navigation.toggleDrawer();
         }}
       >
         <Image source={navIcon} style={styles.navIcon} />
       </TouchableOpacity>
-      <Text style={nav ? { marginLeft: 16 * 4 } : styles.title}>{title}</Text>
+      <Text style={styles.title}>{title}</Text>
     </View>
   );
 };

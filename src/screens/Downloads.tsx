@@ -3,7 +3,7 @@ import React from "react";
 
 const Downloads = () => {
   return (
-    <View>
+    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
       <Text>Downloads</Text>
     </View>
   );

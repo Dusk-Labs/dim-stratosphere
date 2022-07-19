@@ -8,9 +8,6 @@ const showsIcon = require("../../assets/showsIcon.png");
 
 const Nav = () => {
   const [testState, setTestState] = useState(true);
-  useEffect(() => {
-    alert("hola");
-  }, [testState]);
   const timeWatched = 2;
   const userName = "Rodrigo";
 

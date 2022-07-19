@@ -11,22 +11,22 @@ interface TabMenuProps {
 
 const TabMenu: FC<TabMenuProps> = ({ nav }) => {
   return (
-    <View style={nav ? styles.tabManuNav : styles.tabManu}>
-      <TouchableOpacity style={nav ? styles.buttonNav : styles.button}>
+    <View style={styles.tabManu}>
+      <TouchableOpacity style={styles.button}>
         <DashboardIcon color={"#7E7E7E"} />
-        <Text style={nav ? styles.textNav : styles.text}>DashBoard</Text>
+        <Text style={styles.text}>DashBoard</Text>
       </TouchableOpacity>
       <TouchableOpacity style={nav ? styles.buttonNav : styles.button}>
         <SearchIcon color={"#7E7E7E"} />
-        <Text style={nav ? styles.textNav : styles.text}>Search</Text>
+        <Text style={styles.text}>Search</Text>
       </TouchableOpacity>
       <TouchableOpacity style={nav ? styles.buttonNav : styles.button}>
         <DownloadIcon color={"#7E7E7E"} />
-        <Text style={nav ? styles.textNav : styles.text}>Downloads</Text>
+        <Text style={styles.text}>Downloads</Text>
       </TouchableOpacity>
       <TouchableOpacity style={nav ? styles.buttonNav : styles.button}>
         <SettingsIcon color={"#7E7E7E"} />
-        <Text style={nav ? styles.textNav : styles.text}>Settings</Text>
+        <Text style={styles.text}>Settings</Text>
       </TouchableOpacity>
     </View>
   );
