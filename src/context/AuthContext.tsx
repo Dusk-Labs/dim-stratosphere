@@ -1,18 +1,22 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useContext, useEffect, useState } from "react";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 
-export interface AuthContextProps {
+export type AuthContextProps = {
   signIn: ({ userToken }: { userToken: string }) => Promise<void>;
   signOut: () => void;
   isLoggedIn: boolean;
   userToken: string | null;
-}
+};
+
+type AuthProviderProps = {
+  children: ReactElement;
+};
 
 export const AuthContext = React.createContext<AuthContextProps>(
   {} as AuthContextProps
 );
 
-export const AuthContextProvider: React.FC = ({ children }) => {
+export const AuthContextProvider = ({ children }: AuthProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userToken, setUserToken] = useState<string | null>(null);
 

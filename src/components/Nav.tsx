@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import SettingsIcon from "./icons/SettingsIcon";
+
 const userImage = require("../../assets/logo.png");
 const logOutIcon = require("../../assets/logOutIcon.png");
 const moviesIcon = require("../../assets/moviesIcon.png");
 const showsIcon = require("../../assets/showsIcon.png");
 
-const Nav = () => {
+export const Nav = () => {
   const [testState, setTestState] = useState(true);
   useEffect(() => {
     alert("hola");
@@ -61,8 +62,6 @@ const Nav = () => {
     </>
   );
 };
-
-export default Nav;
 
 const styles = StyleSheet.create({
   itemsNumber: {
