@@ -6,6 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Dashboard from "./src/screens/Dashboard";
 import { AuthContextProvider, useAuthContext } from "./src/context/AuthContext";
+import "react-native-gesture-handler";
 
 export type MainStackParams = {
   Dashboard: { title: string };
