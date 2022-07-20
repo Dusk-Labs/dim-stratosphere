@@ -1,8 +1,13 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import AuthNavBar from "../components/AuthNavBar";
+import { useAuthContext } from "../context/AuthContext";
 
 const Shows = ({ navigation }: any) => {
+  const { route, setRoute } = useAuthContext();
+  useEffect(() => {
+    setRoute("Shows");
+  }, [route]);
   return (
     <View style={styles.moviesPage}>
       <AuthNavBar

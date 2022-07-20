@@ -20,7 +20,7 @@ const AuthNavBar: FC<AuthNavBarProps> = ({
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          navigation.getParent().toggleDrawer();
+          navigation.getParent().getParent().toggleDrawer();
         }}
       >
         <Image source={navIcon} style={styles.navIcon} />

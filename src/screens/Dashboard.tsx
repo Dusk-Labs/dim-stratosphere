@@ -6,6 +6,7 @@ import { AuthContext } from "../context/AuthContext";
 import AuthNavBar from "../components/AuthNavBar";
 import Nav from "../components/Nav";
 import TabMenu from "../components/TabMenu";
+import { useAuthContext } from "../context/AuthContext";
 
 interface DashboardProps {
   navigation: any;
@@ -14,6 +15,10 @@ interface DashboardProps {
 const Dashboard = ({ navigation }: DashboardProps) => {
   const context = React.useContext(AuthContext);
   const [nav, setNav] = useState(false);
+  const { route, setRoute } = useAuthContext();
+  useEffect(() => {
+    setRoute("Dashboard");
+  }, [route]);
 
   const signOutFunc = async () => {
     context?.signOut();

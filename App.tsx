@@ -20,12 +20,14 @@ import DownloadIcon from "./src/components/icons/DownloadIcon";
 import SearchIcon from "./src/components/icons/SearchIcon";
 import SettingsIcon from "./src/components/icons/SettingsIcon";
 import TabMenu from "./src/components/TabMenu";
+import { useEffect } from "react";
 
 export type MainStackParams = {
-  Tab: { title: string };
-  Settings: { title: string };
-  Movies: { title: string };
-  Shows: { title: string };
+  Tab?: { title: string };
+  Settings?: { title: string };
+  Movies?: { title: string };
+  Shows?: { title: string };
+  FilterSliderScreens?: { title: string };
 };
 
 export type AuthStackParams = {
@@ -44,7 +46,8 @@ export type TabStackParams = {
 };
 
 export type FilterSliderStackParams = {
-  MoviesIn: { title: string };
+  //MoviesIn: { title: string };
+  TabStackScreens: { title: string };
 };
 
 const DrawerStack = createDrawerNavigator<MainStackParams>();
@@ -54,6 +57,15 @@ const Tab = createBottomTabNavigator<TabStackParams>();
 const FilterSliderStack = createDrawerNavigator<FilterSliderStackParams>();
 
 const FilterSliderScreens = () => {
+  const { route } = useAuthContext();
+  let enable;
+  useEffect(() => {
+    if (route === "Movies" || route === "Shows") {
+      enable = true;
+    } else {
+      enable = false;
+    }
+  });
   return (
     <FilterSliderStack.Navigator
       screenOptions={{
@@ -62,7 +74,12 @@ const FilterSliderScreens = () => {
         drawerType: "slide",
       }}
     >
-      <FilterSliderStack.Screen name="MoviesIn" component={Movies} />
+      <FilterSliderStack.Screen
+        name="TabStackScreens"
+        component={TabStackScreens}
+        options={{ swipeEnabled: enable }}
+      />
+      {/* <FilterSliderStack.Screen name="MoviesIn" component={Movies} /> */}
     </FilterSliderStack.Navigator>
   );
 };
@@ -113,7 +130,7 @@ const TabStackScreens = () => {
       />
       <Tab.Screen
         name="Movies"
-        component={FilterSliderScreens}
+        component={Movies}
         options={{
           headerShadowVisible: false,
         }}
@@ -138,19 +155,6 @@ const AuthStackScreens = () => {
   );
 };
 
-/* const MainStackScreens = () => {
-  return (
-    <MainStack.Navigator
-      screenOptions={{
-        headerShown: false,
-        animation: "none",
-      }}
-    >
-      <MainStack.Screen name="Dashboard" component={Dashboard} />
-    </MainStack.Navigator>
-  );
-}; */
-
 const DrawerStackScreens = () => {
   return (
     <DrawerStack.Navigator
@@ -160,10 +164,11 @@ const DrawerStackScreens = () => {
       }}
       drawerContent={(props) => <Nav {...props} />}
     >
+      {/*       <DrawerStack.Screen name="Tab" component={TabStackScreens} />
+       */}
       <DrawerStack.Screen
-        name="Tab"
-        component={TabStackScreens}
-        options={{ swipeEnabled: true }}
+        name="FilterSliderScreens"
+        component={FilterSliderScreens}
       />
     </DrawerStack.Navigator>
   );

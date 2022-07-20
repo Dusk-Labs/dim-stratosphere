@@ -1,7 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
+import { useAuthContext } from "../context/AuthContext";
 
 const Search = () => {
+  const { route, setRoute } = useAuthContext();
+  useEffect(() => {
+    setRoute("Search");
+  }, [route]);
   return (
     <View
       style={{

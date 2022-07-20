@@ -1,7 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
+import { useAuthContext } from "../context/AuthContext";
 
 const Settings = () => {
+  const { route, setRoute } = useAuthContext();
+  useEffect(() => {
+    setRoute("Settings");
+  }, [route]);
   return (
     <View
       style={{
