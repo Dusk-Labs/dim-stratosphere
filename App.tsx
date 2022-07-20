@@ -12,10 +12,20 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Downloads from "./src/screens/Downloads";
 import Search from "./src/screens/Search";
 import Settings from "./src/screens/Settings";
+import Movies from "./src/screens/Movies";
+import Shows from "./src/screens/Shows";
+import Nav from "./src/components/Nav";
+import DashdoardIcon from "./src/components/icons/DashdoardIcon";
+import DownloadIcon from "./src/components/icons/DownloadIcon";
+import SearchIcon from "./src/components/icons/SearchIcon";
+import SettingsIcon from "./src/components/icons/SettingsIcon";
+import TabMenu from "./src/components/TabMenu";
 
 export type MainStackParams = {
   Tab: { title: string };
-  Dashboard: { title: string };
+  Settings: { title: string };
+  Movies: { title: string };
+  Shows: { title: string };
 };
 
 export type AuthStackParams = {
@@ -29,6 +39,8 @@ export type TabStackParams = {
   Search: { title: string };
   Downloads: { title: string };
   Settings: { title: string };
+  Movies: { title: string };
+  Shows: { title: string };
 };
 
 const DrawerStack = createDrawerNavigator<MainStackParams>();
@@ -39,14 +51,55 @@ const Tab = createBottomTabNavigator<TabStackParams>();
 const TabStackScreens = () => {
   return (
     <Tab.Navigator
+      tabBar={(props) => <TabMenu {...props} />}
       screenOptions={{
         headerShown: false,
+        tabBarActiveTintColor: "rgba(234, 150, 62, 1)",
+        tabBarStyle: {
+          backgroundColor: "rgba(37, 37, 37, 1)",
+          height: 60,
+          borderTopColor: "rgba(37, 37, 37, 1)",
+          paddingBottom: 8,
+          paddingTop: 8,
+        },
       }}
     >
-      <Tab.Screen name="Dashboard" component={Dashboard} />
-      <Tab.Screen name="Search" component={Search} />
-      <Tab.Screen name="Downloads" component={Downloads} />
-      <Tab.Screen name="Settings" component={Settings} />
+      <Tab.Screen
+        name="Dashboard"
+        component={Dashboard}
+        options={{
+          tabBarIcon: ({ color, size }) => <DashdoardIcon color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Search"
+        component={Search}
+        options={{
+          tabBarIcon: ({ color, size }) => <SearchIcon color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Downloads"
+        component={Downloads}
+        options={{
+          tabBarIcon: ({ color, size }) => <DownloadIcon color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Settings"
+        component={Settings}
+        options={{
+          tabBarIcon: ({ color, size }) => <SettingsIcon color={color} />,
+        }}
+      />
+      <Tab.Screen
+        name="Movies"
+        component={Movies}
+        options={{
+          headerShadowVisible: false,
+        }}
+      />
+      <Tab.Screen name="Shows" component={Shows} />
     </Tab.Navigator>
   );
 };
@@ -66,7 +119,7 @@ const AuthStackScreens = () => {
   );
 };
 
-const MainStackScreens = () => {
+/* const MainStackScreens = () => {
   return (
     <MainStack.Navigator
       screenOptions={{
@@ -77,7 +130,7 @@ const MainStackScreens = () => {
       <MainStack.Screen name="Dashboard" component={Dashboard} />
     </MainStack.Navigator>
   );
-};
+}; */
 
 const DrawerStackScreens = () => {
   return (
@@ -86,9 +139,9 @@ const DrawerStackScreens = () => {
         headerShown: false,
         drawerType: "slide",
       }}
+      drawerContent={(props) => <Nav {...props} />}
     >
       <DrawerStack.Screen name="Tab" component={TabStackScreens} />
-      <DrawerStack.Screen name="Dashboard" component={Dashboard} />
     </DrawerStack.Navigator>
   );
 };

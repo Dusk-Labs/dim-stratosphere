@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "black",
+    backgroundColor: "rgba(14, 13, 11, 1)",
   },
   subtitle: {
     color: "#fff",

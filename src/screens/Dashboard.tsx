@@ -28,12 +28,7 @@ const Dashboard = ({ navigation }: DashboardProps) => {
   return (
     <>
       <View style={styles.HomePage}>
-        <AuthNavBar
-          title={"Dashboard"}
-          setNav={setNav}
-          nav={nav}
-          navigation={navigation}
-        />
+        <AuthNavBar title={"Dashboard"} navigation={navigation} />
         <View style={styles.body}>
           <Carousel sectionTitle="Continue Watching" nav={nav} />
           <Carousel sectionTitle="Freshly Added" nav={nav} />
@@ -51,7 +46,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     flex: 1,
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: "rgba(14, 13, 11, 1)",
   },
   body: {
     flex: 1,
@@ -64,7 +59,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     flex: 1,
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: "rgba(14, 13, 11, 1)",
     paddingRight: "0%",
     paddingLeft: 8,
   },

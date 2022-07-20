@@ -5,17 +5,10 @@ const navIcon = require("../../assets/navIcon.png");
 
 interface AuthNavBarProps {
   title: string;
-  setNav: Dispatch<SetStateAction<boolean>>;
-  nav: boolean;
   navigation: any;
 }
 
-const AuthNavBar: FC<AuthNavBarProps> = ({
-  title,
-  setNav,
-  nav,
-  navigation,
-}) => {
+const AuthNavBar: FC<AuthNavBarProps> = ({ title, navigation }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity

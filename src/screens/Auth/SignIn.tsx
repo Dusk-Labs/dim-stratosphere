@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     flex: 1,
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: "rgba(14, 13, 11, 1)",
     paddingRight: "1%",
     paddingLeft: "1%",
   },
