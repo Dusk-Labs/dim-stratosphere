@@ -5,7 +5,11 @@ import AuthNavBar from "../components/AuthNavBar";
 const Shows = ({ navigation }: any) => {
   return (
     <View style={styles.moviesPage}>
-      <AuthNavBar title={"Shows"} navigation={navigation} />
+      <AuthNavBar
+        title={"Shows"}
+        navigation={navigation}
+        moviesOrShows={true}
+      />
       <View style={styles.container}>
         <Text style={{ color: "white" }}>Shows</Text>
       </View>

@@ -1,25 +1,41 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React, { FC, Dispatch, SetStateAction } from "react";
+import FilterSliderIcon from "../components/icons/FilterSliderIcon";
 
 const navIcon = require("../../assets/navIcon.png");
 
 interface AuthNavBarProps {
   title: string;
   navigation: any;
+  moviesOrShows?: boolean;
 }
 
-const AuthNavBar: FC<AuthNavBarProps> = ({ title, navigation }) => {
+const AuthNavBar: FC<AuthNavBarProps> = ({
+  title,
+  navigation,
+  moviesOrShows,
+}) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          navigation.toggleDrawer();
+          navigation.getParent().toggleDrawer();
         }}
       >
         <Image source={navIcon} style={styles.navIcon} />
       </TouchableOpacity>
       <Text style={styles.title}>{title}</Text>
+      {moviesOrShows && (
+        <TouchableOpacity
+          style={styles.filterButton}
+          onPress={() => {
+            navigation.toggleDrawer();
+          }}
+        >
+          <FilterSliderIcon color="gray" />
+        </TouchableOpacity>
+      )}
     </View>
   );
 };
@@ -53,6 +69,12 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: "0%",
     marginLeft: 8,
+    marginRight: 8,
+  },
+  filterButton: {
+    height: 18,
+    position: "absolute",
+    right: "0%",
     marginRight: 8,
   },
 });

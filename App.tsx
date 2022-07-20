@@ -43,10 +43,29 @@ export type TabStackParams = {
   Shows: { title: string };
 };
 
+export type FilterSliderStackParams = {
+  MoviesIn: { title: string };
+};
+
 const DrawerStack = createDrawerNavigator<MainStackParams>();
 const AuthStack = createNativeStackNavigator<AuthStackParams>();
 const MainStack = createNativeStackNavigator<MainStackParams>();
 const Tab = createBottomTabNavigator<TabStackParams>();
+const FilterSliderStack = createDrawerNavigator<FilterSliderStackParams>();
+
+const FilterSliderScreens = () => {
+  return (
+    <FilterSliderStack.Navigator
+      screenOptions={{
+        headerShown: false,
+        drawerPosition: "right",
+        drawerType: "slide",
+      }}
+    >
+      <FilterSliderStack.Screen name="MoviesIn" component={Movies} />
+    </FilterSliderStack.Navigator>
+  );
+};
 
 const TabStackScreens = () => {
   return (
@@ -94,7 +113,7 @@ const TabStackScreens = () => {
       />
       <Tab.Screen
         name="Movies"
-        component={Movies}
+        component={FilterSliderScreens}
         options={{
           headerShadowVisible: false,
         }}
@@ -141,7 +160,11 @@ const DrawerStackScreens = () => {
       }}
       drawerContent={(props) => <Nav {...props} />}
     >
-      <DrawerStack.Screen name="Tab" component={TabStackScreens} />
+      <DrawerStack.Screen
+        name="Tab"
+        component={TabStackScreens}
+        options={{ swipeEnabled: true }}
+      />
     </DrawerStack.Navigator>
   );
 };
