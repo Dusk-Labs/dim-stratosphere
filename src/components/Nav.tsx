@@ -5,11 +5,8 @@ const userImage = require("../../assets/logo.png");
 const logOutIcon = require("../../assets/logOutIcon.png");
 const moviesIcon = require("../../assets/moviesIcon.png");
 const showsIcon = require("../../assets/showsIcon.png");
-import Movies from "../screens/Movies";
-import Shows from "../screens/Shows";
 
 const Nav = ({ ...props }) => {
-  const [testState, setTestState] = useState(true);
   const timeWatched = 2;
   const userName = "Rodrigo";
 

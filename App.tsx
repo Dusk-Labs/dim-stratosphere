@@ -20,7 +20,9 @@ import DownloadIcon from "./src/components/icons/DownloadIcon";
 import SearchIcon from "./src/components/icons/SearchIcon";
 import SettingsIcon from "./src/components/icons/SettingsIcon";
 import TabMenu from "./src/components/TabMenu";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import RigthDrawer from "./src/components/RigthDrawer";
+import { View } from "react-native";
 
 export type MainStackParams = {
   Tab?: { title: string };
@@ -58,28 +60,31 @@ const FilterSliderStack = createDrawerNavigator<FilterSliderStackParams>();
 
 const FilterSliderScreens = () => {
   const { route } = useAuthContext();
-  let enable;
+  const [enable, setEnable] = useState(false);
   useEffect(() => {
     if (route === "Movies" || route === "Shows") {
-      enable = true;
+      setEnable(true);
     } else {
-      enable = false;
+      setEnable(false);
     }
-  });
+  }, [route]);
   return (
     <FilterSliderStack.Navigator
       screenOptions={{
         headerShown: false,
         drawerPosition: "right",
         drawerType: "slide",
+        drawerStyle: {
+          backgroundColor: "rgba(14, 13, 11, 1)",
+        },
       }}
+      drawerContent={(props) => <RigthDrawer {...props} />}
     >
       <FilterSliderStack.Screen
         name="TabStackScreens"
         component={TabStackScreens}
         options={{ swipeEnabled: enable }}
       />
-      {/* <FilterSliderStack.Screen name="MoviesIn" component={Movies} /> */}
     </FilterSliderStack.Navigator>
   );
 };
@@ -90,44 +95,15 @@ const TabStackScreens = () => {
       tabBar={(props) => <TabMenu {...props} />}
       screenOptions={{
         headerShown: false,
-        tabBarActiveTintColor: "rgba(234, 150, 62, 1)",
         tabBarStyle: {
           backgroundColor: "rgba(37, 37, 37, 1)",
-          height: 60,
-          borderTopColor: "rgba(37, 37, 37, 1)",
-          paddingBottom: 8,
-          paddingTop: 8,
         },
       }}
     >
-      <Tab.Screen
-        name="Dashboard"
-        component={Dashboard}
-        options={{
-          tabBarIcon: ({ color, size }) => <DashdoardIcon color={color} />,
-        }}
-      />
-      <Tab.Screen
-        name="Search"
-        component={Search}
-        options={{
-          tabBarIcon: ({ color, size }) => <SearchIcon color={color} />,
-        }}
-      />
-      <Tab.Screen
-        name="Downloads"
-        component={Downloads}
-        options={{
-          tabBarIcon: ({ color, size }) => <DownloadIcon color={color} />,
-        }}
-      />
-      <Tab.Screen
-        name="Settings"
-        component={Settings}
-        options={{
-          tabBarIcon: ({ color, size }) => <SettingsIcon color={color} />,
-        }}
-      />
+      <Tab.Screen name="Dashboard" component={Dashboard} />
+      <Tab.Screen name="Search" component={Search} />
+      <Tab.Screen name="Downloads" component={Downloads} />
+      <Tab.Screen name="Settings" component={Settings} />
       <Tab.Screen
         name="Movies"
         component={Movies}
@@ -161,11 +137,12 @@ const DrawerStackScreens = () => {
       screenOptions={{
         headerShown: false,
         drawerType: "slide",
+        drawerStyle: {
+          backgroundColor: "rgba(14, 13, 11, 1)",
+        },
       }}
       drawerContent={(props) => <Nav {...props} />}
     >
-      {/*       <DrawerStack.Screen name="Tab" component={TabStackScreens} />
-       */}
       <DrawerStack.Screen
         name="FilterSliderScreens"
         component={FilterSliderScreens}
@@ -191,8 +168,10 @@ export function App() {
 
 export default function AppContainer() {
   return (
-    <AuthContextProvider>
-      <App />
-    </AuthContextProvider>
+    <View style={{ flex: 1, backgroundColor: "black" }}>
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
+    </View>
   );
 }

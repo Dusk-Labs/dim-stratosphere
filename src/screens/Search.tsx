@@ -3,10 +3,6 @@ import React, { useEffect } from "react";
 import { useAuthContext } from "../context/AuthContext";
 
 const Search = () => {
-  const { route, setRoute } = useAuthContext();
-  useEffect(() => {
-    setRoute("Search");
-  }, [route]);
   return (
     <View
       style={{

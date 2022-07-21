@@ -5,15 +5,16 @@ import SettingsIcon from "./icons/SettingsIcon";
 import SearchIcon from "./icons/SearchIcon";
 import DownloadIcon from "./icons/DownloadIcon";
 import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
-
+import { useAuthContext } from "../context/AuthContext";
 interface TabMenuProps {
   props: any;
 }
 
 const TabMenu: FC<TabMenuProps> = ({ ...props }) => {
-  const [route, setRoute] = useState(
+  /* const [route, setRoute] = useState(
     props.navigation.getState().routes[props.navigation.getState().index].name
-  );
+  ); */
+  const { route, setRoute } = useAuthContext();
   useEffect(() => {
     setRoute(
       props.navigation.getState().routes[props.navigation.getState().index].name

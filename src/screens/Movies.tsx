@@ -4,10 +4,6 @@ import AuthNavBar from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
 
 const Movies = ({ navigation }: any) => {
-  const { route, setRoute } = useAuthContext();
-  useEffect(() => {
-    setRoute("Movies");
-  }, [route]);
   return (
     <View style={styles.moviesPage}>
       <AuthNavBar

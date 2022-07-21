@@ -3,10 +3,6 @@ import React, { useEffect } from "react";
 import { useAuthContext } from "../context/AuthContext";
 
 const Downloads = () => {
-  const { route, setRoute } = useAuthContext();
-  useEffect(() => {
-    setRoute("Downloads");
-  }, [route]);
   return (
     <View
       style={{
