@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SettingsIcon from "./icons/SettingsIcon";
+
 const userImage = require("../../assets/logo.png");
 const logOutIcon = require("../../assets/logOutIcon.png");
 const moviesIcon = require("../../assets/moviesIcon.png");
 const showsIcon = require("../../assets/showsIcon.png");
 
-const Nav = ({ ...props }) => {
+export const Nav = ({ ...props }) => {
   const timeWatched = 2;
   const userName = "Rodrigo";
 
@@ -74,8 +75,6 @@ const Nav = ({ ...props }) => {
     </>
   );
 };
-
-export default Nav;
 
 const styles = StyleSheet.create({
   itemsNumber: {

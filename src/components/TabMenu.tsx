@@ -1,16 +1,16 @@
-import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React, { FC, useEffect, useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useEffect } from "react";
 import DashboardIcon from "./icons/DashdoardIcon";
 import SettingsIcon from "./icons/SettingsIcon";
 import SearchIcon from "./icons/SearchIcon";
 import DownloadIcon from "./icons/DownloadIcon";
-import { BottomTabBarProps } from "@react-navigation/bottom-tabs";
 import { useAuthContext } from "../context/AuthContext";
-interface TabMenuProps {
-  props: any;
-}
 
-const TabMenu: FC<TabMenuProps> = ({ ...props }) => {
+type TabMenuProps = {
+  navigation: any;
+};
+
+export const TabMenu = ({ ...props }: TabMenuProps) => {
   /* const [route, setRoute] = useState(
     props.navigation.getState().routes[props.navigation.getState().index].name
   ); */
@@ -77,8 +77,6 @@ const TabMenu: FC<TabMenuProps> = ({ ...props }) => {
     </View>
   );
 };
-
-export default TabMenu;
 
 const styles = StyleSheet.create({
   tabManu: {

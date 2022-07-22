@@ -7,15 +7,15 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import { Navbar } from "../../components/Navbar";
-import Input from "../../components/Input";
+import { Input } from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParams } from "../../../App";
+import { AuthStackParams } from "../../../App";
 import { PostSignUp } from "../../../api/auth/Auth";
 
-type SignInProps = NativeStackScreenProps<StackParams, "SignIn">;
+type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
-const SignUp = ({ navigation, route }: SignInProps) => {
+export const SignUp = ({ navigation, route }: SignInProps) => {
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
@@ -222,4 +222,3 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
-export default SignUp;

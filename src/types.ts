@@ -1,16 +1,16 @@
-export interface User {
+export type User = {
   username: string;
   password: string;
   host: string;
   inviteToken?: string;
-}
+};
 
-export interface UserFormErrors {
+export type UserFormErrors = {
   username: string;
   password: string;
   host: string;
-}
+};
 
-export interface IconInteface {
+export type IconInteface = {
   color: string;
-}
+};

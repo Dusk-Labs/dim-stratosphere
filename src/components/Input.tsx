@@ -8,16 +8,16 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 
-interface InputProps {
+type InputProps = {
   placeholder: string;
   secureTextEntry?: boolean;
   showAndHidePassword?: boolean;
   handleOnChangeText?: (text: string) => void;
   error?: string;
   onFocus?: () => void;
-}
+};
 
-const Input = ({
+export const Input = ({
   placeholder,
   showAndHidePassword,
   handleOnChangeText,
@@ -64,8 +64,6 @@ const Input = ({
     </>
   );
 };
-
-export default Input;
 
 const styles = StyleSheet.create({
   input: {

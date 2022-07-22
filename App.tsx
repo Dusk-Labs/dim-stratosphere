@@ -1,7 +1,7 @@
 import { StatusBar } from "expo-status-bar";
-import LogIn from "./src/screens/Auth/LogIn";
-import SignIn from "./src/screens/Auth/SignIn";
-import SignUp from "./src/screens/Auth/SignUp";
+import { LogIn } from "./src/screens/Auth/LogIn";
+import { SignIn } from "./src/screens/Auth/SignIn";
+import { SignUp } from "./src/screens/Auth/SignUp";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import Dashboard from "./src/screens/Dashboard";

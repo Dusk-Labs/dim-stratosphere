@@ -2,9 +2,9 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import ArrowIcon from "./icons/ArrowIcon";
 import Animated, { Value } from "react-native-reanimated";
-interface DropDownProps {
+type DropDownProps = {
   kind: string;
-}
+};
 
 const DropDown = ({ kind }: DropDownProps) => {
   const transition = useRef(new Animated.Value(0)).current;

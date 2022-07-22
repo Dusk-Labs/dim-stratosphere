@@ -1,16 +1,15 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Carousel from "../components/Carousel";
+import { Carousel } from "../components/Carousel";
 import React, { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthContext } from "../context/AuthContext";
 import { AuthNavBar } from "../components/AuthNavBar";
-import Nav from "../components/Nav";
-import TabMenu from "../components/TabMenu";
+import { Nav } from "../components/Nav";
+import { TabMenu } from "../components/TabMenu";
 import { useAuthContext } from "../context/AuthContext";
 
-interface DashboardProps {
+type DashboardProps = {
   navigation: any;
-}
+};
 
 const Dashboard = ({ navigation }: DashboardProps) => {
   const context = React.useContext(AuthContext);

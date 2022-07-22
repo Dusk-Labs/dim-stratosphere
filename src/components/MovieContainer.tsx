@@ -1,17 +1,17 @@
 import { StyleSheet, Text, View, Image } from "react-native";
-import React, { FC } from "react";
+import React from "react";
 
-interface MovieContainerProps {
+type MovieContainerProps = {
   title: string;
   picture: HTMLImageElement;
   reference: string;
-}
+};
 
-const MovieContainer: FC<MovieContainerProps> = ({
+export const MovieContainer = ({
   title,
   picture,
   reference,
-}) => {
+}: MovieContainerProps) => {
   return (
     <View style={styles.movieContainer}>
       <Image source={picture} style={styles.movieImage} />
@@ -20,8 +20,6 @@ const MovieContainer: FC<MovieContainerProps> = ({
     </View>
   );
 };
-
-export default MovieContainer;
 
 const styles = StyleSheet.create({
   movieContainer: {

@@ -1,14 +1,14 @@
 import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
-import React, { FC } from "react";
-import MovieContainer from "./MovieContainer";
+import React from "react";
+import { MovieContainer } from "./MovieContainer";
 import { movies } from "../movies";
 
-interface CarouselProps {
+type CarouselProps = {
   sectionTitle?: string;
   nav: boolean;
-}
+};
 
-const Carousel: FC<CarouselProps> = ({ sectionTitle, nav }) => {
+export const Carousel = ({ sectionTitle, nav }: CarouselProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleSection}>
@@ -29,8 +29,6 @@ const Carousel: FC<CarouselProps> = ({ sectionTitle, nav }) => {
     </View>
   );
 };
-
-export default Carousel;
 
 const styles = StyleSheet.create({
   container: {
