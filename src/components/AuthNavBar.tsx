@@ -48,18 +48,20 @@ const styles = StyleSheet.create({
     width: "100%",
     alignContent: "center",
     alignItems: "center",
-    height: "10%",
+    height: 16 * 5,
     justifyContent: "center",
     flexDirection: "row",
   },
   navIcon: {
     height: 15,
     width: 20,
+    marginBottom: 2,
   },
   title: {
     color: "white",
     fontWeight: "600",
     fontSize: 16,
+    marginBottom: 2,
   },
   button: {
     zIndex: 10,
@@ -80,6 +82,5 @@ const styles = StyleSheet.create({
     width: 30,
     justifyContent: "center",
     alignItems: "center",
-    alignContent: "center",
   },
 });

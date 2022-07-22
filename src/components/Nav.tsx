@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   header: {
     width: "100%",
     marginTop: 16 * 2,
-    height: "10%",
+    height: 16 * 5,
     justifyContent: "center",
     flexDirection: "row",
     borderBottomColor: "#333333",
