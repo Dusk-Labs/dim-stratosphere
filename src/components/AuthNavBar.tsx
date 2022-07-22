@@ -1,20 +1,20 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
-import React, { FC, Dispatch, SetStateAction } from "react";
+import React from "react";
 import FilterSliderIcon from "../components/icons/FilterSliderIcon";
 
 const navIcon = require("../../assets/navIcon.png");
 
-interface AuthNavBarProps {
+type AuthNavBarProps = {
   title: string;
   navigation: any;
   moviesOrShows?: boolean;
-}
+};
 
-const AuthNavBar: FC<AuthNavBarProps> = ({
+export const AuthNavBar = ({
   title,
   navigation,
   moviesOrShows,
-}) => {
+}: AuthNavBarProps) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -39,7 +39,7 @@ const AuthNavBar: FC<AuthNavBarProps> = ({
     </View>
   );
 };
-export default AuthNavBar;
+
 const styles = StyleSheet.create({
   container: {
     marginTop: 16 * 2,

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect } from "react";
-import AuthNavBar from "../components/AuthNavBar";
+import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
 
 const Movies = ({ navigation }: any) => {
