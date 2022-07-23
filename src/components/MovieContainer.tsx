@@ -24,7 +24,7 @@ export const MovieContainer = ({
 const styles = StyleSheet.create({
   movieContainer: {
     position: "relative",
-    backgroundColor: "black",
+    backgroundColor: "rgba(14, 13, 11, 1)",
     flex: 1,
     padding: 8,
   },

@@ -6,6 +6,8 @@ export type AuthContextProps = {
   signOut: () => void;
   isLoggedIn: boolean;
   userToken: string | null;
+  route: string;
+  setRoute: (value: string) => void;
 };
 
 type AuthProviderProps = {
@@ -19,7 +21,7 @@ export const AuthContext = React.createContext<AuthContextProps>(
 export const AuthContextProvider = ({ children }: AuthProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userToken, setUserToken] = useState<string | null>(null);
-
+  const [route, setRoute] = useState("Dashboard");
   useEffect(() => {
     AsyncStorage.getItem("userToken").then((userToken) => {
       if (userToken) {
@@ -51,6 +53,8 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
         signOut,
         isLoggedIn,
         userToken,
+        route,
+        setRoute,
       }}
     >
       {children}

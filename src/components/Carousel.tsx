@@ -11,13 +11,7 @@ type CarouselProps = {
 export const Carousel = ({ sectionTitle, nav }: CarouselProps) => {
   return (
     <View style={styles.container}>
-      <View
-        style={
-          nav
-            ? { ...styles.titleSection, flexWrap: "wrap" }
-            : styles.titleSection
-        }
-      >
+      <View style={styles.titleSection}>
         <Text style={styles.sectionTitle}>{sectionTitle}</Text>
       </View>
       <ScrollView style={styles.moviesSection} horizontal={true}>

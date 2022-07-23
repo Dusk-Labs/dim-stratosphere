@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import SettingsIcon from "./icons/SettingsIcon";
 
 const userImage = require("../../assets/logo.png");
@@ -7,11 +7,7 @@ const logOutIcon = require("../../assets/logOutIcon.png");
 const moviesIcon = require("../../assets/moviesIcon.png");
 const showsIcon = require("../../assets/showsIcon.png");
 
-export const Nav = () => {
-  const [testState, setTestState] = useState(true);
-  useEffect(() => {
-    alert("hola");
-  }, [testState]);
+export const Nav = ({ ...props }) => {
   const timeWatched = 2;
   const userName = "Rodrigo";
 
@@ -33,7 +29,12 @@ export const Nav = () => {
             </View>
           </View>
           <View style={styles.rigth}>
-            <TouchableOpacity style={styles.configBtn}>
+            <TouchableOpacity
+              style={styles.configBtn}
+              onPress={() => {
+                props.navigation.navigate("Settings");
+              }}
+            >
               <SettingsIcon color={"#7E7E7E"} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.logOutBtn}>
@@ -43,20 +44,32 @@ export const Nav = () => {
         </View>
         <View style={styles.body}>
           <Text style={styles.libraries}>LIBRARIES</Text>
-          <View style={styles.section}>
-            <View style={styles.iconAndText}>
-              <Image source={moviesIcon} />
-              <Text style={styles.sectionTitle}>Movies</Text>
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate("Movies");
+            }}
+          >
+            <View style={styles.section}>
+              <View style={styles.iconAndText}>
+                <Image source={moviesIcon} />
+                <Text style={styles.sectionTitle}>Movies</Text>
+              </View>
+              <Text style={styles.itemsNumber}>132</Text>
             </View>
-            <Text style={styles.itemsNumber}>132</Text>
-          </View>
-          <View style={{ ...styles.section, marginTop: 16 * 1.5 }}>
-            <View style={styles.iconAndText}>
-              <Image source={showsIcon} />
-              <Text style={styles.sectionTitle}>Movies</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate("Shows");
+            }}
+          >
+            <View style={{ ...styles.section, marginTop: 16 * 1.5 }}>
+              <View style={styles.iconAndText}>
+                <Image source={showsIcon} />
+                <Text style={styles.sectionTitle}>Shows</Text>
+              </View>
+              <Text style={styles.itemsNumber}>80</Text>
             </View>
-            <Text style={styles.itemsNumber}>80</Text>
-          </View>
+          </TouchableOpacity>
         </View>
       </View>
     </>
@@ -107,12 +120,8 @@ const styles = StyleSheet.create({
     width: 20,
   },
   nav: {
-    width: "80%",
-    position: "absolute",
     flex: 1,
     backgroundColor: "#252525",
-    height: "100%",
-    zIndex: 9,
   },
   imageContainer: {
     borderColor: "white",
@@ -128,7 +137,7 @@ const styles = StyleSheet.create({
   header: {
     width: "100%",
     marginTop: 16 * 2,
-    height: "10%",
+    height: 16 * 5,
     justifyContent: "center",
     flexDirection: "row",
     borderBottomColor: "#333333",
