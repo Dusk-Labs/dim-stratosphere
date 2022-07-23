@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import DropDown from "./DropDown";
 
-const RigthDrawer = () => {
+export const RigthDrawer = () => {
   return (
     <View style={styles.rigthDrawer}>
       <View style={{ ...styles.filterSection, marginTop: 16 * 3.5 }}>
@@ -24,8 +24,6 @@ const RigthDrawer = () => {
     </View>
   );
 };
-
-export default RigthDrawer;
 
 const styles = StyleSheet.create({
   rigthDrawer: {

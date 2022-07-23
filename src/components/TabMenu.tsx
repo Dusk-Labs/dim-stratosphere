@@ -4,22 +4,21 @@ import DashboardIcon from "./icons/DashdoardIcon";
 import SettingsIcon from "./icons/SettingsIcon";
 import SearchIcon from "./icons/SearchIcon";
 import DownloadIcon from "./icons/DownloadIcon";
-import { useAuthContext } from "../context/AuthContext";
+import { useRouteContext } from "../context/RouteContext";
 
 type TabMenuProps = {
   navigation: any;
 };
 
 export const TabMenu = ({ ...props }: TabMenuProps) => {
-  /* const [route, setRoute] = useState(
-    props.navigation.getState().routes[props.navigation.getState().index].name
-  ); */
-  const { route, setRoute } = useAuthContext();
+  const { route, setRoute } = useRouteContext();
+
   useEffect(() => {
     setRoute(
       props.navigation.getState().routes[props.navigation.getState().index].name
     );
   }, [props.navigation.getState()]);
+
   return (
     <View style={styles.tabManu}>
       <TouchableOpacity

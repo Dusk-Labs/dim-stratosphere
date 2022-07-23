@@ -14,15 +14,15 @@ import Search from "./src/screens/Search";
 import Settings from "./src/screens/Settings";
 import Movies from "./src/screens/Movies";
 import Shows from "./src/screens/Shows";
-import Nav from "./src/components/Nav";
-import DashdoardIcon from "./src/components/icons/DashdoardIcon";
-import DownloadIcon from "./src/components/icons/DownloadIcon";
-import SearchIcon from "./src/components/icons/SearchIcon";
-import SettingsIcon from "./src/components/icons/SettingsIcon";
-import TabMenu from "./src/components/TabMenu";
+import { Nav } from "./src/components/Nav";
+import { TabMenu } from "./src/components/TabMenu";
 import { useEffect, useState } from "react";
-import RigthDrawer from "./src/components/RigthDrawer";
+import { RigthDrawer } from "./src/components/RigthDrawer";
 import { View } from "react-native";
+import {
+  RouteContextProvider,
+  useRouteContext,
+} from "./src/context/RouteContext";
 
 export type MainStackParams = {
   Tab?: { title: string };
@@ -54,20 +54,21 @@ export type FilterSliderStackParams = {
 
 const DrawerStack = createDrawerNavigator<MainStackParams>();
 const AuthStack = createNativeStackNavigator<AuthStackParams>();
-const MainStack = createNativeStackNavigator<MainStackParams>();
 const Tab = createBottomTabNavigator<TabStackParams>();
 const FilterSliderStack = createDrawerNavigator<FilterSliderStackParams>();
 
 const FilterSliderScreens = () => {
-  const { route } = useAuthContext();
-  const [enable, setEnable] = useState(false);
+  const { route } = useRouteContext();
+  const [isSliderEnabled, setIsSliderEnabled] = useState<boolean>(false);
+
   useEffect(() => {
     if (route === "Movies" || route === "Shows") {
-      setEnable(true);
+      setIsSliderEnabled(true);
     } else {
-      setEnable(false);
+      setIsSliderEnabled(false);
     }
   }, [route]);
+
   return (
     <FilterSliderStack.Navigator
       screenOptions={{
@@ -78,12 +79,12 @@ const FilterSliderScreens = () => {
           backgroundColor: "rgba(14, 13, 11, 1)",
         },
       }}
-      drawerContent={(props) => <RigthDrawer {...props} />}
+      drawerContent={() => <RigthDrawer />}
     >
       <FilterSliderStack.Screen
         name="TabStackScreens"
         component={TabStackScreens}
-        options={{ swipeEnabled: enable }}
+        options={{ swipeEnabled: isSliderEnabled }}
       />
     </FilterSliderStack.Navigator>
   );
@@ -154,8 +155,13 @@ export function App() {
   const { isLoggedIn } = useAuthContext();
 
   const renderStack = () => {
-    //return isLoggedIn ? <MainStackScreens /> : <AuthStackScreens />;
-    return true ? <DrawerStackScreens /> : <AuthStackScreens />;
+    return isLoggedIn ? (
+      <RouteContextProvider>
+        <DrawerStackScreens />
+      </RouteContextProvider>
+    ) : (
+      <AuthStackScreens />
+    );
   };
 
   return (
