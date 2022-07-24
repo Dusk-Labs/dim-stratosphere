@@ -1,8 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
-import { useAuthContext } from "../context/AuthContext";
 
-const Search = () => {
+export const Search = () => {
   return (
     <View
       style={{
@@ -16,7 +15,5 @@ const Search = () => {
     </View>
   );
 };
-
-export default Search;
 
 const styles = StyleSheet.create({});

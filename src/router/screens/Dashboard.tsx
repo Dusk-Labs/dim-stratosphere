@@ -1,22 +1,21 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Carousel } from "../components/Carousel";
+import { StyleSheet, View } from "react-native";
+import { Carousel } from "../../components/Carousel";
 import React, { useEffect, useState } from "react";
-import { AuthContext } from "../context/AuthContext";
-import { AuthNavBar } from "../components/AuthNavBar";
-import { Nav } from "../components/Nav";
-import { TabMenu } from "../components/TabMenu";
-import { useAuthContext } from "../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext";
+import { AuthNavBar } from "../../components/AuthNavBar";
 
 type DashboardProps = {
   navigation: any;
 };
 
-const Dashboard = ({ navigation }: DashboardProps) => {
+export const Dashboard = ({ navigation }: DashboardProps) => {
   const context = React.useContext(AuthContext);
   const [nav, setNav] = useState(false);
+
   const signOutFunc = async () => {
     context?.signOut();
   };
+
   useEffect(() => {
     if (nav) {
       navigation.openDrawer();
@@ -24,6 +23,7 @@ const Dashboard = ({ navigation }: DashboardProps) => {
       navigation.closeDrawer();
     }
   }, [nav]);
+
   return (
     <>
       <View style={styles.HomePage}>
@@ -37,8 +37,6 @@ const Dashboard = ({ navigation }: DashboardProps) => {
     </>
   );
 };
-
-export default Dashboard;
 
 const styles = StyleSheet.create({
   HomePage: {

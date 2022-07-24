@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { AuthStackParams } from "../../../App";
+import { AuthStackParams } from "../../stacks/AuthStackScreens";
 
 type LoginProps = NativeStackScreenProps<AuthStackParams, "LogIn">;
 
@@ -12,7 +12,7 @@ export const LogIn = ({ navigation }: LoginProps) => {
         <Image
           style={styles.logo}
           resizeMode="contain"
-          source={require("../../../assets/logo.png")}
+          source={require("../../../../assets/logo.png")}
         />
         <Text style={styles.title}>Dim</Text>
         <Text style={styles.subtitle}>Self-hosted media manager</Text>
