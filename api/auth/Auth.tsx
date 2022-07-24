@@ -36,6 +36,7 @@ export const PostSignIn = async ({ signInUrl, options }: SignInrops) => {
     .catch((error) => {
       alert("Error signing up: " + error);
     });
+
   return userToken;
 };
 

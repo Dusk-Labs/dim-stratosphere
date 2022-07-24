@@ -1,8 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
-import { useAuthContext } from "../context/AuthContext";
+import React from "react";
 
-const Settings = () => {
+export const Settings = () => {
   return (
     <View
       style={{
@@ -16,7 +15,5 @@ const Settings = () => {
     </View>
   );
 };
-
-export default Settings;
 
 const styles = StyleSheet.create({});

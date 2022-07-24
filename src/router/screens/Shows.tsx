@@ -1,9 +1,8 @@
 import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect } from "react";
-import { AuthNavBar } from "../components/AuthNavBar";
-import { useAuthContext } from "../context/AuthContext";
+import { AuthNavBar } from "../../components/AuthNavBar";
 
-const Shows = ({ navigation }: any) => {
+export const Shows = ({ navigation }: any) => {
   return (
     <View style={styles.moviesPage}>
       <AuthNavBar
@@ -17,8 +16,6 @@ const Shows = ({ navigation }: any) => {
     </View>
   );
 };
-
-export default Shows;
 
 const styles = StyleSheet.create({
   moviesPage: {
