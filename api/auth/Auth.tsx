@@ -20,8 +20,8 @@ type SignUpProps = {
   };
 };
 
-export const PostSignIn = async ({ signInUrl, options }: SignInrops) => {
-  var userToken: string | null = null;
+export const PostSignIn = async({ signInUrl, options }: SignInrops) => {
+  let userToken: string | null = null;
   await fetch(signInUrl, options)
     .then((response) => {
       if (response.status === 200) {
@@ -30,7 +30,7 @@ export const PostSignIn = async ({ signInUrl, options }: SignInrops) => {
         throw new Error("Something went wrong");
       }
     })
-    .then(async (data) => {
+    .then(async(data) => {
       userToken = await JSON.stringify(data.token);
     })
     .catch((error) => {
@@ -40,8 +40,8 @@ export const PostSignIn = async ({ signInUrl, options }: SignInrops) => {
   return userToken;
 };
 
-export const PostSignUp = async ({ signUpUrl, options }: SignUpProps) => {
-  var username: string | null = null;
+export const PostSignUp = async({ signUpUrl, options }: SignUpProps) => {
+  let username: string | null = null;
   await fetch(signUpUrl, options)
     .then((response) => {
       if (response.status === 200) {
@@ -50,7 +50,7 @@ export const PostSignUp = async ({ signUpUrl, options }: SignUpProps) => {
         throw new Error("Something went wrong");
       }
     })
-    .then(async (data) => {
+    .then(async(data) => {
       username = await JSON.stringify(data.username);
     })
     .catch((error) => {

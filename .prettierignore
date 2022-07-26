@@ -1,0 +1,4 @@
+dist
+package-lock.json
+.expo
+app.json

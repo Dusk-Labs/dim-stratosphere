@@ -10,7 +10,7 @@ type RouteProviderProps = {
 };
 
 export const RouteContext = React.createContext<RouteContextProps>(
-  {} as RouteContextProps
+  {} as RouteContextProps,
 );
 
 export const RouteContextProvider = ({ children }: RouteProviderProps) => {

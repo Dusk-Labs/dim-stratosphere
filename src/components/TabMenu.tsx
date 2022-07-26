@@ -15,7 +15,7 @@ export const TabMenu = ({ ...props }: TabMenuProps) => {
 
   useEffect(() => {
     setRoute(
-      props.navigation.getState().routes[props.navigation.getState().index].name
+      props.navigation.getState().routes[props.navigation.getState().index].name,
     );
   }, [props.navigation.getState()]);
 

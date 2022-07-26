@@ -7,7 +7,7 @@ type DropDownProps = {
 };
 
 const DropDown = ({ kind }: DropDownProps) => {
-  const transition = useRef(new Animated.Value(0)).current;
+  // const transition = useRef(new Animated.Value(0)).current;
   return (
     <Animated.View style={styles.dropDown}>
       <Text style={styles.selected}>Any</Text>

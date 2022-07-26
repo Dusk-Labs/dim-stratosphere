@@ -67,7 +67,7 @@ export const SignUp = ({ navigation, route }: SignInProps) => {
     if (valid) signUpMethod();
   };
 
-  const signUpMethod = async () => {
+  const signUpMethod = async() => {
     const signUpUrl = `http://${user.host}/api/v1/auth/register`;
     const options = {
       method: "POST",
@@ -82,8 +82,8 @@ export const SignUp = ({ navigation, route }: SignInProps) => {
     };
 
     await PostSignUp({
-      signUpUrl: signUpUrl,
-      options: options,
+      signUpUrl,
+      options,
     }).then((res) => {
       console.log(res);
       if (res === user.username) {

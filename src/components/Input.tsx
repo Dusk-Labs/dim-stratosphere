@@ -26,7 +26,7 @@ export const Input = ({
   ...props
 }: InputProps) => {
   const [hidePassword, setHidePassword] = useState<boolean>(
-    showAndHidePassword || false
+    showAndHidePassword || false,
   );
 
   return (
@@ -41,7 +41,7 @@ export const Input = ({
           ]}
           secureTextEntry={hidePassword}
           onChangeText={
-            (text) => handleOnChangeText && handleOnChangeText(text) //?
+            (text) => handleOnChangeText && handleOnChangeText(text) // ?
           }
           onFocus={onFocus}
           {...props}
