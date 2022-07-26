@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { LogIn } from "./../screens/Auth/LogIn";
-import { SignIn } from "./../screens/Auth/SignIn";
-import { SignUp } from "./../screens/Auth/SignUp";
+import { LogIn } from "../../screens/Auth/LogIn";
+import { SignIn } from "../../screens/Auth/SignIn";
+import { SignUp } from "../../screens/Auth/SignUp";
 
 export type AuthStackParams = {
   LogIn: { title: string };

@@ -1,7 +1,7 @@
-import { StyleSheet, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import React from "react";
 
-export const Settings = () => {
+export const Downloads = () => {
   return (
     <View
       style={{
@@ -11,9 +11,7 @@ export const Settings = () => {
         backgroundColor: "rgba(14, 13, 11, 1)",
       }}
     >
-      <Text style={{ color: "white" }}>Settings</Text>
+      <Text style={{ color: "white" }}>Downloads</Text>
     </View>
   );
 };
-
-const styles = StyleSheet.create({});

@@ -1,11 +1,11 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { TabMenu } from "../../components/TabMenu";
-import { Dashboard } from "../screens/Dashboard";
-import { Downloads } from "../screens/Downloads";
-import { Movies } from "../screens/Movies";
-import { Search } from "../screens/Search";
-import { Settings } from "../screens/Settings";
-import { Shows } from "../screens/Shows";
+import { Dashboard } from "../../screens/Dashboard";
+import { Downloads } from "../../screens/Downloads";
+import { Movies } from "../../screens/Movies";
+import { Search } from "../../screens/Search";
+import { Settings } from "../../screens/Settings";
+import { Shows } from "../../screens/Shows";
 
 export type TabStackParams = {
   Dashboard: { title: string };

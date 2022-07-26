@@ -1,17 +1,17 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
-import { AuthNavBar } from "../../components/AuthNavBar";
+import { AuthNavBar } from "../components/AuthNavBar";
 
-export const Movies = ({ navigation }: any) => {
+export const Shows = ({ navigation }: any) => {
   return (
     <View style={styles.moviesPage}>
       <AuthNavBar
-        title={"Movies"}
+        title={"Shows"}
         navigation={navigation}
         moviesOrShows={true}
       />
       <View style={styles.container}>
-        <Text style={{ color: "white" }}>Movies</Text>
+        <Text style={{ color: "white" }}>Shows</Text>
       </View>
     </View>
   );
