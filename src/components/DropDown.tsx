@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import ArrowIcon from "./icons/ArrowIcon";
-import Animated, { Easing, EasingNode, Value } from "react-native-reanimated";
+import Animated, { EasingNode } from "react-native-reanimated";
 
 type DropDownProps = {
   kind: string;
@@ -10,6 +10,7 @@ type DropDownProps = {
 const DropDown = ({ kind }: DropDownProps) => {
   const [showContent, setShowContent] = useState(false);
   const transition = useRef(new Animated.Value(0)).current;
+
   const toggleListItem = () => {
     Animated.timing(transition, {
       duration: 200,
@@ -18,14 +19,18 @@ const DropDown = ({ kind }: DropDownProps) => {
     }).start();
     setShowContent(!showContent);
   };
+
+  // ToDo fix type
   const arrowTransform = transition.interpolate({
     inputRange: [0, 1],
     outputRange: ["0deg", "180deg"],
-  });
+  }) as any;
+
   const showBody = transition.interpolate({
     inputRange: [0, 1],
     outputRange: [0, 50],
   });
+
   return (
     <>
       <TouchableOpacity

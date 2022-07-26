@@ -1,20 +1,14 @@
 import { StyleSheet, View } from "react-native";
-import { Carousel } from "../../components/Carousel";
+import { Carousel } from "../components/Carousel";
 import React, { useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext";
-import { AuthNavBar } from "../../components/AuthNavBar";
+import { AuthNavBar } from "../components/AuthNavBar";
 
 type DashboardProps = {
   navigation: any;
 };
 
 export const Dashboard = ({ navigation }: DashboardProps) => {
-  const context = React.useContext(AuthContext);
   const [nav, setNav] = useState(false);
-
-  const signOutFunc = async () => {
-    context?.signOut();
-  };
 
   useEffect(() => {
     if (nav) {

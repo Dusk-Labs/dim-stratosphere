@@ -1,5 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useEffect } from "react";
+import { Text, View } from "react-native";
 
 export const Search = () => {
   return (
@@ -15,5 +14,3 @@ export const Search = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({});
