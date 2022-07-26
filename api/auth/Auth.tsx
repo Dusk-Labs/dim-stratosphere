@@ -21,7 +21,7 @@ type SignUpProps = {
 };
 
 export const PostSignIn = async ({ signInUrl, options }: SignInrops) => {
-  var userToken: string | null = null;
+  let userToken: string | null = null;
   await fetch(signInUrl, options)
     .then((response) => {
       if (response.status === 200) {
@@ -41,7 +41,7 @@ export const PostSignIn = async ({ signInUrl, options }: SignInrops) => {
 };
 
 export const PostSignUp = async ({ signUpUrl, options }: SignUpProps) => {
-  var username: string | null = null;
+  let username: string | null = null;
   await fetch(signUpUrl, options)
     .then((response) => {
       if (response.status === 200) {

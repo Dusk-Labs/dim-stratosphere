@@ -41,7 +41,7 @@ export const Input = ({
           ]}
           secureTextEntry={hidePassword}
           onChangeText={
-            (text) => handleOnChangeText && handleOnChangeText(text) //?
+            (text) => handleOnChangeText && handleOnChangeText(text) // ?
           }
           onFocus={onFocus}
           {...props}

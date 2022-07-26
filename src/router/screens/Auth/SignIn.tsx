@@ -81,11 +81,11 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
     };
 
     const userToken = await PostSignIn({
-      signInUrl: signInUrl,
-      options: options,
+      signInUrl,
+      options,
     });
 
-    userToken && signIn({ userToken: userToken });
+    userToken && signIn({ userToken });
   };
 
   const handleOnChangeText = (text: string, input: string) => {
@@ -143,7 +143,7 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
             </TouchableOpacity>
             <View style={styles.finalText}>
               <Text style={{ color: "#FFF", opacity: 0.5 }}>
-                Don't have an account yet?
+                Don`&apos;`t have an account yet?
               </Text>
               <TouchableOpacity
                 onPress={() =>

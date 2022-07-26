@@ -6,9 +6,10 @@ import { AuthContextProvider, useAuthContext } from "./src/context/AuthContext";
 import "react-native-gesture-handler";
 import { View } from "react-native";
 import { RouteContextProvider } from "./src/context/RouteContext";
+import React from "react";
 
 function App() {
-  //const { isLoggedIn } = useAuthContext();
+  // const { isLoggedIn } = useAuthContext();
   const isLoggedIn = true;
   const renderStack = () => {
     return isLoggedIn ? (

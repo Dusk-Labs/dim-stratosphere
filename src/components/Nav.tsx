@@ -7,7 +7,11 @@ const logOutIcon = require("../../assets/logOutIcon.png");
 const moviesIcon = require("../../assets/moviesIcon.png");
 const showsIcon = require("../../assets/showsIcon.png");
 
-export const Nav = ({ ...props }) => {
+type NavProps = {
+  navigation: any;
+};
+
+export const Nav = ({ ...props }: NavProps) => {
   const timeWatched = 2;
   const userName = "Rodrigo";
 

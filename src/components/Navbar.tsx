@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import React, { FC } from "react";
+import React from "react";
 
 type NavBarProps = {
   navigation: any;

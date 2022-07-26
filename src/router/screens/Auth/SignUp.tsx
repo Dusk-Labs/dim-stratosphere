@@ -82,8 +82,8 @@ export const SignUp = ({ navigation, route }: SignInProps) => {
     };
 
     await PostSignUp({
-      signUpUrl: signUpUrl,
-      options: options,
+      signUpUrl,
+      options,
     }).then((res) => {
       console.log(res);
       if (res === user.username) {

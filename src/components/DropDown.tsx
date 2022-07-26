@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import ArrowIcon from "./icons/ArrowIcon";
 import Animated, { Easing, EasingNode, Value } from "react-native-reanimated";
+
 type DropDownProps = {
   kind: string;
 };
@@ -42,8 +43,8 @@ const DropDown = ({ kind }: DropDownProps) => {
 
           <Animated.View
             style={{
-              ...styles.arrowButton,
               transform: [{ rotateZ: arrowTransform }],
+              ...styles.arrowButton,
             }}
           >
             <ArrowIcon color="white" />
