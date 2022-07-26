@@ -9,8 +9,8 @@ import { RouteContextProvider } from "./src/context/RouteContext";
 import React from "react";
 
 function App() {
-  const { isLoggedIn } = useAuthContext();
-
+  // const { isLoggedIn } = useAuthContext();
+  const isLoggedIn = true;
   const renderStack = () => {
     return isLoggedIn ? (
       <RouteContextProvider>

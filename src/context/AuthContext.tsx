@@ -13,7 +13,7 @@ type AuthProviderProps = {
 };
 
 export const AuthContext = React.createContext<AuthContextProps>(
-  {} as AuthContextProps
+  {} as AuthContextProps,
 );
 
 export const AuthContextProvider = ({ children }: AuthProviderProps) => {

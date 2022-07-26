@@ -30,5 +30,6 @@ module.exports = {
     "no-unused-vars": ["warn", { args: "none" }],
     "multiline-ternary": [1, "never"],
     "react/react-in-jsx-scope": "off",
+    "import/newline-after-import": ["error", { count: 1 }],
   },
 };
