@@ -2,7 +2,7 @@ import { createDrawerNavigator } from "@react-navigation/drawer";
 import { FilterSliderStackScreens } from "./FilterSliderStackScreens";
 import { Nav } from "./../../components/Nav";
 import { useRouteContext } from "../../context/RouteContext";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 
 export type MainStackParams = {
   Tab?: { title: string };
@@ -39,7 +39,7 @@ export const DrawerStackScreens = () => {
       <DrawerStack.Screen
         name="FilterSliderScreens"
         component={FilterSliderStackScreens}
-        options={{swipeEnabled:isSliderEnabled}}
+        options={{ swipeEnabled: isSliderEnabled }}
       />
     </DrawerStack.Navigator>
   );

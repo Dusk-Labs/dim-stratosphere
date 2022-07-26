@@ -5,7 +5,6 @@ import { TabStackScreens } from "./TabsStackScreens";
 import { RigthDrawer } from "../../components/RigthDrawer";
 
 type FilterSliderStackParams = {
-  // MoviesIn: { title: string };
   TabStackScreens: { title: string };
 };
 

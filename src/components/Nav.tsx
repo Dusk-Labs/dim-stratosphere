@@ -6,9 +6,9 @@ import ShowsIcon from "./icons/ShowsIcon";
 import LogOutIcon from "./icons/LogOutIcon";
 
 const userImage = require("../../assets/logo.png");
-//const logOutIcon = require("../../assets/logOutIcon.png");
+// const logOutIcon = require("../../assets/logOutIcon.png");
 const moviesIcon = require("../../assets/moviesIcon.png");
-//const showsIcon = require("../../assets/showsIcon.png");
+// const showsIcon = require("../../assets/showsIcon.png");
 
 type NavProps = {
   navigation: any;
@@ -45,7 +45,7 @@ export const Nav = ({ ...props }: NavProps) => {
               <SettingsIcon color={"#7E7E7E"} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.logOutBtn}>
-              <LogOutIcon color={"#7E7E7E"}/>
+              <LogOutIcon color={"#7E7E7E"} />
             </TouchableOpacity>
           </View>
         </View>
@@ -59,8 +59,8 @@ export const Nav = ({ ...props }: NavProps) => {
             <View style={styles.section}>
               <View style={styles.iconAndText}>
                 <View>
-               <MoviesICon color="#7E7E7E"/>
-               </View>
+                  <MoviesICon color="#7E7E7E" />
+                </View>
                 <Text style={styles.sectionTitle}>Movies</Text>
               </View>
               <Text style={styles.itemsNumber}>132</Text>
@@ -74,7 +74,7 @@ export const Nav = ({ ...props }: NavProps) => {
             <View style={{ ...styles.section, marginTop: 16 * 1.5 }}>
               <View style={styles.iconAndText}>
                 <View>
-                <ShowsIcon color={"#7E7E7E"}/>
+                  <ShowsIcon color={"#7E7E7E"} />
                 </View>
                 <Text style={styles.sectionTitle}>Shows</Text>
               </View>
