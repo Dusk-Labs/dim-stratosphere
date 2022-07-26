@@ -30,5 +30,11 @@ export const RouteContextProvider = ({ children }: RouteProviderProps) => {
 
 // hook to get the RouteContext
 export const useRouteContext = () => {
-  return useContext(RouteContext) as RouteContextProps;
+  const context = useContext(RouteContext);
+  if (context === undefined) {
+    throw new Error(
+      "useRouteContext must be used within a RouteContextProvider"
+    );
+  }
+  return context;
 };

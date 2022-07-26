@@ -60,5 +60,9 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
 
 // hook to get the AuthContext
 export const useAuthContext = () => {
-  return useContext(AuthContext) as AuthContextProps;
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuthContext must be used within a AuthContextProvider");
+  }
+  return context as AuthContextProps;
 };
