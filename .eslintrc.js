@@ -26,7 +26,7 @@ module.exports = {
       "error",
       { anonymous: "always", named: "never" },
     ],
-    "comma-dangle": ["error", "always-multiline"],
+    "comma-dangle": ["error", "only-multiline"],
     "no-unused-vars": ["warn", { args: "none" }],
     "multiline-ternary": [1, "never"],
     "react/react-in-jsx-scope": "off",
