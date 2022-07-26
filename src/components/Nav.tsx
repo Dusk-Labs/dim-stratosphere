@@ -1,11 +1,14 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import SettingsIcon from "./icons/SettingsIcon";
+import MoviesICon from "./icons/MoviesIcon";
+import ShowsIcon from "./icons/ShowsIcon";
+import LogOutIcon from "./icons/LogOutIcon";
 
 const userImage = require("../../assets/logo.png");
-const logOutIcon = require("../../assets/logOutIcon.png");
+//const logOutIcon = require("../../assets/logOutIcon.png");
 const moviesIcon = require("../../assets/moviesIcon.png");
-const showsIcon = require("../../assets/showsIcon.png");
+//const showsIcon = require("../../assets/showsIcon.png");
 
 type NavProps = {
   navigation: any;
@@ -42,7 +45,7 @@ export const Nav = ({ ...props }: NavProps) => {
               <SettingsIcon color={"#7E7E7E"} />
             </TouchableOpacity>
             <TouchableOpacity style={styles.logOutBtn}>
-              <Image source={logOutIcon} style={styles.logOutIcon} />
+              <LogOutIcon color={"#7E7E7E"}/>
             </TouchableOpacity>
           </View>
         </View>
@@ -55,7 +58,9 @@ export const Nav = ({ ...props }: NavProps) => {
           >
             <View style={styles.section}>
               <View style={styles.iconAndText}>
-                <Image source={moviesIcon} />
+                <View>
+               <MoviesICon color="#7E7E7E"/>
+               </View>
                 <Text style={styles.sectionTitle}>Movies</Text>
               </View>
               <Text style={styles.itemsNumber}>132</Text>
@@ -68,7 +73,9 @@ export const Nav = ({ ...props }: NavProps) => {
           >
             <View style={{ ...styles.section, marginTop: 16 * 1.5 }}>
               <View style={styles.iconAndText}>
-                <Image source={showsIcon} />
+                <View>
+                <ShowsIcon color={"#7E7E7E"}/>
+                </View>
                 <Text style={styles.sectionTitle}>Shows</Text>
               </View>
               <Text style={styles.itemsNumber}>80</Text>

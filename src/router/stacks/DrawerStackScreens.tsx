@@ -1,6 +1,8 @@
 import { createDrawerNavigator } from "@react-navigation/drawer";
 import { FilterSliderStackScreens } from "./FilterSliderStackScreens";
 import { Nav } from "./../../components/Nav";
+import { useRouteContext } from "../../context/RouteContext";
+import { useState,useEffect } from "react";
 
 export type MainStackParams = {
   Tab?: { title: string };
@@ -13,6 +15,16 @@ export type MainStackParams = {
 const DrawerStack = createDrawerNavigator<MainStackParams>();
 
 export const DrawerStackScreens = () => {
+  const { route } = useRouteContext();
+  const [isSliderEnabled, setIsSliderEnabled] = useState<boolean>(false);
+
+  useEffect(() => {
+    if (route === "Settings" || route === "Search") {
+      setIsSliderEnabled(false);
+    } else {
+      setIsSliderEnabled(true);
+    }
+  }, [route]);
   return (
     <DrawerStack.Navigator
       screenOptions={{
@@ -27,6 +39,7 @@ export const DrawerStackScreens = () => {
       <DrawerStack.Screen
         name="FilterSliderScreens"
         component={FilterSliderStackScreens}
+        options={{swipeEnabled:isSliderEnabled}}
       />
     </DrawerStack.Navigator>
   );
