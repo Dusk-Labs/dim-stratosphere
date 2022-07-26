@@ -26,7 +26,7 @@ export const Input = ({
   ...props
 }: InputProps) => {
   const [hidePassword, setHidePassword] = useState<boolean>(
-    showAndHidePassword || false,
+    showAndHidePassword || false
   );
 
   return (

@@ -13,7 +13,7 @@ type AuthProviderProps = {
 };
 
 export const AuthContext = React.createContext<AuthContextProps>(
-  {} as AuthContextProps,
+  {} as AuthContextProps
 );
 
 export const AuthContextProvider = ({ children }: AuthProviderProps) => {
@@ -29,7 +29,7 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
     });
   }, []);
 
-  const signIn = async({ userToken }: { userToken: string }) => {
+  const signIn = async ({ userToken }: { userToken: string }) => {
     console.log("2 userToken", userToken);
     await AsyncStorage.setItem("userToken", userToken).then(() => {
       setUserToken(userToken);
@@ -37,7 +37,7 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
     });
   };
 
-  const signOut = async() => {
+  const signOut = async () => {
     await AsyncStorage.removeItem("userToken").then(() => {
       setIsLoggedIn(false);
       setUserToken(null);

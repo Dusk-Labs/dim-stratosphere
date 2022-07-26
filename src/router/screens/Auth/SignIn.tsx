@@ -67,7 +67,7 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
     if (valid) signInMethod();
   };
 
-  const signInMethod = async() => {
+  const signInMethod = async () => {
     const signInUrl = `http://${user.host}/api/v1/auth/login`;
     const options = {
       method: "POST",

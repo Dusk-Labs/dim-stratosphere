@@ -9,7 +9,7 @@ const showsIcon = require("../../assets/showsIcon.png");
 
 type NavProps = {
   navigation: any;
-}
+};
 
 export const Nav = ({ ...props }: NavProps) => {
   const timeWatched = 2;

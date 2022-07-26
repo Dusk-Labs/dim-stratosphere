@@ -12,7 +12,7 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
   const context = React.useContext(AuthContext);
   const [nav, setNav] = useState(false);
 
-  const signOutFunc = async() => {
+  const signOutFunc = async () => {
     context?.signOut();
   };
 

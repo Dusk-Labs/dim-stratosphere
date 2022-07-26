@@ -22,7 +22,10 @@ module.exports = {
     "react-native/no-inline-styles": 0,
     quotes: ["error", "double"],
     semi: ["error", "always"],
-    "space-before-function-paren": ["error", "never"],
+    "space-before-function-paren": [
+      "error",
+      { anonymous: "always", named: "never" },
+    ],
     "comma-dangle": ["error", "always-multiline"],
     "no-unused-vars": ["warn", { args: "none" }],
     "multiline-ternary": [1, "never"],
