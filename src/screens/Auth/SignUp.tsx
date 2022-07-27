@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Navbar } from "../../components/Navbar";
 import { Input } from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
@@ -16,6 +16,8 @@ import { PostSignUp } from "../../../api/auth/Auth";
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
 export const SignUp = ({ navigation, route }: SignInProps) => {
+  const[isKeyboardOn,setIsKeyboardOn]=useState(false)
+
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
@@ -29,6 +31,18 @@ export const SignUp = ({ navigation, route }: SignInProps) => {
     password: "",
     host: "",
   });
+
+  useEffect(()=>{
+    Keyboard.addListener("keyboardDidShow",()=>{
+      setIsKeyboardOn(true)
+    })
+    Keyboard.addListener("keyboardDidHide",()=>{
+    setIsKeyboardOn(false)})
+    return()=>{
+      Keyboard.removeAllListeners("keyboardDidHide");
+      Keyboard.removeAllListeners("keyboardDidShow");
+    }
+      },[])
 
   const hostRegex =
     /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -139,7 +153,7 @@ export const SignUp = ({ navigation, route }: SignInProps) => {
           )}
         </View>
         <View style={styles.bottomFromBottom}>
-          <View style={styles.footer}>
+          {!isKeyboardOn&&<View style={styles.footer}>
             <TouchableOpacity
               style={styles.signInBtn}
               onPress={() => validate()}
@@ -171,7 +185,7 @@ export const SignUp = ({ navigation, route }: SignInProps) => {
                 <Text style={{ color: "#EA963E" }}> Sign in</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View>}
         </View>
       </View>
     </View>

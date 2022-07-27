@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Navbar } from "../../components/Navbar";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
@@ -17,6 +17,7 @@ import { PostSignIn } from "../../../api/auth/Auth";
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
 export const SignIn = ({ navigation, route }: SignInProps) => {
+  const[isKeyboardOn,setIsKeyboardOn]=useState(false)
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
@@ -30,6 +31,18 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
   });
 
   const { signIn } = useAuthContext();
+
+  useEffect(()=>{
+Keyboard.addListener("keyboardDidShow",()=>{
+  setIsKeyboardOn(true)
+})
+Keyboard.addListener("keyboardDidHide",()=>{
+setIsKeyboardOn(false)})
+return()=>{
+  Keyboard.removeAllListeners("keyboardDidHide");
+  Keyboard.removeAllListeners("keyboardDidShow");
+}
+  },[])
 
   const hostRegex =
     /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -68,22 +81,23 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
   };
 
   const signInMethod = async () => {
-    const signInUrl = `http://${user.host}/api/v1/auth/login`;
+    const signInUrl = `http://${user.host}:8000/api/v1/auth/login`;
     const options = {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        username: user.username,
-        password: user.password,
+        username: user.username.trim(),
+        password: user.password.trim(),
       }),
     };
+     
 
     const userToken = await PostSignIn({
       signInUrl,
       options,
-    });
+    }); 
 
     userToken && signIn({ userToken });
   };
@@ -132,7 +146,7 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
           )}
         </View>
         <View style={styles.bottomFromBottom}>
-          <View style={styles.footer}>
+          {!isKeyboardOn&&<View style={styles.footer}>
             <TouchableOpacity
               style={styles.signInBtn}
               onPress={() => validate()}
@@ -143,7 +157,7 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
             </TouchableOpacity>
             <View style={styles.finalText}>
               <Text style={{ color: "#FFF", opacity: 0.5 }}>
-                Don`&apos;`t have an account yet?
+                Don&apos;t have an account yet?
               </Text>
               <TouchableOpacity
                 onPress={() =>
@@ -153,7 +167,7 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
                 <Text style={{ color: "#EA963E" }}> Sign up here</Text>
               </TouchableOpacity>
             </View>
-          </View>
+          </View>}
         </View>
       </View>
     </View>

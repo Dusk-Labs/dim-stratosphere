@@ -4,6 +4,7 @@ import SettingsIcon from "./icons/SettingsIcon";
 import MoviesICon from "./icons/MoviesIcon";
 import ShowsIcon from "./icons/ShowsIcon";
 import LogOutIcon from "./icons/LogOutIcon";
+import { useAuthContext } from "../context/AuthContext";
 
 const userImage = require("../../assets/logo.png");
 // const logOutIcon = require("../../assets/logOutIcon.png");
@@ -17,6 +18,7 @@ type NavProps = {
 export const Nav = ({ ...props }: NavProps) => {
   const timeWatched = 2;
   const userName = "Rodrigo";
+  const {signOut}=useAuthContext();
 
   return (
     <>
@@ -44,7 +46,7 @@ export const Nav = ({ ...props }: NavProps) => {
             >
               <SettingsIcon color={"#7E7E7E"} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.logOutBtn}>
+            <TouchableOpacity style={styles.logOutBtn} onPress={()=>{signOut()}}>
               <LogOutIcon color={"#7E7E7E"} />
             </TouchableOpacity>
           </View>
