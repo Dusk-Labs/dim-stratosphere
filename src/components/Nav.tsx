@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SettingsIcon from "./icons/SettingsIcon";
 import MoviesICon from "./icons/MoviesIcon";
 import ShowsIcon from "./icons/ShowsIcon";
@@ -7,18 +7,47 @@ import LogOutIcon from "./icons/LogOutIcon";
 import { useAuthContext } from "../context/AuthContext";
 
 const userImage = require("../../assets/logo.png");
-// const logOutIcon = require("../../assets/logOutIcon.png");
-const moviesIcon = require("../../assets/moviesIcon.png");
-// const showsIcon = require("../../assets/showsIcon.png");
 
 type NavProps = {
   navigation: any;
 };
 
+type UserType={
+  picture:string;
+  roles: Array<string>;
+  spentWatching: number;
+  username: string,
+}
+
 export const Nav = ({ ...props }: NavProps) => {
-  const timeWatched = 2;
-  const userName = "Rodrigo";
-  const {signOut}=useAuthContext();
+  const { signOut, host, userToken } = useAuthContext();
+  const [user, setUser] = useState<UserType>();
+  const [libraries, setLibraries] = useState(null);
+
+  useEffect(() => {
+    const config = {
+      headers: {
+        Authorization: JSON.parse(userToken as string),
+      },
+    } as any;
+    if (host !== "") {
+      fetch(`http://${host}:8000/api/v1/auth/whoami`, config).then((response) => {
+        return response.json();
+      }).then((data) => {
+        setUser(data);
+      }).catch((error) => {
+        alert(error);
+      });
+      fetch(`http://${host}:8000/api/v1/library`, config).then((res) => {
+        return res.json();
+      }).then((res) => {
+        setLibraries(res);
+        console.log(res);
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+  }, [host]);
 
   return (
     <>
@@ -27,14 +56,15 @@ export const Nav = ({ ...props }: NavProps) => {
           <View style={styles.left}>
             <View style={styles.imageContainer}>
               <Image
-                source={userImage}
+                source={user ? { uri: `http://${host}:8000${user.picture}` } : userImage}
                 style={styles.userImage}
                 resizeMode="contain"
+
               ></Image>
             </View>
             <View style={styles.useInfo}>
-              <Text style={styles.userName}>{userName}</Text>
-              <Text style={styles.timeWatched}>Watched {timeWatched}h</Text>
+              <Text style={styles.userName}>{user?.username}</Text>
+              <Text style={styles.timeWatched}>Watched {user?.spentWatching}h</Text>
             </View>
           </View>
           <View style={styles.rigth}>
@@ -46,7 +76,12 @@ export const Nav = ({ ...props }: NavProps) => {
             >
               <SettingsIcon color={"#7E7E7E"} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.logOutBtn} onPress={()=>{signOut()}}>
+            <TouchableOpacity
+              style={styles.logOutBtn}
+              onPress={() => {
+                signOut();
+              }}
+            >
               <LogOutIcon color={"#7E7E7E"} />
             </TouchableOpacity>
           </View>

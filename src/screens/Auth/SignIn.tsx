@@ -5,7 +5,7 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar } from "../../components/Navbar";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
@@ -17,12 +17,13 @@ import { PostSignIn } from "../../../api/auth/Auth";
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
 export const SignIn = ({ navigation, route }: SignInProps) => {
-  const[isKeyboardOn,setIsKeyboardOn]=useState(false)
+  const [isKeyboardOn, setIsKeyboardOn] = useState(false);
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
     host: "",
   });
+  const { setHost } = useAuthContext();
 
   const [errors, setErrors] = useState<UserFormErrors>({
     username: "",
@@ -32,17 +33,18 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
 
   const { signIn } = useAuthContext();
 
-  useEffect(()=>{
-Keyboard.addListener("keyboardDidShow",()=>{
-  setIsKeyboardOn(true)
-})
-Keyboard.addListener("keyboardDidHide",()=>{
-setIsKeyboardOn(false)})
-return()=>{
-  Keyboard.removeAllListeners("keyboardDidHide");
-  Keyboard.removeAllListeners("keyboardDidShow");
-}
-  },[])
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", () => {
+      setIsKeyboardOn(true);
+    });
+    Keyboard.addListener("keyboardDidHide", () => {
+      setIsKeyboardOn(false);
+    });
+    return () => {
+      Keyboard.removeAllListeners("keyboardDidHide");
+      Keyboard.removeAllListeners("keyboardDidShow");
+    };
+  }, []);
 
   const hostRegex =
     /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -92,14 +94,13 @@ return()=>{
         password: user.password.trim(),
       }),
     };
-     
 
     const userToken = await PostSignIn({
       signInUrl,
       options,
-    }); 
-
-    userToken && signIn({ userToken });
+    });
+    const host = user.host;
+    userToken && signIn({ userToken, host });
   };
 
   const handleOnChangeText = (text: string, input: string) => {
@@ -146,28 +147,30 @@ return()=>{
           )}
         </View>
         <View style={styles.bottomFromBottom}>
-          {!isKeyboardOn&&<View style={styles.footer}>
-            <TouchableOpacity
-              style={styles.signInBtn}
-              onPress={() => validate()}
-            >
-              <Text style={{ color: "#FFF", textAlign: "center" }}>
-                Sign in
-              </Text>
-            </TouchableOpacity>
-            <View style={styles.finalText}>
-              <Text style={{ color: "#FFF", opacity: 0.5 }}>
-                Don&apos;t have an account yet?
-              </Text>
+          {!isKeyboardOn && (
+            <View style={styles.footer}>
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("SignUp", { title: "Sign Up" })
-                }
+                style={styles.signInBtn}
+                onPress={() => validate()}
               >
-                <Text style={{ color: "#EA963E" }}> Sign up here</Text>
+                <Text style={{ color: "#FFF", textAlign: "center" }}>
+                  Sign in
+                </Text>
               </TouchableOpacity>
+              <View style={styles.finalText}>
+                <Text style={{ color: "#FFF", opacity: 0.5 }}>
+                  Don&apos;t have an account yet?
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("SignUp", { title: "Sign Up" })
+                  }
+                >
+                  <Text style={{ color: "#EA963E" }}> Sign up here</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>}
+          )}
         </View>
       </View>
     </View>
