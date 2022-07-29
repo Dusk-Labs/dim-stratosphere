@@ -25,7 +25,6 @@ export const Nav = ({ ...props }: NavProps) => {
   const [libraries, setLibraries] = useState(null);
 
   useEffect(() => {
-    console.log(userToken)
     const config = {
       headers: {
         Authorization: JSON.parse(userToken as string),
@@ -63,9 +62,7 @@ export const Nav = ({ ...props }: NavProps) => {
             <View style={styles.imageContainer}>
               <Image
                 source={
-                  user
-                    ? { uri: `http://${host}:8000${user.picture}` }
-                    : userImage
+                  user ? { uri: `http://${host}:8000${user.picture}` } : userImage
                 }
                 style={styles.userImage}
                 resizeMode="contain"
@@ -100,10 +97,10 @@ export const Nav = ({ ...props }: NavProps) => {
         <View style={styles.body}>
           <Text style={styles.libraries}>LIBRARIES</Text>
 
-          {libraries&&libraries.map((element)=>{
-            return<TouchableOpacity
+          {libraries && libraries.map((element) => {
+            return <TouchableOpacity
             onPress={() => {
-              props.navigation.navigate("Movies",{"name":element.name});
+              props.navigation.navigate("Movies", { name: element.name, id: element.id });
             }}
             style={styles.library}
             key={element.id}
@@ -111,13 +108,13 @@ export const Nav = ({ ...props }: NavProps) => {
             <View style={styles.section}>
               <View style={styles.iconAndText}>
                 <View>
-                  {element.media_type==="movie"?<MoviesICon color="#7E7E7E"/>:<ShowsIcon color={"#7E7E7E"} /> }
+                  {element.media_type === "movie" ? <MoviesICon color="#7E7E7E"/> : <ShowsIcon color={"#7E7E7E"} /> }
                 </View>
                 <Text style={styles.sectionTitle}>{element.name}</Text>
               </View>
               <Text style={styles.itemsNumber}>132</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity>;
           })}
           {/* <TouchableOpacity
             onPress={() => {
@@ -183,13 +180,13 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
-    paddingRight:16,
-    paddingLeft:16
+    paddingRight: 16,
+    paddingLeft: 16
   },
   body: {
     padding: 16,
     paddingTop: 16 * 2,
-    flex:1,
+    flex: 1,
   },
   libraries: {
     color: "#EA963E",
@@ -262,8 +259,8 @@ const styles = StyleSheet.create({
   logOutBtn: {
     marginRight: 16,
   },
-  library:{
-    marginTop:16,
-    width:"100%",
+  library: {
+    marginTop: 16,
+    width: "100%",
   }
 });
