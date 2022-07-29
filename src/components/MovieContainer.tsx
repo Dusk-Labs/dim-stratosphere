@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View, Image } from "react-native";
 import React from "react";
+import { useAuthContext } from "../context/AuthContext";
 
 type MovieContainerProps = {
   title: string;
@@ -12,9 +13,10 @@ export const MovieContainer = ({
   picture,
   reference,
 }: MovieContainerProps) => {
+  const {host}=useAuthContext()
   return (
     <View style={styles.movieContainer}>
-      <Image source={picture} style={styles.movieImage} />
+      <Image source={{uri:`http://${host}:8000/${picture}`}} style={styles.movieImage} />
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.reference}>{reference}</Text>
     </View>
@@ -26,7 +28,9 @@ const styles = StyleSheet.create({
     position: "relative",
     backgroundColor: "rgba(14, 13, 11, 1)",
     flex: 1,
-    padding: 8,
+    padding:8,
+    paddingBottom:16,
+
   },
   title: {
     marginTop: 8,
@@ -44,5 +48,6 @@ const styles = StyleSheet.create({
   movieImage: {
     aspectRatio: 0.63,
     height: "80%",
+    borderRadius:5
   },
 });

@@ -25,7 +25,6 @@ export const SignUp = ({ navigation, route }: SignInProps) => {
     // hardcoded for now. will be replaced with input?
     // inviteToken: "cc23092e-484c-4ef9-a40b-75e0829ebbea",
     inviteToken: "c6e52889-0cec-4171-8980-a5d2ac872577",
-
   });
 
   const [errors, setErrors] = useState<UserFormErrors>({

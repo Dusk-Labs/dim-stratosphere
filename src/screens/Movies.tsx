@@ -2,16 +2,18 @@ import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 
-export const Movies = ({ navigation }: any) => {
+export const Movies = ({ route,navigation }: any) => {
+  const {name}=route.params;
+ 
   return (
     <View style={styles.moviesPage}>
       <AuthNavBar
-        title={"Movies"}
+        title={name}
         navigation={navigation}
         moviesOrShows={true}
       />
       <View style={styles.container}>
-        <Text style={{ color: "white" }}>Movies</Text>
+        <Text style={{ color: "white" }}>{name}</Text>
       </View>
     </View>
   );

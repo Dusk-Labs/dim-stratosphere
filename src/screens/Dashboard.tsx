@@ -1,14 +1,15 @@
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View,ScrollView } from "react-native";
 import { Carousel } from "../components/Carousel";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
+import {useAuthContext} from "../context/AuthContext"
 
 type DashboardProps = {
   navigation: any;
 };
 
 export const Dashboard = ({ navigation }: DashboardProps) => {
-  const [nav, setNav] = useState(false);
+    const [nav, setNav] = useState(false);
 
   useEffect(() => {
     if (nav) {
@@ -22,10 +23,11 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
     <>
       <View style={styles.HomePage}>
         <AuthNavBar title={"Dashboard"} navigation={navigation} />
-        <View style={styles.body}>
-          <Carousel sectionTitle="Continue Watching" nav={nav} />
-          <Carousel sectionTitle="Freshly Added" nav={nav} />
-        </View>
+        <ScrollView style={styles.body}>
+        <Carousel sectionTitle={"Continue Watching"} nav={nav} />
+        <Carousel sectionTitle="Freshly Added" nav={nav} />
+        <Carousel sectionTitle="Top Rated" nav={nav} /> 
+        </ScrollView>
         {/* <TabMenu nav={nav} /> */}
       </View>
     </>

@@ -2,12 +2,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { ReactElement, useContext, useEffect, useState } from "react";
 
 export type AuthContextProps = {
-  signIn: ({ userToken, host }: { userToken: string, host:string }) => Promise<void>;
+  signIn: ({
+    userToken,
+    host,
+  }: {
+    userToken: string;
+    host: string;
+  }) => Promise<void>;
   signOut: () => void;
   isLoggedIn: boolean;
   userToken: string | null;
-  host:string;
-  setHost:(value:string)=>void;
+  host: string;
+  setHost: (value: string) => void;
 };
 
 type AuthProviderProps = {
@@ -35,7 +41,13 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
     });
   }, []);
 
-  const signIn = async ({ userToken, host }: { userToken: string, host:string }) => {
+  const signIn = async ({
+    userToken,
+    host,
+  }: {
+    userToken: string;
+    host: string;
+  }) => {
     await AsyncStorage.setItem("userToken", userToken).then(() => {
       setUserToken(userToken);
       setIsLoggedIn(true);
@@ -63,7 +75,7 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
         isLoggedIn,
         userToken,
         host,
-        setHost
+        setHost,
       }}
     >
       {children}

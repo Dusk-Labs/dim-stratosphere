@@ -12,12 +12,12 @@ type NavProps = {
   navigation: any;
 };
 
-type UserType={
-  picture:string;
+type UserType = {
+  picture: string;
   roles: Array<string>;
   spentWatching: number;
-  username: string,
-}
+  username: string;
+};
 
 export const Nav = ({ ...props }: NavProps) => {
   const { signOut, host, userToken } = useAuthContext();
@@ -25,27 +25,33 @@ export const Nav = ({ ...props }: NavProps) => {
   const [libraries, setLibraries] = useState(null);
 
   useEffect(() => {
+    console.log(userToken)
     const config = {
       headers: {
         Authorization: JSON.parse(userToken as string),
       },
     } as any;
     if (host !== "") {
-      fetch(`http://${host}:8000/api/v1/auth/whoami`, config).then((response) => {
-        return response.json();
-      }).then((data) => {
-        setUser(data);
-      }).catch((error) => {
-        alert(error);
-      });
-      fetch(`http://${host}:8000/api/v1/library`, config).then((res) => {
-        return res.json();
-      }).then((res) => {
-        setLibraries(res);
-        console.log(res);
-      }).catch((err) => {
-        console.log(err);
-      });
+      fetch(`http://${host}:8000/api/v1/auth/whoami`, config)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setUser(data);
+        })
+        .catch((error) => {
+          alert(error);
+        });
+      fetch(`http://${host}:8000/api/v1/library`, config)
+        .then((res) => {
+          return res.json();
+        })
+        .then((res) => {
+          setLibraries(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
   }, [host]);
 
@@ -56,15 +62,20 @@ export const Nav = ({ ...props }: NavProps) => {
           <View style={styles.left}>
             <View style={styles.imageContainer}>
               <Image
-                source={user ? { uri: `http://${host}:8000${user.picture}` } : userImage}
+                source={
+                  user
+                    ? { uri: `http://${host}:8000${user.picture}` }
+                    : userImage
+                }
                 style={styles.userImage}
                 resizeMode="contain"
-
               ></Image>
             </View>
             <View style={styles.useInfo}>
               <Text style={styles.userName}>{user?.username}</Text>
-              <Text style={styles.timeWatched}>Watched {user?.spentWatching}h</Text>
+              <Text style={styles.timeWatched}>
+                Watched {user?.spentWatching}h
+              </Text>
             </View>
           </View>
           <View style={styles.rigth}>
@@ -88,7 +99,27 @@ export const Nav = ({ ...props }: NavProps) => {
         </View>
         <View style={styles.body}>
           <Text style={styles.libraries}>LIBRARIES</Text>
-          <TouchableOpacity
+
+          {libraries&&libraries.map((element)=>{
+            return<TouchableOpacity
+            onPress={() => {
+              props.navigation.navigate("Movies",{"name":element.name});
+            }}
+            style={styles.library}
+            key={element.id}
+          >
+            <View style={styles.section}>
+              <View style={styles.iconAndText}>
+                <View>
+                  {element.media_type==="movie"?<MoviesICon color="#7E7E7E"/>:<ShowsIcon color={"#7E7E7E"} /> }
+                </View>
+                <Text style={styles.sectionTitle}>{element.name}</Text>
+              </View>
+              <Text style={styles.itemsNumber}>132</Text>
+            </View>
+          </TouchableOpacity>
+          })}
+          {/* <TouchableOpacity
             onPress={() => {
               props.navigation.navigate("Movies");
             }}
@@ -117,7 +148,7 @@ export const Nav = ({ ...props }: NavProps) => {
               </View>
               <Text style={styles.itemsNumber}>80</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
       </View>
     </>
@@ -152,16 +183,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
+    paddingRight:16,
+    paddingLeft:16
   },
   body: {
     padding: 16,
     paddingTop: 16 * 2,
+    flex:1,
   },
   libraries: {
     color: "#EA963E",
     fontWeight: "500",
     fontSize: 12,
-    marginBottom: 16 * 2,
+    marginBottom: 16,
   },
   logOutIcon: {
     height: 20,
@@ -228,4 +262,8 @@ const styles = StyleSheet.create({
   logOutBtn: {
     marginRight: 16,
   },
+  library:{
+    marginTop:16,
+    width:"100%",
+  }
 });
