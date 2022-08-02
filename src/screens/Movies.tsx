@@ -29,23 +29,31 @@ export const Movies = ({ route, navigation }: any) => {
   return (
     <View style={styles.moviesPage}>
       <AuthNavBar title={name} navigation={navigation} moviesOrShows={true} />
-      <View style={styles.body} >
-      <FlatList
-        data={data}
-        keyExtractor={(element) => element.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity onPress={()=>{alert(item.name)}}>
-          <MovieContainer
-            key={item.id}
-            title={item.name}
-            picture={item.poster_path}
-            reference={item.id}
-          />
-          </TouchableOpacity>
-        )}
-        numColumns={3}
-      columnWrapperStyle={{paddingRight:8,paddingLeft:8,justifyContent:"space-between"}}
-      />
+      <View style={styles.body}>
+        <FlatList
+          data={data}
+          keyExtractor={(element) => element.id}
+          renderItem={({ item }) => (
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("MediaPage",{name:item.name,id:item.id})
+              }}
+            >
+              <MovieContainer
+                key={item.id}
+                title={item.name}
+                picture={item.poster_path}
+                reference={item.id}
+              />
+            </TouchableOpacity>
+          )}
+          numColumns={3}
+          columnWrapperStyle={{
+            paddingRight: 8,
+            paddingLeft: 8,
+            justifyContent: "space-between",
+          }}
+        />
       </View>
     </View>
   );
@@ -59,7 +67,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  body:{
-    flex:1,
-  }
+  body: {
+    flex: 1,
+  },
 });

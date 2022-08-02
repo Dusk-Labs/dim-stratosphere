@@ -9,10 +9,10 @@ const logo = require("../../assets/logo.png");
 
 type CarouselProps = {
   sectionTitle?: string;
-  nav: boolean;
+  navigation:any
 };
 
-export const Carousel = ({ sectionTitle, nav }: CarouselProps) => {
+export const Carousel = ({ sectionTitle,navigation }: CarouselProps) => {
   const { host, userToken } = useAuthContext();
   const [dashboardData, setDashboardData] = useState();
   useEffect(() => {
@@ -32,7 +32,7 @@ export const Carousel = ({ sectionTitle, nav }: CarouselProps) => {
       .catch((err) => {
         console.log(err);
       });
-      console.log(userToken)
+    console.log(userToken);
   }, [host]);
   return (
     <View style={styles.container}>
@@ -43,13 +43,18 @@ export const Carousel = ({ sectionTitle, nav }: CarouselProps) => {
         {dashboardData &&
           dashboardData.map((element) => {
             return (
-              <TouchableOpacity key={element.id} onPress={()=>{alert(element.name)}}  >
-              <MovieContainer
+              <TouchableOpacity
                 key={element.id}
-                title={element.name}
-                picture={element.poster_path}
-                reference={element.id}
-              />
+                onPress={() => {
+                  navigation.navigate("MediaPage",{name:element.name,id:element.id})
+                }}
+              >
+                <MovieContainer
+                  key={element.id}
+                  title={element.name}
+                  picture={element.poster_path}
+                  reference={element.id}
+                />
               </TouchableOpacity>
             );
           })}

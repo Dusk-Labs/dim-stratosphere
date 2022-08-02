@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image,Dimensions } from "react-native";
+import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 
@@ -13,12 +13,15 @@ export const MovieContainer = ({
   picture,
   reference,
 }: MovieContainerProps) => {
-  const { host} = useAuthContext();
+  const { host } = useAuthContext();
   return (
     <View style={styles.movieContainer}>
       <Image
         source={{ uri: `http://${host}:8000/${picture}` }}
-        style={{...styles.movieImage,width:Dimensions.get("window").width/3.4}}
+        style={{
+          ...styles.movieImage,
+          width: Dimensions.get("window").width / 3.4,
+        }}
       />
       <Text style={styles.title}>{title}</Text>
       <Text style={styles.reference}>{reference}</Text>
@@ -30,10 +33,10 @@ const styles = StyleSheet.create({
   movieContainer: {
     position: "relative",
     paddingBottom: 8,
-    paddingTop:8,
-    marginRight:8,
-    justifyContent:"flex-start",
-    alignItems:"flex-start"
+    paddingTop: 8,
+    marginRight: 8,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
   },
   title: {
     marginTop: 8,
@@ -41,7 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "white",
     fontWeight: "400",
-    width:120
+    width: 120,
   },
   reference: {
     fontSize: 14,
@@ -51,5 +54,5 @@ const styles = StyleSheet.create({
   movieImage: {
     aspectRatio: 0.63,
     borderRadius: 5,
-},
+  },
 });
