@@ -62,7 +62,9 @@ export const Nav = ({ ...props }: NavProps) => {
             <View style={styles.imageContainer}>
               <Image
                 source={
-                  user ? { uri: `http://${host}:8000${user.picture}` } : userImage
+                  user
+                    ? { uri: `http://${host}:8000${user.picture}` }
+                    : userImage
                 }
                 style={styles.userImage}
                 resizeMode="contain"
@@ -97,25 +99,35 @@ export const Nav = ({ ...props }: NavProps) => {
         <View style={styles.body}>
           <Text style={styles.libraries}>LIBRARIES</Text>
 
-          {libraries && libraries.map((element) => {
-            return <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate("Movies", { name: element.name, id: element.id });
-            }}
-            style={styles.library}
-            key={element.id}
-          >
-            <View style={styles.section}>
-              <View style={styles.iconAndText}>
-                <View>
-                  {element.media_type === "movie" ? <MoviesICon color="#7E7E7E"/> : <ShowsIcon color={"#7E7E7E"} /> }
-                </View>
-                <Text style={styles.sectionTitle}>{element.name}</Text>
-              </View>
-              <Text style={styles.itemsNumber}>132</Text>
-            </View>
-          </TouchableOpacity>;
-          })}
+          {libraries &&
+            libraries.map((element) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    props.navigation.navigate("Movies", {
+                      name: element.name,
+                      id: element.id,
+                    });
+                  }}
+                  style={styles.library}
+                  key={element.id}
+                >
+                  <View style={styles.section}>
+                    <View style={styles.iconAndText}>
+                      <View>
+                        {element.media_type === "movie" ? (
+                          <MoviesICon color="#7E7E7E" />
+                        ) : (
+                          <ShowsIcon color={"#7E7E7E"} />
+                        )}
+                      </View>
+                      <Text style={styles.sectionTitle}>{element.name}</Text>
+                    </View>
+                    <Text style={styles.itemsNumber}>132</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
           {/* <TouchableOpacity
             onPress={() => {
               props.navigation.navigate("Movies");
@@ -181,7 +193,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
     paddingRight: 16,
-    paddingLeft: 16
+    paddingLeft: 16,
   },
   body: {
     padding: 16,
@@ -262,5 +274,5 @@ const styles = StyleSheet.create({
   library: {
     marginTop: 16,
     width: "100%",
-  }
+  },
 });

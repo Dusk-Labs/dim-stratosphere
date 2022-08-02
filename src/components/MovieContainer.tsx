@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image,Dimensions } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 
@@ -13,39 +13,15 @@ export const MovieContainer = ({
   picture,
   reference,
 }: MovieContainerProps) => {
-  const { host, userToken } = useAuthContext();
-  const [info, setInfo] = useState("");
-  useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: JSON.parse(userToken as string),
-      },
-    } as any;
-
-    fetch(`http://${host}:8000/api/v1/media/${reference}/files`, config)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        if (data[0].raw_year) {
-          setInfo(data[0].raw_year);
-        } else {
-          setInfo(`S${data[0].season}:E${data[0].episode}`);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [host, reference]);
-
+  const { host} = useAuthContext();
   return (
     <View style={styles.movieContainer}>
       <Image
         source={{ uri: `http://${host}:8000/${picture}` }}
-        style={styles.movieImage}
+        style={{...styles.movieImage,width:Dimensions.get("window").width/3.4}}
       />
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.reference}>{info}</Text>
+      <Text style={styles.reference}>{reference}</Text>
     </View>
   );
 };
@@ -53,8 +29,11 @@ export const MovieContainer = ({
 const styles = StyleSheet.create({
   movieContainer: {
     position: "relative",
-    backgroundColor: "rgba(14, 13, 11, 1)",
-    padding: 8,
+    paddingBottom: 8,
+    paddingTop:8,
+    marginRight:8,
+    justifyContent:"flex-start",
+    alignItems:"flex-start"
   },
   title: {
     marginTop: 8,
@@ -62,7 +41,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "white",
     fontWeight: "400",
-    width: 120,
+    width:120
   },
   reference: {
     fontSize: 14,
@@ -72,5 +51,5 @@ const styles = StyleSheet.create({
   movieImage: {
     aspectRatio: 0.63,
     borderRadius: 5,
-  },
+},
 });

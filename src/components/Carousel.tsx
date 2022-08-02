@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { MovieContainer } from "./MovieContainer";
 import { movies } from "../movies";
 import { useAuthContext } from "../context/AuthContext";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const logo = require("../../assets/logo.png");
 
@@ -31,6 +32,7 @@ export const Carousel = ({ sectionTitle, nav }: CarouselProps) => {
       .catch((err) => {
         console.log(err);
       });
+      console.log(userToken)
   }, [host]);
   return (
     <View style={styles.container}>
@@ -41,12 +43,14 @@ export const Carousel = ({ sectionTitle, nav }: CarouselProps) => {
         {dashboardData &&
           dashboardData.map((element) => {
             return (
+              <TouchableOpacity key={element.id} onPress={()=>{alert(element.name)}}  >
               <MovieContainer
                 key={element.id}
                 title={element.name}
                 picture={element.poster_path}
                 reference={element.id}
               />
+              </TouchableOpacity>
             );
           })}
       </ScrollView>
