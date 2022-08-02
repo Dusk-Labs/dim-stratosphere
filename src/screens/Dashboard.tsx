@@ -24,8 +24,11 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
       <View style={styles.HomePage}>
         <AuthNavBar title={"Dashboard"} navigation={navigation} />
         <ScrollView style={styles.body}>
-          <Carousel sectionTitle={"Continue Watching"} navigation={navigation} />
-          <Carousel sectionTitle="Freshly Added" navigation={navigation}/>
+          <Carousel
+            sectionTitle={"Continue Watching"}
+            navigation={navigation}
+          />
+          <Carousel sectionTitle="Freshly Added" navigation={navigation} />
           <Carousel sectionTitle="Top Rated" navigation={navigation} />
         </ScrollView>
         {/* <TabMenu nav={nav} /> */}

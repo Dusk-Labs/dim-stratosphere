@@ -9,10 +9,10 @@ const logo = require("../../assets/logo.png");
 
 type CarouselProps = {
   sectionTitle?: string;
-  navigation:any
+  navigation: any;
 };
 
-export const Carousel = ({ sectionTitle,navigation }: CarouselProps) => {
+export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
   const { host, userToken } = useAuthContext();
   const [dashboardData, setDashboardData] = useState();
   useEffect(() => {
@@ -46,7 +46,10 @@ export const Carousel = ({ sectionTitle,navigation }: CarouselProps) => {
               <TouchableOpacity
                 key={element.id}
                 onPress={() => {
-                  navigation.navigate("MediaPage",{name:element.name,id:element.id})
+                  navigation.navigate("MediaPage", {
+                    name: element.name,
+                    id: element.id,
+                  });
                 }}
               >
                 <MovieContainer

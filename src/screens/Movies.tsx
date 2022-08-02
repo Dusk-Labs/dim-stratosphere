@@ -36,7 +36,10 @@ export const Movies = ({ route, navigation }: any) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate("MediaPage",{name:item.name,id:item.id})
+                navigation.navigate("MediaPage", {
+                  name: item.name,
+                  id: item.id,
+                });
               }}
             >
               <MovieContainer
