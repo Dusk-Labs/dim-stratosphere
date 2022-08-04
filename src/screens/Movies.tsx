@@ -22,7 +22,6 @@ export const Movies = ({ route, navigation }: any) => {
       })
       .then((data) => {
         setData(data[name]);
-        console.log(userToken);
       });
   }, [id]);
 

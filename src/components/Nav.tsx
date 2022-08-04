@@ -37,7 +37,6 @@ export const Nav = ({ ...props }: NavProps) => {
         })
         .then((data) => {
           setUser(data);
-          console.log(data.picture)
         })
         .catch((error) => {
           alert(error);
