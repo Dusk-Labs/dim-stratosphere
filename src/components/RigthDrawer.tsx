@@ -3,7 +3,7 @@ import React from "react";
 import DropDown from "./DropDown";
 
 export const RigthDrawer = () => {
-  const options = ["hello", "hello", "hello", "hello"]
+  const options = ["hello", "hello", "hello", "hello"];
   return (
     <View style={styles.rigthDrawer}>
       <View style={{ ...styles.filterSection, marginTop: 16 * 2.5 }}>

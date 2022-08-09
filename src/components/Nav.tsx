@@ -60,15 +60,17 @@ export const Nav = ({ ...props }: NavProps) => {
         <View style={styles.header}>
           <View style={styles.left}>
             <View style={styles.imageContainer}>
-              {user?.picture&&<Image
-                source={
-                  user
-                    ? { uri: `http://${host}:8000${user.picture}` }
-                    : userImage
-                }
-                style={styles.userImage}
-                resizeMode="contain"
-              />}
+              {user?.picture && (
+                <Image
+                  source={
+                    user
+                      ? { uri: `http://${host}:8000${user.picture}` }
+                      : userImage
+                  }
+                  style={styles.userImage}
+                  resizeMode="contain"
+                />
+              )}
             </View>
             <View style={styles.useInfo}>
               <Text style={styles.userName}>{user?.username}</Text>
@@ -128,7 +130,6 @@ export const Nav = ({ ...props }: NavProps) => {
                 </TouchableOpacity>
               );
             })}
-        
         </View>
       </View>
     </>
@@ -195,7 +196,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
     marginRight: 16,
-    backgroundColor:"#de9636"
+    backgroundColor: "#de9636",
   },
   header: {
     width: "100%",
@@ -224,8 +225,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: 40,
     height: 40,
-    borderColor:"white",
-    borderWidth:2,
+    borderColor: "white",
+    borderWidth: 2,
   },
   useInfo: {
     flexDirection: "column",

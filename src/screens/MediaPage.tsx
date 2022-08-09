@@ -2,12 +2,12 @@ import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
-import { LinearGradient } from 'expo-linear-gradient';
-import DownloadIcon from "../components/icons/DownloadIcon"
-import SettingsIcon from "../components/icons/SettingsIcon"
+import { LinearGradient } from "expo-linear-gradient";
+import DownloadIcon from "../components/icons/DownloadIcon";
+import SettingsIcon from "../components/icons/SettingsIcon";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import DropDown from "../components/DropDown";
-import { filterConfig } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlerCommon";
+import ReadMoreIcon from "../components/icons/ReadMore"
 
 export const MediaPage = ({ navigation, route }: any) => {
   const { name, id } = route.params;
@@ -16,8 +16,8 @@ export const MediaPage = ({ navigation, route }: any) => {
   const [season, setSeason] = useState(null);
   const [episodes, setEpisodes] = useState(null);
   const [seasonNumber, setSeasonNumber] = useState(1);
-  const [first, setFirst] = useState(true)
-
+  const [first, setFirst] = useState(true);
+  const [isReadMoreActive, setIsreadMoreActive] = useState(false);
   useEffect(() => {
     const config = {
       headers: {
@@ -31,9 +31,9 @@ export const MediaPage = ({ navigation, route }: any) => {
       .then((data) => {
         setData(data);
       });
-    setSeasonNumber(1)
+    setSeasonNumber(1);
     setFirst(true);
-    setSeason(null)
+    setSeason(null);
   }, [id]);
 
   useEffect(() => {
@@ -50,22 +50,22 @@ export const MediaPage = ({ navigation, route }: any) => {
         .then((data) => {
           setSeason(data);
         });
-    }
-    else {
+    } else {
       setSeason(null);
       setEpisodes(null);
     }
-  }, [data])
+  }, [data]);
 
   function handleRigthSeason(seasons: Array<any>) {
-    let filteredArray = seasons.filter(element => element.season_number === seasonNumber)
+    const filteredArray = seasons.filter(
+      (element) => element.season_number === seasonNumber
+    );
     if (first) {
-      return seasons[0].id
+      return seasons[0].id;
     } else {
-      return filteredArray[0].id
+      return filteredArray[0].id;
     }
   }
-
 
   useEffect(() => {
     if (season) {
@@ -74,27 +74,40 @@ export const MediaPage = ({ navigation, route }: any) => {
           Authorization: JSON.parse(userToken as string),
         },
       } as any;
-      let thisSeason = handleRigthSeason(season);
+      const thisSeason = handleRigthSeason(season);
       fetch(`http://${host}:8000/api/v1/season/${thisSeason}/episodes`, config)
         .then((response) => {
           return response.json();
         })
         .then((data) => {
           setEpisodes(data);
+          //console.log(data)
         });
     }
-  }, [season, seasonNumber])
-  /*   useEffect(() => {
-      if (season) {
-        setSeasonNumber(season[0].season_number);
-      }
-    }, [id]) */
+  }, [season, seasonNumber]);
 
+  function handleDescription(description) {
+    if (isReadMoreActive) {
+      return description
+    } else {
+      if (description.length > 200) {
+        return description.slice(0, 200) + "..."
+      } else {
+        return description
+      }
+    }
+  }
+  function handleReadMore() {
+    setIsreadMoreActive(!isReadMoreActive)
+  }
   return (
     <View style={styles.mediaPage}>
       {data && (
         <View style={styles.body}>
-          <LinearGradient colors={["gray", "black"]} style={styles.topAndNavBar}>
+          <LinearGradient
+            colors={["gray", "black"]}
+            style={styles.topAndNavBar}
+          >
             <AuthNavBar title={name} navigation={navigation} />
             <View style={styles.top}>
               <View style={styles.topLeft}>
@@ -105,9 +118,18 @@ export const MediaPage = ({ navigation, route }: any) => {
               </View>
 
               <View style={styles.topRigth}>
-                <Text style={styles.description}>{data.description}</Text>
+                <View style={styles.descriptionContainer}>
+                  <Text style={styles.description}>{handleDescription(data.description)}</Text>
+                  {data.description.length > 200 && <View style={styles.readMoreButtonContainer}>
+                    <TouchableOpacity style={styles.readMoreButton} onPress={handleReadMore}>
+                      <ReadMoreIcon />
+                    </TouchableOpacity>
+                  </View>}
+                </View>
                 <TouchableOpacity style={styles.playtBtn}>
-                  <Text style={{ color: "black", fontWeight: "500", fontSize: 12 }}>
+                  <Text
+                    style={{ color: "black", fontWeight: "500", fontSize: 12 }}
+                  >
                     Play
                   </Text>
                 </TouchableOpacity>
@@ -121,42 +143,46 @@ export const MediaPage = ({ navigation, route }: any) => {
               </View>
             </View>
           </LinearGradient>
-          {episodes && season &&
-            (
-              <View style={styles.seasonElection}>
-                <View style={{ width: "45%", marginBottom: 16 }}>
-                  <DropDown
-                    kind={"Season"}
-                    options={season.map((element) => {
-                      return element.season_number
-                    })}
-                    setOption={setSeasonNumber}
-                    first={first}
-                    setFirst={setFirst}
-                    season={season}
-                  />
-
-                </View>
-                <ScrollView style={styles.episodes}>
-                  {episodes &&
-                    episodes.map((element) => {
-                      return (<TouchableOpacity style={styles.episodePresentation} key={element.id}>
+          {episodes && season && (
+            <View style={styles.seasonElection}>
+              <View style={{ width: "45%", marginBottom: 16 }}>
+                <DropDown
+                  kind={"Season"}
+                  options={season.map((element) => {
+                    return element.season_number;
+                  })}
+                  setOption={setSeasonNumber}
+                  first={first}
+                  setFirst={setFirst}
+                  season={season}
+                />
+              </View>
+              <ScrollView style={styles.episodes}>
+                {episodes &&
+                  episodes.map((element) => {
+                    return (
+                      <TouchableOpacity
+                        style={styles.episodePresentation}
+                        key={element.id}
+                      >
                         <View style={styles.episodePosterContainer}>
                           <Image
-                            source={{ uri: `http://${host}:8000/${element.thumbnail_url}` }}
+                            source={{
+                              uri: `http://${host}:8000/${element.thumbnail_url}`,
+                            }}
                             style={styles.episodePoster}
                           />
                         </View>
                         <Text style={styles.episodeTitle}>{element.name}</Text>
-                        <Text style={styles.episodeNumber}>Episode {element.episode}</Text>
-                      </TouchableOpacity>)
-                    })
-                  }
-
-                </ScrollView>
-              </View>
-            )
-          }
+                        <Text style={styles.episodeNumber}>
+                          Episode {element.episode}
+                        </Text>
+                      </TouchableOpacity>
+                    );
+                  })}
+              </ScrollView>
+            </View>
+          )}
         </View>
       )}
     </View>
@@ -175,81 +201,94 @@ const styles = StyleSheet.create({
   poster: {
     aspectRatio: 0.63,
     width: 133,
-    borderRadius: 5
+    borderRadius: 5,
   },
   top: {
     flexDirection: "row",
     paddingLeft: 8,
-    paddingRight: 8
+    paddingRight: 8,
   },
   topLeft: {
-    marginRight: 8
+    marginRight: 8,
   },
   topRigth: {
     paddingLeft: 8,
     paddingRight: 8,
-    flex: 1
+    flex: 1,
   },
   description: {
     fontSize: 12,
     color: "white",
   },
   topAndNavBar: {
-    marginBottom: 16 * 3
+    marginBottom: 16 * 3,
   },
   playtBtn: {
     backgroundColor: "#EA963E",
     borderRadius: 5,
     padding: 8,
     width: "100%",
-    justifyContent: "center"
-    , alignItems: "center",
-    marginTop: 16
+    justifyContent: "center",
+    alignItems: "center",
   },
   DownloadSeasonBtn: {
     backgroundColor: "#494746",
     borderRadius: 5,
     padding: 8,
     width: "100%",
-    justifyContent: "flex-start"
-    , alignItems: "center",
+    justifyContent: "flex-start",
+    alignItems: "center",
     marginTop: 8,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   seasonElection: {
     flex: 1,
     paddingRight: 8,
-    paddingLeft: 8
+    paddingLeft: 8,
   },
   episodes: {
     flex: 1,
   },
   episodePresentation: {
     flex: 1,
-    marginBottom: 16
+    marginBottom: 16,
   },
   episodePosterContainer: {
     width: "100%",
     height: 200,
     overflow: "hidden",
     marginBottom: 16,
-    borderRadius: 10
+    borderRadius: 10,
   },
   episodePoster: {
     width: "100%",
-    aspectRatio: .6,
+    aspectRatio: 0.6,
     borderRadius: 10,
-    position: "relative",
     top: "0%",
-
   },
   episodeTitle: {
     color: "white",
     fontWeight: "500",
-    marginBottom: 8
+    marginBottom: 8,
   },
   episodeNumber: {
     color: "white",
     fontWeight: "400",
+    fontSize: 14,
+    opacity: .8
+  },
+  descriptionContainer: {
+    paddingBottom: 8
+  },
+  readMoreButton: {
+    width: 30,
+    height: 20,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  readMoreButtonContainer: {
+    width: 30,
+    height: 20,
+    marginBottom: 8,
   }
 });

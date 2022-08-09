@@ -12,5 +12,5 @@ export type UserFormErrors = {
 };
 
 export type IconInteface = {
-  color: string;
+  color?: string;
 };
