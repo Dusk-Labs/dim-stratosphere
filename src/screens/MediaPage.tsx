@@ -7,7 +7,7 @@ import DownloadIcon from "../components/icons/DownloadIcon";
 import SettingsIcon from "../components/icons/SettingsIcon";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import DropDown from "../components/DropDown";
-import ReadMoreIcon from "../components/icons/ReadMore"
+import ReadMoreIcon from "../components/icons/ReadMore";
 
 export const MediaPage = ({ navigation, route }: any) => {
   const { name, id } = route.params;
@@ -34,6 +34,7 @@ export const MediaPage = ({ navigation, route }: any) => {
     setSeasonNumber(1);
     setFirst(true);
     setSeason(null);
+    setIsreadMoreActive(false)
   }, [id]);
 
   useEffect(() => {
@@ -81,24 +82,24 @@ export const MediaPage = ({ navigation, route }: any) => {
         })
         .then((data) => {
           setEpisodes(data);
-          //console.log(data)
+          // console.log(data)
         });
     }
   }, [season, seasonNumber]);
 
   function handleDescription(description) {
     if (isReadMoreActive) {
-      return description
+      return description;
     } else {
       if (description.length > 200) {
-        return description.slice(0, 200) + "..."
+        return description.slice(0, 200) + "...";
       } else {
-        return description
+        return description;
       }
     }
   }
   function handleReadMore() {
-    setIsreadMoreActive(!isReadMoreActive)
+    setIsreadMoreActive(!isReadMoreActive);
   }
   return (
     <View style={styles.mediaPage}>
@@ -119,12 +120,19 @@ export const MediaPage = ({ navigation, route }: any) => {
 
               <View style={styles.topRigth}>
                 <View style={styles.descriptionContainer}>
-                  <Text style={styles.description}>{handleDescription(data.description)}</Text>
-                  {data.description.length > 200 && <View style={styles.readMoreButtonContainer}>
-                    <TouchableOpacity style={styles.readMoreButton} onPress={handleReadMore}>
-                      <ReadMoreIcon />
-                    </TouchableOpacity>
-                  </View>}
+                  <Text style={styles.description}>
+                    {handleDescription(data.description)}
+                    {data && data.description.length > 200 && (
+                      <View style={styles.readMoreButtonContainer}>
+                        <TouchableOpacity
+                          style={styles.readMoreButton}
+                          onPress={handleReadMore}
+                        >
+                          <ReadMoreIcon color={"white"} />
+                        </TouchableOpacity>
+                      </View>
+                    )}
+                  </Text>
                 </View>
                 <TouchableOpacity style={styles.playtBtn}>
                   <Text
@@ -219,6 +227,7 @@ const styles = StyleSheet.create({
   description: {
     fontSize: 12,
     color: "white",
+    flexDirection: "row",
   },
   topAndNavBar: {
     marginBottom: 16 * 3,
@@ -275,20 +284,21 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "400",
     fontSize: 14,
-    opacity: .8
+    opacity: 0.8,
   },
   descriptionContainer: {
-    paddingBottom: 8
+    paddingBottom: 8,
   },
   readMoreButton: {
     width: 30,
     height: 20,
-    justifyContent: "center",
+    justifyContent: "flex-end",
     alignItems: "center",
+    top: 5
   },
   readMoreButtonContainer: {
     width: 30,
     height: 20,
-    marginBottom: 8,
-  }
+    justifyContent: "flex-end"
+  },
 });
