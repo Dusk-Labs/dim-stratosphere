@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
@@ -6,11 +6,17 @@ import { LinearGradient } from 'expo-linear-gradient';
 import DownloadIcon from "../components/icons/DownloadIcon"
 import SettingsIcon from "../components/icons/SettingsIcon"
 import { TouchableOpacity } from "react-native-gesture-handler";
+import DropDown from "../components/DropDown";
+import { filterConfig } from "react-native-gesture-handler/lib/typescript/handlers/gestureHandlerCommon";
 
 export const MediaPage = ({ navigation, route }: any) => {
   const { name, id } = route.params;
   const { host, userToken } = useAuthContext();
-  const [data, setData] = useState();
+  const [data, setData] = useState(null);
+  const [season, setSeason] = useState(null);
+  const [episodes, setEpisodes] = useState(null);
+  const [seasonNumber, setSeasonNumber] = useState(1);
+  const [first, setFirst] = useState(true)
 
   useEffect(() => {
     const config = {
@@ -24,9 +30,65 @@ export const MediaPage = ({ navigation, route }: any) => {
       })
       .then((data) => {
         setData(data);
-        console.log(data)
       });
+    setSeasonNumber(1)
+    setFirst(true);
+    setSeason(null)
   }, [id]);
+
+  useEffect(() => {
+    if (data && data.media_type === "tv") {
+      const config = {
+        headers: {
+          Authorization: JSON.parse(userToken as string),
+        },
+      } as any;
+      fetch(`http://${host}:8000/api/v1/tv/${id}/season`, config)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setSeason(data);
+        });
+    }
+    else {
+      setSeason(null);
+      setEpisodes(null);
+    }
+  }, [data])
+
+  function handleRigthSeason(seasons: Array<any>) {
+    let filteredArray = seasons.filter(element => element.season_number === seasonNumber)
+    if (first) {
+      return seasons[0].id
+    } else {
+      return filteredArray[0].id
+    }
+  }
+
+
+  useEffect(() => {
+    if (season) {
+      const config = {
+        headers: {
+          Authorization: JSON.parse(userToken as string),
+        },
+      } as any;
+      let thisSeason = handleRigthSeason(season);
+      fetch(`http://${host}:8000/api/v1/season/${thisSeason}/episodes`, config)
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          setEpisodes(data);
+        });
+    }
+  }, [season, seasonNumber])
+  /*   useEffect(() => {
+      if (season) {
+        setSeasonNumber(season[0].season_number);
+      }
+    }, [id]) */
 
   return (
     <View style={styles.mediaPage}>
@@ -49,16 +111,52 @@ export const MediaPage = ({ navigation, route }: any) => {
                     Play
                   </Text>
                 </TouchableOpacity>
-                <TouchableOpacity style={styles.DownloadSeasonBtn}>
+                {/*   <TouchableOpacity style={styles.DownloadSeasonBtn}>
                   <View style={{ height: 20, width: 20, marginRight: 8 }}><DownloadIcon color="white" /></View>
                   <Text style={{ color: "white", fontWeight: "500", fontSize: 12 }}>
                     Download Season
                   </Text>
                   <View style={{ height: 20, width: 20, position: "absolute", right: "0%", marginRight: 8 }}><SettingsIcon color="#949494" /></View>
-                </TouchableOpacity>
+                </TouchableOpacity> */}
               </View>
             </View>
           </LinearGradient>
+          {episodes && season &&
+            (
+              <View style={styles.seasonElection}>
+                <View style={{ width: "45%", marginBottom: 16 }}>
+                  <DropDown
+                    kind={"Season"}
+                    options={season.map((element) => {
+                      return element.season_number
+                    })}
+                    setOption={setSeasonNumber}
+                    first={first}
+                    setFirst={setFirst}
+                    season={season}
+                  />
+
+                </View>
+                <ScrollView style={styles.episodes}>
+                  {episodes &&
+                    episodes.map((element) => {
+                      return (<TouchableOpacity style={styles.episodePresentation} key={element.id}>
+                        <View style={styles.episodePosterContainer}>
+                          <Image
+                            source={{ uri: `http://${host}:8000/${element.thumbnail_url}` }}
+                            style={styles.episodePoster}
+                          />
+                        </View>
+                        <Text style={styles.episodeTitle}>{element.name}</Text>
+                        <Text style={styles.episodeNumber}>Episode {element.episode}</Text>
+                      </TouchableOpacity>)
+                    })
+                  }
+
+                </ScrollView>
+              </View>
+            )
+          }
         </View>
       )}
     </View>
@@ -97,6 +195,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   topAndNavBar: {
+    marginBottom: 16 * 3
   },
   playtBtn: {
     backgroundColor: "#EA963E",
@@ -116,5 +215,41 @@ const styles = StyleSheet.create({
     , alignItems: "center",
     marginTop: 8,
     flexDirection: "row"
+  },
+  seasonElection: {
+    flex: 1,
+    paddingRight: 8,
+    paddingLeft: 8
+  },
+  episodes: {
+    flex: 1,
+  },
+  episodePresentation: {
+    flex: 1,
+    marginBottom: 16
+  },
+  episodePosterContainer: {
+    width: "100%",
+    height: 200,
+    overflow: "hidden",
+    marginBottom: 16,
+    borderRadius: 10
+  },
+  episodePoster: {
+    width: "100%",
+    aspectRatio: .6,
+    borderRadius: 10,
+    position: "relative",
+    top: "0%",
+
+  },
+  episodeTitle: {
+    color: "white",
+    fontWeight: "500",
+    marginBottom: 8
+  },
+  episodeNumber: {
+    color: "white",
+    fontWeight: "400",
   }
 });

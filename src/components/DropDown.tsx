@@ -1,15 +1,30 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect, Dispatch, SetStateAction } from "react";
 import ArrowIcon from "./icons/ArrowIcon";
 import Animated, { EasingNode } from "react-native-reanimated";
 
 type DropDownProps = {
   kind: string;
+  options: Array<string>;
+  setOption: Dispatch<SetStateAction<number>>;
+  first?: boolean;
+  setFirst?: Dispatch<SetStateAction<boolean>>;
+  season?: Array<any>;
 };
 
-const DropDown = ({ kind }: DropDownProps) => {
+const DropDown = ({ kind, options, setOption, first, setFirst, season }: DropDownProps) => {
   const [showContent, setShowContent] = useState(false);
+  const [selected, setSelected] = useState("Any");
   const transition = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    if (first) {
+      if (kind === "Season") {
+        setSelected(season[0].season_number)
+      } else { setSelected("Any"); }
+      setFirst(false);
+    }
+  }, [first])
 
   const toggleListItem = () => {
     Animated.timing(transition, {
@@ -31,6 +46,19 @@ const DropDown = ({ kind }: DropDownProps) => {
     outputRange: [0, 50],
   });
 
+  function handlePress(element) {
+
+    setOption(element)
+    setSelected(element);
+    setShowContent(false);
+  }
+  function zero(number: number) {
+    if (number < 10) {
+      return `0${number}`
+    } else {
+      return number
+    }
+  }
   return (
     <>
       <TouchableOpacity
@@ -39,12 +67,9 @@ const DropDown = ({ kind }: DropDownProps) => {
         }}
       >
         <View
-          style={{
-            ...styles.dropDownTitleContainer,
-            borderRadius: showContent ? 0 : 10,
-          }}
+          style={showContent ? styles.dropDownTitleContainerOpened : styles.dropDownTitleContainer}
         >
-          <Text style={styles.selected}>Any</Text>
+          <Text style={styles.selected}>{kind === "Season" ? "Season " + zero(selected) : selected}</Text>
 
           <Animated.View
             style={{
@@ -56,7 +81,16 @@ const DropDown = ({ kind }: DropDownProps) => {
           </Animated.View>
         </View>
       </TouchableOpacity>
-      {showContent && (
+      <View style={showContent ? styles.body : styles.bodyOff}>
+        {
+          showContent && options.map((element, index) => {
+            return (<TouchableOpacity key={index} onPress={() => { handlePress(element); }}>
+              <Text style={styles.option}>{kind === "Season" ? "Season " + zero(element) : element}</Text>
+            </TouchableOpacity>)
+          })
+        }
+      </View>
+      {/* {showContent && (
         <Animated.View style={{ ...styles.body }}>
           <TouchableOpacity>
             <Text style={styles.option}>hello</Text>
@@ -71,7 +105,7 @@ const DropDown = ({ kind }: DropDownProps) => {
             <Text style={{ ...styles.option, marginBottom: 0 }}>hello</Text>
           </TouchableOpacity>
         </Animated.View>
-      )}
+      )} */}
     </>
   );
 };
@@ -99,12 +133,29 @@ const styles = StyleSheet.create({
   },
   body: {
     width: "100%",
-    padding: 16,
+    paddingRight: 16,
+    paddingLeft: 16,
     backgroundColor: "rgba(53, 52, 51, 1)",
-    borderRadius: 0,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+  },
+  bodyOff: {
+    flex: 0
   },
   option: {
     color: "white",
     marginBottom: 8,
   },
+  dropDownTitleContainerOpened: {
+    width: "100%",
+    backgroundColor: "rgba(53, 52, 51, 1)",
+    padding: 8,
+    paddingRight: 16,
+    paddingLeft: 16,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    borderTopRightRadius: 10,
+    borderTopLeftRadius: 10,
+  }
 });
