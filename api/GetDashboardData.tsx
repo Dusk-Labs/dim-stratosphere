@@ -1,7 +1,12 @@
-import { useAuthContext } from "../src/context/AuthContext";
+type DashboardDataProps = {
+  host: string;
+  userToken: string | null;
+};
 
-export const getDashboardData = async () => {
-  const { host, userToken } = useAuthContext();
+export const getDashboardData = async ({
+  host,
+  userToken,
+}: DashboardDataProps) => {
   const options = {
     method: "GET",
     headers: {

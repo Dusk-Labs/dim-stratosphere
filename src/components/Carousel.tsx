@@ -4,6 +4,7 @@ import { MovieContainer } from "./MovieContainer";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { getDashboardData } from "../../api/GetDashboardData";
+import { useAuthContext } from "../context/AuthContext";
 
 // const logo = require("../../assets/logo.png");
 
@@ -20,13 +21,19 @@ type FileProps = {
 
 export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
   const [dashboardData, setDashboardData] = useState([]);
+  const { host, userToken } = useAuthContext();
 
-  const { data } = useQuery(
+  const { data, refetch } = useQuery(
     ["getDashboardData"] as QueryKey,
-    async () => await getDashboardData()
+    async () => await getDashboardData({ host, userToken })
   );
 
+  // console.log(data);
+
   useEffect(() => {
+    // console.log(data);
+    refetch();
+    console.log("llamado");
     const title = sectionTitle?.toUpperCase() || "";
     data && setDashboardData(data[title]);
   }, [data]);

@@ -19,10 +19,16 @@ type UserType = {
   username: string;
 };
 
+type Library = {
+  id: number;
+  name: string;
+  media_type: string;
+};
+
 export const Nav = ({ ...props }: NavProps) => {
   const { signOut, host, userToken } = useAuthContext();
   const [user, setUser] = useState<UserType>();
-  const [libraries, setLibraries] = useState(null);
+  const [libraries, setLibraries] = useState([]);
 
   useEffect(() => {
     const config = {
@@ -37,7 +43,7 @@ export const Nav = ({ ...props }: NavProps) => {
         })
         .then((data) => {
           setUser(data);
-          console.log(data.picture);
+          // console.log(data.picture);
         })
         .catch((error) => {
           alert(error);
@@ -64,9 +70,7 @@ export const Nav = ({ ...props }: NavProps) => {
               {user?.picture && (
                 <Image
                   source={
-                    user
-                      ? { uri: `http://${host}:8000${user.picture}` }
-                      : userImage
+                    user ? `http://${host}:8000${user.picture}` : userImage
                   }
                   style={styles.userImage}
                   resizeMode="contain"
@@ -103,28 +107,28 @@ export const Nav = ({ ...props }: NavProps) => {
           <Text style={styles.libraries}>LIBRARIES</Text>
 
           {libraries &&
-            libraries.map((element) => {
+            libraries.map((library: Library) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
                     props.navigation.navigate("Movies", {
-                      name: element.name,
-                      id: element.id,
+                      name: library.name,
+                      id: library.id,
                     });
                   }}
                   style={styles.library}
-                  key={element.id}
+                  key={library.id}
                 >
                   <View style={styles.section}>
                     <View style={styles.iconAndText}>
                       <View>
-                        {element.media_type === "movie" ? (
+                        {library.media_type === "movie" ? (
                           <MoviesICon color="#7E7E7E" />
                         ) : (
                           <ShowsIcon color={"#7E7E7E"} />
                         )}
                       </View>
-                      <Text style={styles.sectionTitle}>{element.name}</Text>
+                      <Text style={styles.sectionTitle}>{library.name}</Text>
                     </View>
                     <Text style={styles.itemsNumber}>132</Text>
                   </View>
