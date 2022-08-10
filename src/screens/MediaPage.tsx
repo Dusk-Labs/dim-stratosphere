@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, Image, ScrollView, DevSettings } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  ScrollView,
+  DevSettings,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
@@ -178,7 +185,7 @@ export const MediaPage = ({ navigation, route }: any) => {
                             source={{
                               uri: `http://${host}:8000/${element.thumbnail_url}`,
                             }}
-                            //resizeMode="cover"
+                            // resizeMode="cover"
                             style={styles.episodePoster}
                           />
                         </View>
@@ -273,7 +280,7 @@ const styles = StyleSheet.create({
   episodePoster: {
     borderRadius: 10,
     width: "100%",
-    aspectRatio: .6,
+    aspectRatio: 0.6,
     position: "absolute",
     top: "-10%",
   },

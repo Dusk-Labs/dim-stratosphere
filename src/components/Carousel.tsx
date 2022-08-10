@@ -1,9 +1,8 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { MovieContainer } from "./MovieContainer";
 import { movies } from "../movies";
 import { useAuthContext } from "../context/AuthContext";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const logo = require("../../assets/logo.png");
 

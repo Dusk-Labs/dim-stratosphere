@@ -1,9 +1,8 @@
-import { StyleSheet, Text, View, ScrollView, FlatList } from "react-native";
+import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
 import { MovieContainer } from "../components/MovieContainer";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 export const Movies = ({ route, navigation }: any) => {
   const { name, id } = route.params;

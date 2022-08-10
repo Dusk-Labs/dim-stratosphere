@@ -112,7 +112,9 @@ const DropDown = ({
                 }}
               >
                 <Text style={styles.option}>
-                  {kind === "Season" ? "Season " + HandleAddZero(element) : element}
+                  {kind === "Season"
+                    ? "Season " + HandleAddZero(element)
+                    : element}
                 </Text>
               </TouchableOpacity>
             );

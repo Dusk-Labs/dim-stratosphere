@@ -1,13 +1,11 @@
 import { StyleSheet, View } from "react-native";
 import { IconInteface } from "../../types";
-import React, { FC, useEffect, } from "react";
+import React, { FC, useEffect } from "react";
 import Svg, { Circle, Rect } from "react-native-svg";
 
 const paths = ["7", "14.7778", "22.5556"];
 
-
 const ReadMoreIcon: FC<IconInteface> = ({ color }) => {
-
   return (
     <View style={styles.layer}>
       <Svg width="30" height="14" viewBox="0 0 30 14" fill="none">
