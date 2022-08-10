@@ -43,7 +43,6 @@ export const Nav = ({ ...props }: NavProps) => {
         })
         .then((data) => {
           setUser(data);
-          // console.log(data.picture);
         })
         .catch((error) => {
           alert(error);
@@ -56,7 +55,7 @@ export const Nav = ({ ...props }: NavProps) => {
           setLibraries(res);
         })
         .catch((err) => {
-          console.log(err);
+          alert(err);
         });
     }
   }, [host]);

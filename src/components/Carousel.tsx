@@ -28,12 +28,8 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
     async () => await getDashboardData({ host, userToken })
   );
 
-  // console.log(data);
-
   useEffect(() => {
-    // console.log(data);
     refetch();
-    console.log("llamado");
     const title = sectionTitle?.toUpperCase() || "";
     data && setDashboardData(data[title]);
   }, [data]);
