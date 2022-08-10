@@ -1,42 +1,37 @@
-import { StyleSheet, Text, View, ScrollView, FlatList } from "react-native";
+import { StyleSheet, View, FlatList } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
 import { MovieContainer } from "../components/MovieContainer";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { getMovies } from "../../api/GetMovies";
 
 export const Movies = ({ route, navigation }: any) => {
   const { name, id } = route.params;
   const { host, userToken } = useAuthContext();
-  const [data, setData] = useState();
+  const [movies, setMovies] = useState();
+
+  const { data } = useQuery(
+    ["getMovies"] as QueryKey,
+    async () => await getMovies({ host, id, userToken })
+  );
 
   useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: JSON.parse(userToken as string),
-      },
-    } as any;
-    fetch(`http://${host}:8000/api/v1/library/${id}/media`, config)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        setData(data[name]);
-        console.log(userToken);
-      });
-  }, [id]);
+    data && setMovies(data[name]);
+  }, [data]);
 
   return (
     <View style={styles.moviesPage}>
       <AuthNavBar title={name} navigation={navigation} moviesOrShows={true} />
       <View style={styles.body}>
         <FlatList
-          data={data}
+          data={movies}
           keyExtractor={(element) => element.id}
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                alert(item.name)
+                alert(item.name);
               }}
             >
               <MovieContainer

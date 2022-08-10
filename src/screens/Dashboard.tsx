@@ -2,14 +2,13 @@ import { StyleSheet, View, ScrollView } from "react-native";
 import { Carousel } from "../components/Carousel";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
-import { useAuthContext } from "../context/AuthContext";
 
 type DashboardProps = {
   navigation: any;
 };
 
 export const Dashboard = ({ navigation }: DashboardProps) => {
-  const [nav, setNav] = useState(false);
+  const [nav] = useState(false);
 
   useEffect(() => {
     if (nav) {

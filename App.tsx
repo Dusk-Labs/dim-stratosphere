@@ -7,6 +7,7 @@ import "react-native-gesture-handler";
 import { View } from "react-native";
 import { RouteContextProvider } from "./src/context/RouteContext";
 import React from "react";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
   const { isLoggedIn } = useAuthContext();
@@ -21,10 +22,14 @@ function App() {
     );
   };
 
+  const queryClient = new QueryClient();
+
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>{renderStack()}</NavigationContainer>
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>{renderStack()}</NavigationContainer>
+      </QueryClientProvider>
     </>
   );
 }

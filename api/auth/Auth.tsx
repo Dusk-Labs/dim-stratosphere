@@ -1,26 +1,25 @@
+import { User } from "../../src/types";
+
 type SignInrops = {
-  signInUrl: string;
-  options: {
-    method: string;
-    headers: {
-      "Content-Type": string;
-    };
-    body: string;
-  };
+  user: User;
 };
 
 type SignUpProps = {
-  signUpUrl: string;
-  options: {
-    method: string;
-    headers: {
-      "Content-Type": string;
-    };
-    body: string;
-  };
+  user: User;
 };
 
-export const PostSignIn = async ({ signInUrl, options }: SignInrops) => {
+export const PostSignIn = async ({ user }: SignInrops) => {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: user.username.trim(),
+      password: user.password.trim(),
+    }),
+  };
+  const signInUrl = `http://${user.host}:8000/api/v1/auth/login`;
   let userToken: string | null = null;
   await fetch(signInUrl, options)
     .then((response) => {
@@ -40,7 +39,19 @@ export const PostSignIn = async ({ signInUrl, options }: SignInrops) => {
   return userToken;
 };
 
-export const PostSignUp = async ({ signUpUrl, options }: SignUpProps) => {
+export const PostSignUp = async ({ user }: SignUpProps) => {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      username: user.username.trim(),
+      password: user.password.trim(),
+      invite_token: user.inviteToken,
+    }),
+  };
+  const signUpUrl = `http://${user.host}:8000/api/v1/auth/register`;
   let username: string | null = null;
   await fetch(signUpUrl, options)
     .then((response) => {

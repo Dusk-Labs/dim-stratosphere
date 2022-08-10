@@ -13,17 +13,23 @@ import { Input } from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
 import { useAuthContext } from "../../context/AuthContext";
 import { PostSignIn } from "../../../api/auth/Auth";
+import { QueryKey, useQuery } from "@tanstack/react-query";
 
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
+type fetchProps = {
+  // data = token
+  data: any;
+};
+
 export const SignIn = ({ navigation, route }: SignInProps) => {
   const [isKeyboardOn, setIsKeyboardOn] = useState(false);
+
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
     host: "",
   });
-  const { setHost } = useAuthContext();
 
   const [errors, setErrors] = useState<UserFormErrors>({
     username: "",
@@ -31,7 +37,16 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
     host: "",
   });
 
-  const { signIn } = useAuthContext();
+  const { signIn, setHost } = useAuthContext();
+
+  const { refetch } = useQuery(
+    ["signIn"] as QueryKey,
+    async () => await PostSignIn({ user }),
+    {
+      // query will not be executed when component is mounted
+      enabled: false,
+    }
+  );
 
   useEffect(() => {
     Keyboard.addListener("keyboardDidShow", () => {
@@ -45,6 +60,8 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
       Keyboard.removeAllListeners("keyboardDidShow");
     };
   }, []);
+
+  // TODO Remove hostRegex & validate method
 
   const hostRegex =
     /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -83,24 +100,10 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
   };
 
   const signInMethod = async () => {
-    const signInUrl = `http://${user.host}:8000/api/v1/auth/login`;
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: user.username.trim(),
-        password: user.password.trim(),
-      }),
-    };
-
-    const userToken = await PostSignIn({
-      signInUrl,
-      options,
+    await refetch().then((res: fetchProps) => {
+      res.data && signIn({ userToken: res.data, host: user.host });
+      setHost(user.host);
     });
-    const host = user.host;
-    userToken && signIn({ userToken, host });
   };
 
   const handleOnChangeText = (text: string, input: string) => {

@@ -1,39 +1,36 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
 import React, { useEffect, useState } from "react";
 import { MovieContainer } from "./MovieContainer";
-import { movies } from "../movies";
-import { useAuthContext } from "../context/AuthContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { getDashboardData } from "../../api/GetDashboardData";
 
-const logo = require("../../assets/logo.png");
+// const logo = require("../../assets/logo.png");
 
 type CarouselProps = {
   sectionTitle?: string;
-  navigation: any;
+  navigation?: any;
+};
+
+type FileProps = {
+  name: string;
+  id: string;
+  poster_path: HTMLImageElement;
 };
 
 export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
-  const { host, userToken } = useAuthContext();
-  const [dashboardData, setDashboardData] = useState();
+  const [dashboardData, setDashboardData] = useState([]);
+
+  const { data } = useQuery(
+    ["getDashboardData"] as QueryKey,
+    async () => await getDashboardData()
+  );
+
   useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: JSON.parse(userToken as string),
-      },
-    } as any;
-    fetch(`http://${host}:8000/api/v1/dashboard`, config)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
-        const title = sectionTitle.toUpperCase();
-        setDashboardData(data[title]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-    console.log(userToken);
-  }, [host]);
+    const title = sectionTitle?.toUpperCase() || "";
+    data && setDashboardData(data[title]);
+  }, [data]);
+
   return (
     <View style={styles.container}>
       <View style={styles.titleSection}>
@@ -41,19 +38,19 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
       </View>
       <ScrollView style={styles.moviesSection} horizontal={true}>
         {dashboardData &&
-          dashboardData.map((element) => {
+          dashboardData.map((file: FileProps) => {
             return (
               <TouchableOpacity
-                key={element.id}
+                key={file.id}
                 onPress={() => {
-                 alert(element.name)
+                  alert(file.name);
                 }}
               >
                 <MovieContainer
-                  key={element.id}
-                  title={element.name}
-                  picture={element.poster_path}
-                  reference={element.id}
+                  key={file.id}
+                  title={file.name}
+                  picture={file.poster_path}
+                  reference={file.id}
                 />
               </TouchableOpacity>
             );

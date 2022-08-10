@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useAuthContext } from "../context/AuthContext";
 
 type MovieContainerProps = {
