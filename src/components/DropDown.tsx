@@ -66,7 +66,7 @@ const DropDown = ({
     setSelected(element);
     setShowContent(false);
   }
-  function zero(number: number) {
+  function HandleAddZero(number: number) {
     if (number < 10) {
       return `0${number}`;
     } else {
@@ -88,7 +88,7 @@ const DropDown = ({
           }
         >
           <Text style={styles.selected}>
-            {kind === "Season" ? "Season " + zero(selected) : selected}
+            {kind === "Season" ? "Season " + HandleAddZero(selected) : selected}
           </Text>
 
           <Animated.View
@@ -112,7 +112,7 @@ const DropDown = ({
                 }}
               >
                 <Text style={styles.option}>
-                  {kind === "Season" ? "Season " + zero(element) : element}
+                  {kind === "Season" ? "Season " + HandleAddZero(element) : element}
                 </Text>
               </TouchableOpacity>
             );

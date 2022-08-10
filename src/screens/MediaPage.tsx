@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
+import { StyleSheet, Text, View, Image, ScrollView, DevSettings } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
@@ -34,7 +34,7 @@ export const MediaPage = ({ navigation, route }: any) => {
     setSeasonNumber(1);
     setFirst(true);
     setSeason(null);
-    setIsreadMoreActive(false)
+    setIsreadMoreActive(false);
   }, [id]);
 
   useEffect(() => {
@@ -122,13 +122,13 @@ export const MediaPage = ({ navigation, route }: any) => {
                 <View style={styles.descriptionContainer}>
                   <Text style={styles.description}>
                     {handleDescription(data.description)}
-                    {data && data.description.length > 200 && (
+                    {data.description.length > 200 && !first && (
                       <View style={styles.readMoreButtonContainer}>
                         <TouchableOpacity
                           style={styles.readMoreButton}
                           onPress={handleReadMore}
                         >
-                          <ReadMoreIcon color={"white"} />
+                          <ReadMoreIcon color={"#ADADAD"} />
                         </TouchableOpacity>
                       </View>
                     )}
@@ -178,6 +178,7 @@ export const MediaPage = ({ navigation, route }: any) => {
                             source={{
                               uri: `http://${host}:8000/${element.thumbnail_url}`,
                             }}
+                            //resizeMode="cover"
                             style={styles.episodePoster}
                           />
                         </View>
@@ -270,10 +271,11 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   episodePoster: {
-    width: "100%",
-    aspectRatio: 0.6,
     borderRadius: 10,
-    top: "0%",
+    width: "100%",
+    aspectRatio: .6,
+    position: "absolute",
+    top: "-10%",
   },
   episodeTitle: {
     color: "white",
@@ -294,11 +296,11 @@ const styles = StyleSheet.create({
     height: 20,
     justifyContent: "flex-end",
     alignItems: "center",
-    top: 5
+    top: 5,
   },
   readMoreButtonContainer: {
     width: 30,
     height: 20,
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
 });
