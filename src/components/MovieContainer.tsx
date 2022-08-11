@@ -20,10 +20,11 @@ export const MovieContainer = ({
         source={{ uri: `http://${host}:8000/${picture}` }}
         style={{
           ...styles.movieImage,
-          width: Dimensions.get("window").width / 3.4,
+          width: Dimensions.get("window").width / 3.5,
         }}
+        resizeMode="cover"
       />
-      <Text style={styles.title}>{title}</Text>
+      <Text style={{ ...styles.title, width: Dimensions.get("window").width / 3.5 }}>{title}</Text>
       <Text style={styles.reference}>{reference}</Text>
     </View>
   );
@@ -34,9 +35,10 @@ const styles = StyleSheet.create({
     position: "relative",
     paddingBottom: 8,
     paddingTop: 8,
-    marginRight: 8,
     justifyContent: "flex-start",
     alignItems: "flex-start",
+    paddingRight: 8,
+    paddingLeft: 8
   },
   title: {
     marginTop: 8,
@@ -44,7 +46,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "white",
     fontWeight: "400",
-    width: 120,
   },
   reference: {
     fontSize: 14,

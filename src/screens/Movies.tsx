@@ -1,4 +1,11 @@
-import { StyleSheet, Text, View, ScrollView, FlatList, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
@@ -50,9 +57,9 @@ export const Movies = ({ route, navigation }: any) => {
           )}
           numColumns={3}
           columnWrapperStyle={{
-            paddingRight: 8,
-            paddingLeft: 8,
             justifyContent: "space-between",
+            paddingLeft: 4,
+            paddingRight: 4,
           }}
         />
       </View>
