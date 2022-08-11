@@ -12,7 +12,7 @@ import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
 import { Input } from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
 import { useAuthContext } from "../../context/AuthContext";
-import { PostSignIn } from "../../../api/auth/Auth";
+import { PostSignIn } from "../../../api/Auth";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;

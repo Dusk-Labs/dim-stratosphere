@@ -1,4 +1,4 @@
-import { User } from "../../src/types";
+import { User } from "../src/types";
 
 type SignInrops = {
   user: User;

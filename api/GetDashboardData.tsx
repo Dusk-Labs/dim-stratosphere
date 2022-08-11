@@ -7,6 +7,9 @@ export const getDashboardData = async ({
   host,
   userToken,
 }: DashboardDataProps) => {
+  if (!host) return alert("No host Provided!");
+  // !userToken not be suposed to happen but just in case.. meanwhile development is easier
+  if (!userToken) return alert("No userToken Provided!");
   const options = {
     method: "GET",
     headers: {

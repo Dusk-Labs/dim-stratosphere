@@ -5,6 +5,9 @@ import MoviesICon from "./icons/MoviesIcon";
 import ShowsIcon from "./icons/ShowsIcon";
 import LogOutIcon from "./icons/LogOutIcon";
 import { useAuthContext } from "../context/AuthContext";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { getLibraries } from "../../api/GetLibraries";
+import { getWhoAmI } from "../../api/GetWhoAmI";
 
 const userImage = require("../../assets/logo.png");
 
@@ -30,35 +33,20 @@ export const Nav = ({ ...props }: NavProps) => {
   const [user, setUser] = useState<UserType>();
   const [libraries, setLibraries] = useState([]);
 
+  const { data: librariesFetched } = useQuery(
+    ["getLibraries"] as QueryKey,
+    async () => host && userToken && (await getLibraries({ host, userToken }))
+  );
+
+  const { data: whoAmI } = useQuery(
+    ["getWhoAmI"] as QueryKey,
+    async () => host && userToken && (await getWhoAmI({ host, userToken }))
+  );
+
   useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: JSON.parse(userToken as string),
-      },
-    } as any;
-    if (host !== "") {
-      fetch(`http://${host}:8000/api/v1/auth/whoami`, config)
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          setUser(data);
-        })
-        .catch((error) => {
-          alert(error);
-        });
-      fetch(`http://${host}:8000/api/v1/library`, config)
-        .then((res) => {
-          return res.json();
-        })
-        .then((res) => {
-          setLibraries(res);
-        })
-        .catch((err) => {
-          alert(err);
-        });
-    }
-  }, [host]);
+    librariesFetched && setLibraries(librariesFetched);
+    whoAmI && setUser(whoAmI);
+  }, [librariesFetched, whoAmI]);
 
   return (
     <>

@@ -11,7 +11,7 @@ import { Input } from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
-import { PostSignUp } from "../../../api/auth/Auth";
+import { PostSignUp } from "../../../api/Auth";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;

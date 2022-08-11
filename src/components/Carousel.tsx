@@ -6,8 +6,6 @@ import { QueryKey, useQuery } from "@tanstack/react-query";
 import { getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
 
-// const logo = require("../../assets/logo.png");
-
 type CarouselProps = {
   sectionTitle?: string;
   navigation?: any;
@@ -23,13 +21,12 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
   const [dashboardData, setDashboardData] = useState([]);
   const { host, userToken } = useAuthContext();
 
-  const { data, refetch } = useQuery(
+  const { data } = useQuery(
     ["getDashboardData"] as QueryKey,
     async () => await getDashboardData({ host, userToken })
   );
 
   useEffect(() => {
-    refetch();
     const title = sectionTitle?.toUpperCase() || "";
     data && setDashboardData(data[title]);
   }, [data]);
