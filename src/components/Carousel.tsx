@@ -1,30 +1,60 @@
 import { StyleSheet, Text, View, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MovieContainer } from "./MovieContainer";
-import { movies } from "../movies";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { getDashboardData } from "../../api/GetDashboardData";
+import { useAuthContext } from "../context/AuthContext";
 
 type CarouselProps = {
   sectionTitle?: string;
-  nav: boolean;
+  navigation?: any;
 };
 
-export const Carousel = ({ sectionTitle, nav }: CarouselProps) => {
+type FileProps = {
+  name: string;
+  id: string;
+  poster_path: HTMLImageElement;
+};
+
+export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
+  const [dashboardData, setDashboardData] = useState([]);
+  const { host, userToken } = useAuthContext();
+
+  const { data } = useQuery(
+    ["getDashboardData"] as QueryKey,
+    async () => await getDashboardData({ host, userToken })
+  );
+
+  useEffect(() => {
+    const title = sectionTitle?.toUpperCase() || "";
+    data && setDashboardData(data[title]);
+  }, [data]);
+
   return (
     <View style={styles.container}>
       <View style={styles.titleSection}>
         <Text style={styles.sectionTitle}>{sectionTitle}</Text>
       </View>
       <ScrollView style={styles.moviesSection} horizontal={true}>
-        {movies.map((element) => {
-          return (
-            <MovieContainer
-              key={element.title}
-              title={element.title}
-              picture={element.picture}
-              reference={element.reference}
-            />
-          );
-        })}
+        {dashboardData &&
+          dashboardData.map((file: FileProps) => {
+            return (
+              <TouchableOpacity
+                key={file.id}
+                onPress={() => {
+                  alert(file.name);
+                }}
+              >
+                <MovieContainer
+                  key={file.id}
+                  title={file.name}
+                  picture={file.poster_path}
+                  reference={file.id}
+                />
+              </TouchableOpacity>
+            );
+          })}
       </ScrollView>
     </View>
   );

@@ -5,23 +5,33 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar } from "../../components/Navbar";
 import { Input } from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
-import { PostSignUp } from "../../../api/auth/Auth";
+import { PostSignUp } from "../../../api/Auth";
+import { QueryKey, useQuery } from "@tanstack/react-query";
 
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
+type postProps = {
+  // data = username
+  data: any;
+};
+
 export const SignUp = ({ navigation, route }: SignInProps) => {
+  const [isKeyboardOn, setIsKeyboardOn] = useState(false);
+
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
     host: "",
     // hardcoded for now. will be replaced with input?
-    inviteToken: "cc23092e-484c-4ef9-a40b-75e0829ebbea",
+    // inviteToken: "cc23092e-484c-4ef9-a40b-75e0829ebbea",
+    // inviteToken: "c6e52889-0cec-4171-8980-a5d2ac872577",
+    inviteToken: "28ec4b93-6136-4d4e-a081-1a9077dcfb39",
   });
 
   const [errors, setErrors] = useState<UserFormErrors>({
@@ -29,6 +39,30 @@ export const SignUp = ({ navigation, route }: SignInProps) => {
     password: "",
     host: "",
   });
+
+  const { refetch } = useQuery(
+    ["signUp"] as QueryKey,
+    async () => await PostSignUp({ user }),
+    {
+      // query will not be executed when component is mounted
+      enabled: false,
+    }
+  );
+
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", () => {
+      setIsKeyboardOn(true);
+    });
+    Keyboard.addListener("keyboardDidHide", () => {
+      setIsKeyboardOn(false);
+    });
+    return () => {
+      Keyboard.removeAllListeners("keyboardDidHide");
+      Keyboard.removeAllListeners("keyboardDidShow");
+    };
+  }, []);
+
+  // TODO Remove hostRegex & validate method
 
   const hostRegex =
     /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -68,25 +102,8 @@ export const SignUp = ({ navigation, route }: SignInProps) => {
   };
 
   const signUpMethod = async () => {
-    const signUpUrl = `http://${user.host}/api/v1/auth/register`;
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: user.username,
-        password: user.password,
-        invite_token: user.inviteToken,
-      }),
-    };
-
-    await PostSignUp({
-      signUpUrl,
-      options,
-    }).then((res) => {
-      console.log(res);
-      if (res === user.username) {
+    await refetch().then((res: postProps) => {
+      if (res.data === user.username) {
         alert("Successfully registered");
         // TODO login automatically when registered successfully
       }
@@ -139,39 +156,41 @@ export const SignUp = ({ navigation, route }: SignInProps) => {
           )}
         </View>
         <View style={styles.bottomFromBottom}>
-          <View style={styles.footer}>
-            <TouchableOpacity
-              style={styles.signInBtn}
-              onPress={() => validate()}
-            >
-              <Text style={{ color: "#FFF", textAlign: "center" }}>
-                Sign Up
-              </Text>
-            </TouchableOpacity>
-            <Text
-              style={{
-                color: "white",
-                opacity: 0.5,
-                fontSize: 10,
-                marginBottom: 18,
-                textAlign: "center",
-              }}
-            >
-              By signing up you are agreeing to our Terms of Service
-            </Text>
-            <View style={styles.finalText}>
-              <Text style={{ color: "#FFF", opacity: 0.5 }}>
-                Already have an account?
-              </Text>
+          {!isKeyboardOn && (
+            <View style={styles.footer}>
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("SignIn", { title: "Sign In" })
-                }
+                style={styles.signInBtn}
+                onPress={() => validate()}
               >
-                <Text style={{ color: "#EA963E" }}> Sign in</Text>
+                <Text style={{ color: "#FFF", textAlign: "center" }}>
+                  Sign Up
+                </Text>
               </TouchableOpacity>
+              <Text
+                style={{
+                  color: "white",
+                  opacity: 0.5,
+                  fontSize: 10,
+                  marginBottom: 18,
+                  textAlign: "center",
+                }}
+              >
+                By signing up you are agreeing to our Terms of Service
+              </Text>
+              <View style={styles.finalText}>
+                <Text style={{ color: "#FFF", opacity: 0.5 }}>
+                  Already have an account?
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("SignIn", { title: "Sign In" })
+                  }
+                >
+                  <Text style={{ color: "#EA963E" }}> Sign in</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          )}
         </View>
       </View>
     </View>

@@ -5,7 +5,6 @@ import { TabStackScreens } from "./TabsStackScreens";
 import { RigthDrawer } from "../../components/RigthDrawer";
 
 type FilterSliderStackParams = {
-  // MoviesIn: { title: string };
   TabStackScreens: { title: string };
 };
 
@@ -16,7 +15,7 @@ export const FilterSliderStackScreens = () => {
   const [isSliderEnabled, setIsSliderEnabled] = useState<boolean>(false);
 
   useEffect(() => {
-    if (route === "Movies" || route === "Shows") {
+    if (route === "Movies") {
       setIsSliderEnabled(true);
     } else {
       setIsSliderEnabled(false);

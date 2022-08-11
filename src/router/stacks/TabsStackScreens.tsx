@@ -5,7 +5,6 @@ import { Downloads } from "../../screens/Downloads";
 import { Movies } from "../../screens/Movies";
 import { Search } from "../../screens/Search";
 import { Settings } from "../../screens/Settings";
-import { Shows } from "../../screens/Shows";
 
 export type TabStackParams = {
   Dashboard: { title: string };
@@ -13,7 +12,6 @@ export type TabStackParams = {
   Downloads: { title: string };
   Settings: { title: string };
   Movies: { title: string };
-  Shows: { title: string };
 };
 
 const Tab = createBottomTabNavigator<TabStackParams>();
@@ -40,7 +38,6 @@ export const TabStackScreens = () => {
           headerShadowVisible: false,
         }}
       />
-      <Tab.Screen name="Shows" component={Shows} />
     </Tab.Navigator>
   );
 };

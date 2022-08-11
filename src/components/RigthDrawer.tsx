@@ -5,7 +5,7 @@ import DropDown from "./DropDown";
 export const RigthDrawer = () => {
   return (
     <View style={styles.rigthDrawer}>
-      <View style={{ ...styles.filterSection, marginTop: 16 * 3.5 }}>
+      <View style={{ ...styles.filterSection, marginTop: 16 * 2.5 }}>
         <Text style={styles.filtersTitle}>Sort By</Text>
         <DropDown kind="Sort By" />
       </View>

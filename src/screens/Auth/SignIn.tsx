@@ -5,18 +5,26 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar } from "../../components/Navbar";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
 import { Input } from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
 import { useAuthContext } from "../../context/AuthContext";
-import { PostSignIn } from "../../../api/auth/Auth";
+import { PostSignIn } from "../../../api/Auth";
+import { QueryKey, useQuery } from "@tanstack/react-query";
 
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
+type fetchProps = {
+  // data = token
+  data: any;
+};
+
 export const SignIn = ({ navigation, route }: SignInProps) => {
+  const [isKeyboardOn, setIsKeyboardOn] = useState(false);
+
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
@@ -29,7 +37,31 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
     host: "",
   });
 
-  const { signIn } = useAuthContext();
+  const { signIn, setHost } = useAuthContext();
+
+  const { refetch } = useQuery(
+    ["signIn"] as QueryKey,
+    async () => await PostSignIn({ user }),
+    {
+      // query will not be executed when component is mounted
+      enabled: false,
+    }
+  );
+
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", () => {
+      setIsKeyboardOn(true);
+    });
+    Keyboard.addListener("keyboardDidHide", () => {
+      setIsKeyboardOn(false);
+    });
+    return () => {
+      Keyboard.removeAllListeners("keyboardDidHide");
+      Keyboard.removeAllListeners("keyboardDidShow");
+    };
+  }, []);
+
+  // TODO Remove hostRegex & validate method
 
   const hostRegex =
     /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
@@ -68,24 +100,10 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
   };
 
   const signInMethod = async () => {
-    const signInUrl = `http://${user.host}/api/v1/auth/login`;
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: user.username,
-        password: user.password,
-      }),
-    };
-
-    const userToken = await PostSignIn({
-      signInUrl,
-      options,
+    await refetch().then((res: fetchProps) => {
+      res.data && signIn({ userToken: res.data, host: user.host });
+      setHost(user.host);
     });
-
-    userToken && signIn({ userToken });
   };
 
   const handleOnChangeText = (text: string, input: string) => {
@@ -132,28 +150,30 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
           )}
         </View>
         <View style={styles.bottomFromBottom}>
-          <View style={styles.footer}>
-            <TouchableOpacity
-              style={styles.signInBtn}
-              onPress={() => validate()}
-            >
-              <Text style={{ color: "#FFF", textAlign: "center" }}>
-                Sign in
-              </Text>
-            </TouchableOpacity>
-            <View style={styles.finalText}>
-              <Text style={{ color: "#FFF", opacity: 0.5 }}>
-                Don`&apos;`t have an account yet?
-              </Text>
+          {!isKeyboardOn && (
+            <View style={styles.footer}>
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("SignUp", { title: "Sign Up" })
-                }
+                style={styles.signInBtn}
+                onPress={() => validate()}
               >
-                <Text style={{ color: "#EA963E" }}> Sign up here</Text>
+                <Text style={{ color: "#FFF", textAlign: "center" }}>
+                  Sign in
+                </Text>
               </TouchableOpacity>
+              <View style={styles.finalText}>
+                <Text style={{ color: "#FFF", opacity: 0.5 }}>
+                  Don&apos;t have an account yet?
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("SignUp", { title: "Sign Up" })
+                  }
+                >
+                  <Text style={{ color: "#EA963E" }}> Sign up here</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          )}
         </View>
       </View>
     </View>

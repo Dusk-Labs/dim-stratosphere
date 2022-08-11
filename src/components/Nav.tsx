@@ -1,19 +1,52 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import SettingsIcon from "./icons/SettingsIcon";
+import MoviesICon from "./icons/MoviesIcon";
+import ShowsIcon from "./icons/ShowsIcon";
+import LogOutIcon from "./icons/LogOutIcon";
+import { useAuthContext } from "../context/AuthContext";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { getLibraries } from "../../api/GetLibraries";
+import { getWhoAmI } from "../../api/GetWhoAmI";
 
 const userImage = require("../../assets/logo.png");
-const logOutIcon = require("../../assets/logOutIcon.png");
-const moviesIcon = require("../../assets/moviesIcon.png");
-const showsIcon = require("../../assets/showsIcon.png");
 
 type NavProps = {
   navigation: any;
 };
 
+type UserType = {
+  picture: string;
+  roles: Array<string>;
+  spentWatching: number;
+  username: string;
+};
+
+type Library = {
+  id: number;
+  name: string;
+  media_type: string;
+};
+
 export const Nav = ({ ...props }: NavProps) => {
-  const timeWatched = 2;
-  const userName = "Rodrigo";
+  const { signOut, host, userToken } = useAuthContext();
+  const [user, setUser] = useState<UserType>();
+  const [libraries, setLibraries] = useState([]);
+
+  const { data: librariesFetched } = useQuery(
+    ["getLibraries"] as QueryKey,
+    async () => host && userToken && (await getLibraries({ host, userToken }))
+  );
+
+  const { data: whoAmI } = useQuery(
+    ["getWhoAmI"] as QueryKey,
+    async () => host && userToken && (await getWhoAmI({ host, userToken }))
+  );
+
+  useEffect(() => {
+    librariesFetched && setLibraries(librariesFetched);
+    whoAmI && setUser(whoAmI);
+  }, [librariesFetched, whoAmI]);
 
   return (
     <>
@@ -21,15 +54,21 @@ export const Nav = ({ ...props }: NavProps) => {
         <View style={styles.header}>
           <View style={styles.left}>
             <View style={styles.imageContainer}>
-              <Image
-                source={userImage}
-                style={styles.userImage}
-                resizeMode="contain"
-              ></Image>
+              {user?.picture && (
+                <Image
+                  source={
+                    user ? `http://${host}:8000${user.picture}` : userImage
+                  }
+                  style={styles.userImage}
+                  resizeMode="contain"
+                />
+              )}
             </View>
             <View style={styles.useInfo}>
-              <Text style={styles.userName}>{userName}</Text>
-              <Text style={styles.timeWatched}>Watched {timeWatched}h</Text>
+              <Text style={styles.userName}>{user?.username}</Text>
+              <Text style={styles.timeWatched}>
+                Watched {user?.spentWatching}h
+              </Text>
             </View>
           </View>
           <View style={styles.rigth}>
@@ -41,39 +80,48 @@ export const Nav = ({ ...props }: NavProps) => {
             >
               <SettingsIcon color={"#7E7E7E"} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.logOutBtn}>
-              <Image source={logOutIcon} style={styles.logOutIcon} />
+            <TouchableOpacity
+              style={styles.logOutBtn}
+              onPress={() => {
+                signOut();
+              }}
+            >
+              <LogOutIcon color={"#7E7E7E"} />
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.body}>
           <Text style={styles.libraries}>LIBRARIES</Text>
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate("Movies");
-            }}
-          >
-            <View style={styles.section}>
-              <View style={styles.iconAndText}>
-                <Image source={moviesIcon} />
-                <Text style={styles.sectionTitle}>Movies</Text>
-              </View>
-              <Text style={styles.itemsNumber}>132</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => {
-              props.navigation.navigate("Shows");
-            }}
-          >
-            <View style={{ ...styles.section, marginTop: 16 * 1.5 }}>
-              <View style={styles.iconAndText}>
-                <Image source={showsIcon} />
-                <Text style={styles.sectionTitle}>Shows</Text>
-              </View>
-              <Text style={styles.itemsNumber}>80</Text>
-            </View>
-          </TouchableOpacity>
+
+          {libraries &&
+            libraries.map((library: Library) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    props.navigation.navigate("Movies", {
+                      name: library.name,
+                      id: library.id,
+                    });
+                  }}
+                  style={styles.library}
+                  key={library.id}
+                >
+                  <View style={styles.section}>
+                    <View style={styles.iconAndText}>
+                      <View>
+                        {library.media_type === "movie" ? (
+                          <MoviesICon color="#7E7E7E" />
+                        ) : (
+                          <ShowsIcon color={"#7E7E7E"} />
+                        )}
+                      </View>
+                      <Text style={styles.sectionTitle}>{library.name}</Text>
+                    </View>
+                    <Text style={styles.itemsNumber}>132</Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
         </View>
       </View>
     </>
@@ -108,16 +156,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
+    paddingRight: 16,
+    paddingLeft: 16,
   },
   body: {
     padding: 16,
     paddingTop: 16 * 2,
+    flex: 1,
   },
   libraries: {
     color: "#EA963E",
     fontWeight: "500",
     fontSize: 12,
-    marginBottom: 16 * 2,
+    marginBottom: 16,
   },
   logOutIcon: {
     height: 20,
@@ -137,6 +188,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     alignItems: "center",
     marginRight: 16,
+    backgroundColor: "#de9636",
   },
   header: {
     width: "100%",
@@ -165,6 +217,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: 40,
     height: 40,
+    borderColor: "white",
+    borderWidth: 2,
   },
   useInfo: {
     flexDirection: "column",
@@ -183,5 +237,9 @@ const styles = StyleSheet.create({
   },
   logOutBtn: {
     marginRight: 16,
+  },
+  library: {
+    marginTop: 16,
+    width: "100%",
   },
 });

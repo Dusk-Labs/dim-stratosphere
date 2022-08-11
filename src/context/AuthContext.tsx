@@ -2,10 +2,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { ReactElement, useContext, useEffect, useState } from "react";
 
 export type AuthContextProps = {
-  signIn: ({ userToken }: { userToken: string }) => Promise<void>;
+  signIn: ({
+    userToken,
+    host,
+  }: {
+    userToken: string;
+    host: string;
+  }) => Promise<void>;
   signOut: () => void;
   isLoggedIn: boolean;
   userToken: string | null;
+  host: string;
+  setHost: (value: string) => void;
 };
 
 type AuthProviderProps = {
@@ -19,21 +27,33 @@ export const AuthContext = React.createContext<AuthContextProps>(
 export const AuthContextProvider = ({ children }: AuthProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userToken, setUserToken] = useState<string | null>(null);
+  const [host, setHost] = useState("");
 
   useEffect(() => {
     AsyncStorage.getItem("userToken").then((userToken) => {
       if (userToken) {
         setIsLoggedIn(true);
         setUserToken(userToken);
+        AsyncStorage.getItem("host").then((host) => {
+          setHost(host as string);
+        });
       }
     });
   }, []);
 
-  const signIn = async ({ userToken }: { userToken: string }) => {
-    console.log("2 userToken", userToken);
+  const signIn = async ({
+    userToken,
+    host,
+  }: {
+    userToken: string;
+    host: string;
+  }) => {
     await AsyncStorage.setItem("userToken", userToken).then(() => {
       setUserToken(userToken);
       setIsLoggedIn(true);
+    });
+    await AsyncStorage.setItem("host", host).then(() => {
+      setHost(host);
     });
   };
 
@@ -41,6 +61,9 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
     await AsyncStorage.removeItem("userToken").then(() => {
       setIsLoggedIn(false);
       setUserToken(null);
+    });
+    await AsyncStorage.removeItem("host").then(() => {
+      setHost("");
     });
   };
 
@@ -51,6 +74,8 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
         signOut,
         isLoggedIn,
         userToken,
+        host,
+        setHost,
       }}
     >
       {children}
