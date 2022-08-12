@@ -15,6 +15,7 @@ import SettingsIcon from "../components/icons/SettingsIcon";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import DropDown from "../components/DropDown";
 import ReadMoreIcon from "../components/icons/ReadMore";
+import DimIcon from "../components/icons/DimIcon";
 
 export const MediaPage = ({ navigation, route }: any) => {
   const { name, id } = route.params;
@@ -25,6 +26,7 @@ export const MediaPage = ({ navigation, route }: any) => {
   const [seasonNumber, setSeasonNumber] = useState(1);
   const [first, setFirst] = useState(true);
   const [isReadMoreActive, setIsreadMoreActive] = useState(false);
+
   useEffect(() => {
     const config = {
       headers: {
@@ -89,7 +91,6 @@ export const MediaPage = ({ navigation, route }: any) => {
         })
         .then((data) => {
           setEpisodes(data);
-          // console.log(data)
         });
     }
   }, [season, seasonNumber]);
@@ -99,7 +100,7 @@ export const MediaPage = ({ navigation, route }: any) => {
       return description;
     } else {
       if (description.length > 200) {
-        return description.slice(0, 200) + "...";
+        return description.slice(0, 200) + "...  ";
       } else {
         return description;
       }
@@ -181,13 +182,14 @@ export const MediaPage = ({ navigation, route }: any) => {
                         key={element.id}
                       >
                         <View style={styles.episodePosterContainer}>
-                          <Image
-                            source={{
-                              uri: `http://${host}:8000/${element.thumbnail_url}`,
-                            }}
-                            // resizeMode="cover"
-                            style={styles.episodePoster}
-                          />
+                          {element.thumbnail_url ?
+                            <Image
+                              source={{
+                                uri: `http://${host}:8000/${element.thumbnail_url}`
+                              }}
+                              style={styles.episodePoster}
+                            /> : <View style={styles.episodePosterFailed}><DimIcon color="white" /></View>
+                          }
                         </View>
                         <Text style={styles.episodeTitle}>{element.name}</Text>
                         <Text style={styles.episodeNumber}>
@@ -283,6 +285,11 @@ const styles = StyleSheet.create({
     aspectRatio: 0.6,
     position: "absolute",
     top: "-10%",
+  },
+  episodePosterFailed: {
+    height: 200,
+    justifyContent: "center",
+    alignItems: "center"
   },
   episodeTitle: {
     color: "white",
