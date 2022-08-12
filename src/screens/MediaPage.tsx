@@ -182,14 +182,18 @@ export const MediaPage = ({ navigation, route }: any) => {
                         key={element.id}
                       >
                         <View style={styles.episodePosterContainer}>
-                          {element.thumbnail_url ?
+                          {element.thumbnail_url ? (
                             <Image
                               source={{
-                                uri: `http://${host}:8000/${element.thumbnail_url}`
+                                uri: `http://${host}:8000/${element.thumbnail_url}`,
                               }}
                               style={styles.episodePoster}
-                            /> : <View style={styles.episodePosterFailed}><DimIcon color="white" /></View>
-                          }
+                            />
+                          ) : (
+                            <View style={styles.episodePosterFailed}>
+                              <DimIcon color="white" />
+                            </View>
+                          )}
                         </View>
                         <Text style={styles.episodeTitle}>{element.name}</Text>
                         <Text style={styles.episodeNumber}>
@@ -289,7 +293,7 @@ const styles = StyleSheet.create({
   episodePosterFailed: {
     height: 200,
     justifyContent: "center",
-    alignItems: "center"
+    alignItems: "center",
   },
   episodeTitle: {
     color: "white",

@@ -64,7 +64,7 @@ const DropDown = ({
   function handlePress(element) {
     setOption(element);
     setSelected(element);
-    toggleListItem()
+    toggleListItem();
   }
   function HandleAddZero(number: number | string) {
     if (number < 10) {

@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
-import DimIcon from "../../components/icons/DimIcon"
+import DimIcon from "../../components/icons/DimIcon";
 
 type LoginProps = NativeStackScreenProps<AuthStackParams, "LogIn">;
 
@@ -10,13 +10,15 @@ export const LogIn = ({ navigation }: LoginProps) => {
   return (
     <View style={styles.login}>
       <View style={styles.top}>
-        <View style={{
-          height: 100,
-          width: 100,
-          marginBottom: 24,
-          justifyContent: "center",
-          alignItems: "center"
-        }}>
+        <View
+          style={{
+            height: 100,
+            width: 100,
+            marginBottom: 24,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
           <DimIcon color="white" />
         </View>
         <Text style={styles.title}>Dim</Text>

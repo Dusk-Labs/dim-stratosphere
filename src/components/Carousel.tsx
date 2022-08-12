@@ -43,7 +43,11 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
       <View style={styles.titleSection}>
         <Text style={styles.sectionTitle}>{sectionTitle}</Text>
       </View>
-      <ScrollView style={styles.moviesSection} horizontal={true} showsHorizontalScrollIndicator={false}>
+      <ScrollView
+        style={styles.moviesSection}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+      >
         {dashboardData &&
           dashboardData.map((element) => {
             return (
@@ -65,7 +69,6 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
               </TouchableOpacity>
             );
           })}
-
       </ScrollView>
     </View>
   );

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
-import DimIcon from "../components/icons/DimIcon"
+import DimIcon from "../components/icons/DimIcon";
 
 type MovieContainerProps = {
   title: string;
@@ -18,7 +18,7 @@ export const MovieContainer = ({
 
   return (
     <View style={styles.movieContainer}>
-      {picture ?
+      {picture ? (
         <Image
           source={{ uri: `http://${host}:8000/${picture}` }}
           style={{
@@ -26,8 +26,19 @@ export const MovieContainer = ({
             width: Dimensions.get("window").width / 3.5,
           }}
           resizeMode="contain"
-        /> : <View style={{ width: Dimensions.get("window").width / 3.5, aspectRatio: 0.63, justifyContent: "center", alignItems: "center" }}><DimIcon color="white" /></View>
-      }
+        />
+      ) : (
+        <View
+          style={{
+            width: Dimensions.get("window").width / 3.5,
+            aspectRatio: 0.63,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <DimIcon color="white" />
+        </View>
+      )}
       <Text
         style={{ ...styles.title, width: Dimensions.get("window").width / 3.5 }}
       >
