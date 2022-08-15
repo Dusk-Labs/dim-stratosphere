@@ -7,11 +7,13 @@ import "react-native-gesture-handler";
 import { View } from "react-native";
 import { RouteContextProvider } from "./src/context/RouteContext";
 import React from "react";
-import * as NavigationBar from 'expo-navigation-bar';
+import * as NavigationBar from "expo-navigation-bar";
 
 function App() {
   const { isLoggedIn } = useAuthContext();
-  isLoggedIn ? NavigationBar.setBackgroundColorAsync("rgba(37, 37, 37, 1)") : NavigationBar.setBackgroundColorAsync("rgba(14, 13, 11, 1)");
+  isLoggedIn
+    ? NavigationBar.setBackgroundColorAsync("rgba(37, 37, 37, 1)")
+    : NavigationBar.setBackgroundColorAsync("rgba(14, 13, 11, 1)");
   const renderStack = () => {
     return isLoggedIn ? (
       <RouteContextProvider>
