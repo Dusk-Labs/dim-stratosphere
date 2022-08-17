@@ -3,7 +3,17 @@ type GetLibrariesProps = {
   userToken: string | null;
 };
 
-export const getLibraries = async ({ host, userToken }: GetLibrariesProps) => {
+interface Library {
+  id: number;
+  name: string;
+  media_type: string;
+  media_count: number;
+}
+
+export const getLibraries = async ({
+  host,
+  userToken,
+}: GetLibrariesProps): Promise<Array<Library>> => {
   const options = {
     method: "GET",
     headers: {
@@ -12,20 +22,12 @@ export const getLibraries = async ({ host, userToken }: GetLibrariesProps) => {
     },
   };
   const librariesUrl = `http://${host}:8000/api/v1/library`;
-  let libraries = null;
-  await fetch(librariesUrl, options)
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        throw new Error("Something went wrong");
-      }
-    })
-    .then(async (data) => {
-      libraries = await data;
-    })
-    .catch((error) => {
-      alert("Error fetching libraries: " + error);
-    });
-  return libraries;
+  const response = await fetch(librariesUrl, options);
+
+  if (response.status !== 200) {
+    console.log("Failed to fetch libraries: ", response.body);
+    throw new Error("Something went wrong");
+  }
+
+  return await response.json();
 };

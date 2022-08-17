@@ -12,21 +12,15 @@ export const getMovies = async ({ host, id, userToken }: GetMoviesProps) => {
       Authorization: JSON.parse(userToken as string),
     },
   };
+
+  // FIXME: Get rid of manual URL construction, this should be kept in the auth context once we figured out a good host.
   const moviesUrl = `http://${host}:8000/api/v1/library/${id}/media`;
-  let movies = null;
-  await fetch(moviesUrl, options)
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        throw new Error("Something went wrong");
-      }
-    })
-    .then(async (data) => {
-      movies = await data;
-    })
-    .catch((error) => {
-      alert("Error signing up: " + error);
-    });
-  return movies;
+  const response = await fetch(moviesUrl, options);
+
+  if (response.status !== 200) {
+    console.log("Failed to fetch movies: ", response.body);
+    throw new Error("Something went wrong when fetching movies");
+  }
+
+  return await response.json();
 };

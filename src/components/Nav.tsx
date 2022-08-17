@@ -6,7 +6,7 @@ import ShowsIcon from "./icons/ShowsIcon";
 import LogOutIcon from "./icons/LogOutIcon";
 import { useAuthContext } from "../context/AuthContext";
 import { QueryKey, useQuery } from "@tanstack/react-query";
-import { getLibraries } from "../../api/GetLibraries";
+import { Library, getLibraries } from "../../api/GetLibraries";
 import { getWhoAmI } from "../../api/GetWhoAmI";
 
 const userImage = require("../../assets/logo.png");
@@ -22,16 +22,10 @@ type UserType = {
   username: string;
 };
 
-type Library = {
-  id: number;
-  name: string;
-  media_type: string;
-};
-
 export const Nav = ({ ...props }: NavProps) => {
   const { signOut, host, userToken } = useAuthContext();
   const [user, setUser] = useState<UserType>();
-  const [libraries, setLibraries] = useState([]);
+  const [libraries, setLibraries] = useState<Array<Library>>([]);
 
   const { data: librariesFetched } = useQuery(
     ["getLibraries"] as QueryKey,
@@ -117,7 +111,9 @@ export const Nav = ({ ...props }: NavProps) => {
                       </View>
                       <Text style={styles.sectionTitle}>{library.name}</Text>
                     </View>
-                    <Text style={styles.itemsNumber}>132</Text>
+                    <Text style={styles.itemsNumber}>
+                      {library.media_count || 0}
+                    </Text>
                   </View>
                 </TouchableOpacity>
               );
@@ -132,7 +128,6 @@ const styles = StyleSheet.create({
   itemsNumber: {
     backgroundColor: "rgba(234, 150, 62, 0.5)",
     borderRadius: 30,
-    paddingTop: 2,
     paddingHorizontal: 8,
     textAlign: "center",
     justifyContent: "center",
