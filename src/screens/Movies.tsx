@@ -35,6 +35,7 @@ export const Movies = ({ route, navigation }: any) => {
               }}
             >
               <MovieContainer
+                id={item.id}
                 key={item.id}
                 title={item.name}
                 picture={item.poster_path}

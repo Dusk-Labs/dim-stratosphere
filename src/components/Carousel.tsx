@@ -13,7 +13,7 @@ type CarouselProps = {
 
 type FileProps = {
   name: string;
-  id: string;
+  id: number;
   poster_path: HTMLImageElement;
 };
 
@@ -36,6 +36,7 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
       <View style={styles.titleSection}>
         <Text style={styles.sectionTitle}>{sectionTitle}</Text>
       </View>
+
       <ScrollView style={styles.moviesSection} horizontal={true}>
         {dashboardData &&
           dashboardData.map((file: FileProps) => {
@@ -47,6 +48,7 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
                 }}
               >
                 <MovieContainer
+                  id={file.id}
                   key={file.id}
                   title={file.name}
                   picture={file.poster_path}

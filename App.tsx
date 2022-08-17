@@ -1,12 +1,13 @@
-import { StatusBar } from "expo-status-bar";
-import { NavigationContainer } from "@react-navigation/native";
-import { DrawerStackScreens } from "./src/router/stacks/DrawerStackScreens";
-import { AuthStackScreens } from "./src/router/stacks/AuthStackScreens";
-import { AuthContextProvider, useAuthContext } from "./src/context/AuthContext";
 import "react-native-gesture-handler";
+import React from "react";
+
+import { AuthContextProvider, useAuthContext } from "./src/context/AuthContext";
+import { AuthStackScreens } from "./src/router/stacks/AuthStackScreens";
+import { DrawerStackScreens } from "./src/router/stacks/DrawerStackScreens";
+import { NavigationContainer } from "@react-navigation/native";
 import { View } from "react-native";
 import { RouteContextProvider } from "./src/context/RouteContext";
-import React from "react";
+import { StatusBar } from "expo-status-bar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {

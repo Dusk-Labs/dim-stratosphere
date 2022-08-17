@@ -1,19 +1,30 @@
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import React from "react";
+import { Media, fetchMediaDetails } from "../../api/media/Media";
 import { useAuthContext } from "../context/AuthContext";
+import { useQuery } from "@tanstack/react-query";
 
 type MovieContainerProps = {
+  id: number;
   title: string;
   picture: HTMLImageElement;
-  reference: string;
+  reference: string | number;
 };
 
 export const MovieContainer = ({
+  id,
   title,
   picture,
   reference,
 }: MovieContainerProps) => {
-  const { host } = useAuthContext();
+  const { host, userToken } = useAuthContext();
+  // FIXME (Val): ideally the dashboard api would return the year as its cheap to obtain.
+  const { data } = useQuery(["media", id], () =>
+    fetchMediaDetails({ id, host: `http://${host}:8000`, token: userToken! })
+  );
+
+  console.log(data);
+
   return (
     <View style={styles.movieContainer}>
       <Image
@@ -24,7 +35,7 @@ export const MovieContainer = ({
         }}
       />
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.reference}>{reference}</Text>
+      {data?.year && <Text style={styles.reference}>{data.year}</Text>}
     </View>
   );
 };

@@ -30,7 +30,7 @@ export const PostSignIn = async ({ user }: SignInrops) => {
       }
     })
     .then(async (data) => {
-      userToken = await JSON.stringify(data.token);
+      userToken = JSON.stringify(data.token);
     })
     .catch((error) => {
       alert("Error signing up: " + error);
@@ -62,7 +62,7 @@ export const PostSignUp = async ({ user }: SignUpProps) => {
       }
     })
     .then(async (data) => {
-      username = await JSON.stringify(data.username);
+      username = JSON.stringify(data.username);
     })
     .catch((error) => {
       alert("Error signing up: " + error);
