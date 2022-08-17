@@ -5,6 +5,7 @@ import {
   Image,
   ScrollView,
   DevSettings,
+  TouchableOpacity
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
@@ -12,7 +13,6 @@ import { useAuthContext } from "../context/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
 import DownloadIcon from "../components/icons/DownloadIcon";
 import SettingsIcon from "../components/icons/SettingsIcon";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import DropDown from "../components/DropDown";
 import ReadMoreIcon from "../components/icons/ReadMore";
 import DimIcon from "../components/icons/DimIcon";
@@ -45,6 +45,15 @@ export const MediaPage = ({ navigation, route }: any) => {
     setSeason(null);
     setIsreadMoreActive(false);
   }, [id]);
+  useEffect(() => {
+    console.log(data, "data")
+    console.log(first, "first...")
+    if (data?.media_type === "movie") {
+      if (first) {
+        setFirst(false);
+      }
+    }
+  }, [first, data])
 
   useEffect(() => {
     if (data && data.media_type === "tv") {
@@ -130,13 +139,13 @@ export const MediaPage = ({ navigation, route }: any) => {
                 <View style={styles.descriptionContainer}>
                   <Text style={styles.description}>
                     {handleDescription(data.description)}
-                    {data.description.length > 200 && !first && (
+                    {(data.description.length > 200 && !first) && (
                       <View style={styles.readMoreButtonContainer}>
                         <TouchableOpacity
                           style={styles.readMoreButton}
                           onPress={handleReadMore}
                         >
-                          <ReadMoreIcon color={"#ADADAD"} />
+                          <ReadMoreIcon color={"rgba(173, 173, 173,.34)"} />
                         </TouchableOpacity>
                       </View>
                     )}

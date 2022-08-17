@@ -14,7 +14,6 @@ const ReadMoreIcon: FC<IconInteface> = ({ color }) => {
           height="14"
           rx="3.11111"
           fill={color}
-          fill-opacity="0.34"
         />
         <Circle cx="7" cy="7.00033" r="2.33333" fill="white" />
         <Circle cx="14.7778" cy="7.00033" r="2.33333" fill="white" />

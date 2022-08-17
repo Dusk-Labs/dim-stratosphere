@@ -82,7 +82,7 @@ const DropDown = ({
       >
         <View
           style={
-            showContent
+            showContent && options.length > 1
               ? styles.dropDownTitleContainerOpened
               : styles.dropDownTitleContainer
           }
@@ -91,18 +91,20 @@ const DropDown = ({
             {kind === "Season" ? "Season " + HandleAddZero(selected) : selected}
           </Text>
 
-          <Animated.View
-            style={{
-              transform: [{ rotateZ: arrowTransform }],
-              ...styles.arrowButton,
-            }}
-          >
-            <ArrowIcon color="white" />
-          </Animated.View>
+          {options.length > 1 &&
+            <Animated.View
+              style={{
+                transform: [{ rotateZ: arrowTransform }],
+                ...styles.arrowButton,
+              }}
+            >
+              <ArrowIcon color="white" />
+            </Animated.View>
+          }
         </View>
       </TouchableOpacity>
       <View style={showContent ? styles.body : styles.bodyOff}>
-        {showContent &&
+        {showContent && options.length > 1 &&
           options.map((element, index) => {
             return (
               <TouchableOpacity
