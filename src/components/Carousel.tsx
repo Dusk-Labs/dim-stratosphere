@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { MovieContainer } from "./MovieContainer";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { QueryKey, useQuery } from "@tanstack/react-query";
-import { getDashboardData } from "../../api/GetDashboardData";
+import { FileProps, getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
 
 type CarouselProps = {
@@ -11,14 +11,8 @@ type CarouselProps = {
   navigation?: any;
 };
 
-type FileProps = {
-  name: string;
-  id: number;
-  poster_path: HTMLImageElement;
-};
-
 export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
-  const [dashboardData, setDashboardData] = useState([]);
+  const [dashboardData, setDashboardData] = useState<Array<FileProps>>([]);
   const { host, userToken } = useAuthContext();
 
   const { data } = useQuery(
@@ -27,7 +21,7 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
   );
 
   useEffect(() => {
-    const title = sectionTitle?.toUpperCase() || "";
+    const title: string = sectionTitle?.toUpperCase() || "";
     data && setDashboardData(data[title]);
   }, [data]);
 
@@ -38,8 +32,8 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
       </View>
 
       <ScrollView style={styles.moviesSection} horizontal={true}>
-        {dashboardData &&
-          dashboardData.map((file: FileProps) => {
+        {dashboardData.length > 0 &&
+          dashboardData?.map((file: FileProps) => {
             return (
               <TouchableOpacity
                 key={file.id}

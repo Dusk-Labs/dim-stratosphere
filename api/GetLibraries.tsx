@@ -3,12 +3,12 @@ type GetLibrariesProps = {
   userToken: string | null;
 };
 
-interface Library {
+export type Library = {
   id: number;
   name: string;
   media_type: string;
   media_count: number;
-}
+};
 
 export const getLibraries = async ({
   host,

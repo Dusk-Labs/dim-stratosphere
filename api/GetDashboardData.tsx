@@ -3,13 +3,23 @@ type DashboardDataProps = {
   userToken: string | null;
 };
 
+export type FileProps = {
+  id: number;
+  name: string;
+  poster_path: HTMLImageElement;
+};
+
+export type DashboardData = {
+  [key: string]: Array<FileProps>;
+};
+
 export const getDashboardData = async ({
   host,
   userToken,
-}: DashboardDataProps) => {
-  if (!host) return alert("No host Provided!");
+}: DashboardDataProps): Promise<DashboardData> => {
+  if (!host) throw new Error("No host Provided!");
   // !userToken not be suposed to happen but just in case.. meanwhile development is easier
-  if (!userToken) return alert("No userToken Provided!");
+  if (!userToken) throw new Error("No userToken Provided!");
   const options = {
     method: "GET",
     headers: {
@@ -19,22 +29,10 @@ export const getDashboardData = async ({
   };
   const dashboardUrl = `http://${host}:8000/api/v1/dashboard`;
 
-  let dashboardData = null;
-
-  await fetch(dashboardUrl, options)
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        throw new Error("Something went wrong");
-      }
-    })
-    .then(async (data) => {
-      dashboardData = await data;
-    })
-    .catch((error) => {
-      alert("Error signing up: " + error);
-    });
-
-  return dashboardData;
+  const response = await fetch(dashboardUrl, options);
+  if (response.status !== 200) {
+    console.log("Failed to fetch dashboard: ", response.body);
+    throw new Error("Something went wrong");
+  }
+  return await response.json();
 };

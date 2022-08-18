@@ -3,7 +3,17 @@ type GetWhoAmIProps = {
   userToken: string | null;
 };
 
-export const getWhoAmI = async ({ host, userToken }: GetWhoAmIProps) => {
+type WhoAmI = {
+  picture: any;
+  spentWatching: number;
+  username: String;
+  roles: Array<String>;
+};
+
+export const getWhoAmI = async ({
+  host,
+  userToken,
+}: GetWhoAmIProps): Promise<WhoAmI> => {
   const options = {
     method: "GET",
     headers: {
@@ -12,20 +22,11 @@ export const getWhoAmI = async ({ host, userToken }: GetWhoAmIProps) => {
     },
   };
   const whoAmIUrl = `http://${host}:8000/api/v1/auth/whoami`;
-  let whoAmI = null;
-  await fetch(whoAmIUrl, options)
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        throw new Error("Something went wrong");
-      }
-    })
-    .then(async (data) => {
-      whoAmI = await data;
-    })
-    .catch((error) => {
-      alert("Error whoAmI fetching: " + error);
-    });
-  return whoAmI;
+  const response = await fetch(whoAmIUrl, options);
+
+  if (response.status !== 200) {
+    console.log("Failed to fetch whoami: ", response.body);
+    throw new Error("Something went wrong");
+  }
+  return await response.json();
 };
