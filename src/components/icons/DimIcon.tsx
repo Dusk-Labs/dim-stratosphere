@@ -10,10 +10,10 @@ const paths = [
   "M58.8098 1.80276H55.8565C54.654 1.80276 53.6791 2.84112 53.6791 4.122V48.4649C53.6791 49.7458 54.654 50.7842 55.8565 50.7842H58.8098C60.0123 50.7842 60.9872 49.7458 60.9872 48.4649V4.122C60.9872 2.84112 60.0123 1.80276 58.8098 1.80276Z",
 ];
 
-const DimIcon: FC<IconInteface> = ({ color }) => {
+const DimIcon: FC<IconInteface> = ({ color, width, heigth }) => {
   return (
     <View style={styles.layer}>
-      <Svg width="113" height="82" viewBox="0 0 113 82" fill="none">
+      <Svg width={width ? width : "113"} height={heigth ? heigth : "82"} viewBox="0 0 113 82" fill="none">
         {paths.map((d, key) => (
           <Path
             d={d}

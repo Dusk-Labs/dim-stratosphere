@@ -5,14 +5,12 @@ import {
   Image,
   ScrollView,
   DevSettings,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
-import DownloadIcon from "../components/icons/DownloadIcon";
-import SettingsIcon from "../components/icons/SettingsIcon";
 import DropDown from "../components/DropDown";
 import ReadMoreIcon from "../components/icons/ReadMore";
 import DimIcon from "../components/icons/DimIcon";
@@ -26,6 +24,7 @@ export const MediaPage = ({ navigation, route }: any) => {
   const [seasonNumber, setSeasonNumber] = useState(1);
   const [first, setFirst] = useState(true);
   const [isReadMoreActive, setIsreadMoreActive] = useState(false);
+  const [episodesFiles, setEpisodesFiles] = useState([])
 
   useEffect(() => {
     const config = {
@@ -39,21 +38,14 @@ export const MediaPage = ({ navigation, route }: any) => {
       })
       .then((data) => {
         setData(data);
+        //console.log(data, "media")
       });
     setSeasonNumber(1);
     setFirst(true);
     setSeason(null);
     setIsreadMoreActive(false);
+    setEpisodesFiles([])
   }, [id]);
-  useEffect(() => {
-    console.log(data, "data")
-    console.log(first, "first...")
-    if (data?.media_type === "movie") {
-      if (first) {
-        setFirst(false);
-      }
-    }
-  }, [first, data])
 
   useEffect(() => {
     if (data && data.media_type === "tv") {
@@ -68,10 +60,14 @@ export const MediaPage = ({ navigation, route }: any) => {
         })
         .then((data) => {
           setSeason(data);
+          //console.log(data, "season")
         });
     } else {
       setSeason(null);
       setEpisodes(null);
+      if (first) {
+        setFirst(false);
+      }
     }
   }, [data]);
 
@@ -100,9 +96,30 @@ export const MediaPage = ({ navigation, route }: any) => {
         })
         .then((data) => {
           setEpisodes(data);
+          //console.log(data[0].id, "episodes")
         });
     }
   }, [season, seasonNumber]);
+
+  useEffect(() => {
+    if (data?.media_type === "tv") {
+      if (episodes) {
+        const config = {
+          headers: {
+            Authorization: JSON.parse(userToken as string),
+          },
+        } as any;
+        let idArray = episodes.map((element) => { return element.id })
+        let requests = idArray.map((id) => { return fetch(`http://${host}:8000/api/v1/media/${id}/files`, config) })
+        Promise.all(requests).then(responses =>
+          Promise.all(responses.map(res => res.json()))
+        ).then((final) => {
+          setEpisodesFiles(final);
+          //console.log(final); 
+        })
+      }
+    }
+  }, [episodes])
 
   function handleDescription(description) {
     if (isReadMoreActive) {
@@ -118,8 +135,17 @@ export const MediaPage = ({ navigation, route }: any) => {
   function handleReadMore() {
     setIsreadMoreActive(!isReadMoreActive);
   }
+  function handleDuration(id) {
+    let ans = 0;
+    episodesFiles.forEach((element) => {
+      if (element[0].media_id === id) {
+        ans = element[0].duration;
+      }
+    })
+    return Math.round(ans / 60);
+  }
   return (
-    <View style={styles.mediaPage}>
+    <ScrollView style={styles.mediaPage}>
       {data && (
         <View style={styles.body}>
           <LinearGradient
@@ -137,9 +163,9 @@ export const MediaPage = ({ navigation, route }: any) => {
 
               <View style={styles.topRigth}>
                 <View style={styles.descriptionContainer}>
-                  <Text style={styles.description}>
-                    {handleDescription(data.description)}
-                    {(data.description.length > 200 && !first) && (
+                  <Text style={{ ...styles.description, lineHeight: 16 }}>
+                    <Text style={styles.InnerDescription}>{handleDescription(data.description)}</Text>
+                    {data.description.length > 200 && !first && (
                       <View style={styles.readMoreButtonContainer}>
                         <TouchableOpacity
                           style={styles.readMoreButton}
@@ -182,7 +208,7 @@ export const MediaPage = ({ navigation, route }: any) => {
                   season={season}
                 />
               </View>
-              <ScrollView style={styles.episodes}>
+              <View style={styles.episodes}>
                 {episodes &&
                   episodes.map((element) => {
                     return (
@@ -204,19 +230,24 @@ export const MediaPage = ({ navigation, route }: any) => {
                             </View>
                           )}
                         </View>
-                        <Text style={styles.episodeTitle}>{element.name}</Text>
-                        <Text style={styles.episodeNumber}>
-                          Episode {element.episode}
-                        </Text>
+                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                          <View>
+                            <Text style={styles.episodeTitle}>{element.name}</Text>
+                            <Text style={styles.episodeNumber}>
+                              Episode {element.episode}
+                            </Text>
+                          </View>
+                          <View>{episodesFiles && <Text style={{ color: "#7E7E7E", fontWeight: "400" }}>{handleDuration(element.id)} m</Text>}</View>
+                        </View>
                       </TouchableOpacity>
                     );
                   })}
-              </ScrollView>
+              </View>
             </View>
           )}
         </View>
       )}
-    </View>
+    </ScrollView>
   );
 };
 
@@ -248,9 +279,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   description: {
+    textAlign: "left",
+
+  },
+  InnerDescription: {
     fontSize: 12,
     color: "white",
-    flexDirection: "row",
   },
   topAndNavBar: {
     marginBottom: 16 * 3,
@@ -303,6 +337,7 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#252525"
   },
   episodeTitle: {
     color: "white",
@@ -317,13 +352,14 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     paddingBottom: 8,
+    justifyContent: "center",
+    alignItems: "center",
   },
   readMoreButton: {
     width: 30,
-    height: 20,
+    height: 12,
     justifyContent: "flex-end",
     alignItems: "center",
-    top: 5,
   },
   readMoreButtonContainer: {
     width: 30,

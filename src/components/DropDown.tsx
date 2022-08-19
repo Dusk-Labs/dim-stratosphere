@@ -91,7 +91,7 @@ const DropDown = ({
             {kind === "Season" ? "Season " + HandleAddZero(selected) : selected}
           </Text>
 
-          {options.length > 1 &&
+          {options.length > 1 && (
             <Animated.View
               style={{
                 transform: [{ rotateZ: arrowTransform }],
@@ -100,11 +100,12 @@ const DropDown = ({
             >
               <ArrowIcon color="white" />
             </Animated.View>
-          }
+          )}
         </View>
       </TouchableOpacity>
       <View style={showContent ? styles.body : styles.bodyOff}>
-        {showContent && options.length > 1 &&
+        {showContent &&
+          options.length > 1 &&
           options.map((element, index) => {
             return (
               <TouchableOpacity

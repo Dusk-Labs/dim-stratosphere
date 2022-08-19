@@ -5,7 +5,7 @@ import DimIcon from "../components/icons/DimIcon";
 
 type MovieContainerProps = {
   title: string;
-  picture: HTMLImageElement;
+  picture: HTMLImageElement | null | undefined;
   reference: string;
 };
 
@@ -18,7 +18,7 @@ export const MovieContainer = ({
 
   return (
     <View style={styles.movieContainer}>
-      {picture ? (
+      {picture ?
         <Image
           source={{ uri: `http://${host}:8000/${picture}` }}
           style={{
@@ -27,18 +27,15 @@ export const MovieContainer = ({
           }}
           resizeMode="contain"
         />
-      ) : (
+        :
         <View
           style={{
+            ...styles.iconContainer,
             width: Dimensions.get("window").width / 3.5,
-            aspectRatio: 0.63,
-            justifyContent: "center",
-            alignItems: "center",
-          }}
-        >
-          <DimIcon color="white" />
+          }}>
+          <DimIcon color="white" width={70} heigth={40} />
         </View>
-      )}
+      }
       <Text
         style={{ ...styles.title, width: Dimensions.get("window").width / 3.5 }}
       >
@@ -75,4 +72,11 @@ const styles = StyleSheet.create({
     aspectRatio: 0.63,
     borderRadius: 5,
   },
+  iconContainer: {
+    aspectRatio: 0.63,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#252525",
+    borderRadius: 5
+  }
 });

@@ -13,4 +13,6 @@ export type UserFormErrors = {
 
 export type IconInteface = {
   color?: string;
+  width?: number;
+  heigth?: number;
 };

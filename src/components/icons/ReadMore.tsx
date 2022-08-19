@@ -9,12 +9,7 @@ const ReadMoreIcon: FC<IconInteface> = ({ color }) => {
   return (
     <View style={styles.layer}>
       <Svg width="30" height="14" viewBox="0 0 30 14" fill="none">
-        <Rect
-          width="29.5556"
-          height="14"
-          rx="3.11111"
-          fill={color}
-        />
+        <Rect width="29.5556" height="14" rx="3.11111" fill={color} />
         <Circle cx="7" cy="7.00033" r="2.33333" fill="white" />
         <Circle cx="14.7778" cy="7.00033" r="2.33333" fill="white" />
         <Circle cx="22.5556" cy="7.00033" r="2.33333" fill="white" />
