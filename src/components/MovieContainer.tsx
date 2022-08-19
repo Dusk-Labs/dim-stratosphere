@@ -18,7 +18,7 @@ export const MovieContainer = ({
 
   return (
     <View style={styles.movieContainer}>
-      {picture ?
+      {picture ? (
         <Image
           source={{ uri: `http://${host}:8000/${picture}` }}
           style={{
@@ -27,15 +27,16 @@ export const MovieContainer = ({
           }}
           resizeMode="contain"
         />
-        :
+      ) : (
         <View
           style={{
             ...styles.iconContainer,
             width: Dimensions.get("window").width / 3.5,
-          }}>
+          }}
+        >
           <DimIcon color="white" width={70} heigth={40} />
         </View>
-      }
+      )}
       <Text
         style={{ ...styles.title, width: Dimensions.get("window").width / 3.5 }}
       >
@@ -77,6 +78,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#252525",
-    borderRadius: 5
-  }
+    borderRadius: 5,
+  },
 });

@@ -13,7 +13,12 @@ const paths = [
 const DimIcon: FC<IconInteface> = ({ color, width, heigth }) => {
   return (
     <View style={styles.layer}>
-      <Svg width={width ? width : "113"} height={heigth ? heigth : "82"} viewBox="0 0 113 82" fill="none">
+      <Svg
+        width={width || "113"}
+        height={heigth || "82"}
+        viewBox="0 0 113 82"
+        fill="none"
+      >
         {paths.map((d, key) => (
           <Path
             d={d}

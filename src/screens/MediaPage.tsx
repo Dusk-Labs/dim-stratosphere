@@ -24,7 +24,7 @@ export const MediaPage = ({ navigation, route }: any) => {
   const [seasonNumber, setSeasonNumber] = useState(1);
   const [first, setFirst] = useState(true);
   const [isReadMoreActive, setIsreadMoreActive] = useState(false);
-  const [episodesFiles, setEpisodesFiles] = useState([])
+  const [episodesFiles, setEpisodesFiles] = useState([]);
 
   useEffect(() => {
     const config = {
@@ -38,13 +38,13 @@ export const MediaPage = ({ navigation, route }: any) => {
       })
       .then((data) => {
         setData(data);
-        //console.log(data, "media")
+        // console.log(data, "media")
       });
     setSeasonNumber(1);
     setFirst(true);
     setSeason(null);
     setIsreadMoreActive(false);
-    setEpisodesFiles([])
+    setEpisodesFiles([]);
   }, [id]);
 
   useEffect(() => {
@@ -60,7 +60,7 @@ export const MediaPage = ({ navigation, route }: any) => {
         })
         .then((data) => {
           setSeason(data);
-          //console.log(data, "season")
+          // console.log(data, "season")
         });
     } else {
       setSeason(null);
@@ -96,7 +96,7 @@ export const MediaPage = ({ navigation, route }: any) => {
         })
         .then((data) => {
           setEpisodes(data);
-          //console.log(data[0].id, "episodes")
+          // console.log(data[0].id, "episodes")
         });
     }
   }, [season, seasonNumber]);
@@ -109,17 +109,21 @@ export const MediaPage = ({ navigation, route }: any) => {
             Authorization: JSON.parse(userToken as string),
           },
         } as any;
-        let idArray = episodes.map((element) => { return element.id })
-        let requests = idArray.map((id) => { return fetch(`http://${host}:8000/api/v1/media/${id}/files`, config) })
-        Promise.all(requests).then(responses =>
-          Promise.all(responses.map(res => res.json()))
-        ).then((final) => {
-          setEpisodesFiles(final);
-          //console.log(final); 
-        })
+        const idArray = episodes.map((element) => {
+          return element.id;
+        });
+        const requests = idArray.map((id) => {
+          return fetch(`http://${host}:8000/api/v1/media/${id}/files`, config);
+        });
+        Promise.all(requests)
+          .then((responses) => Promise.all(responses.map((res) => res.json())))
+          .then((final) => {
+            setEpisodesFiles(final);
+            // console.log(final);
+          });
       }
     }
-  }, [episodes])
+  }, [episodes]);
 
   function handleDescription(description) {
     if (isReadMoreActive) {
@@ -141,7 +145,7 @@ export const MediaPage = ({ navigation, route }: any) => {
       if (element[0].media_id === id) {
         ans = element[0].duration;
       }
-    })
+    });
     return Math.round(ans / 60);
   }
   return (
@@ -164,7 +168,9 @@ export const MediaPage = ({ navigation, route }: any) => {
               <View style={styles.topRigth}>
                 <View style={styles.descriptionContainer}>
                   <Text style={{ ...styles.description, lineHeight: 16 }}>
-                    <Text style={styles.InnerDescription}>{handleDescription(data.description)}</Text>
+                    <Text style={styles.InnerDescription}>
+                      {handleDescription(data.description)}
+                    </Text>
                     {data.description.length > 200 && !first && (
                       <View style={styles.readMoreButtonContainer}>
                         <TouchableOpacity
@@ -230,14 +236,29 @@ export const MediaPage = ({ navigation, route }: any) => {
                             </View>
                           )}
                         </View>
-                        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+                        <View
+                          style={{
+                            flexDirection: "row",
+                            justifyContent: "space-between",
+                          }}
+                        >
                           <View>
-                            <Text style={styles.episodeTitle}>{element.name}</Text>
+                            <Text style={styles.episodeTitle}>
+                              {element.name}
+                            </Text>
                             <Text style={styles.episodeNumber}>
                               Episode {element.episode}
                             </Text>
                           </View>
-                          <View>{episodesFiles && <Text style={{ color: "#7E7E7E", fontWeight: "400" }}>{handleDuration(element.id)} m</Text>}</View>
+                          <View>
+                            {episodesFiles && (
+                              <Text
+                                style={{ color: "#7E7E7E", fontWeight: "400" }}
+                              >
+                                {handleDuration(element.id)} m
+                              </Text>
+                            )}
+                          </View>
                         </View>
                       </TouchableOpacity>
                     );
@@ -280,7 +301,6 @@ const styles = StyleSheet.create({
   },
   description: {
     textAlign: "left",
-
   },
   InnerDescription: {
     fontSize: 12,
@@ -337,7 +357,7 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#252525"
+    backgroundColor: "#252525",
   },
   episodeTitle: {
     color: "white",
