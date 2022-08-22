@@ -251,9 +251,7 @@ export const MediaPage = ({ navigation, route }: any) => {
                             </Text>
                           </View>
                           {episodesFiles && (
-                            <Text
-                              style={styles.duration}
-                            >
+                            <Text style={styles.duration}>
                               {handleDuration(element.id)}m
                             </Text>
                           )}
@@ -387,6 +385,6 @@ const styles = StyleSheet.create({
   duration: {
     color: "#7E7E7E",
     fontWeight: "400",
-    fontSize: 14
-  }
+    fontSize: 14,
+  },
 });
