@@ -250,15 +250,13 @@ export const MediaPage = ({ navigation, route }: any) => {
                               Episode {element.episode}
                             </Text>
                           </View>
-                          <View>
-                            {episodesFiles && (
-                              <Text
-                                style={{ color: "#7E7E7E", fontWeight: "400" }}
-                              >
-                                {handleDuration(element.id)} m
-                              </Text>
-                            )}
-                          </View>
+                          {episodesFiles && (
+                            <Text
+                              style={styles.duration}
+                            >
+                              {handleDuration(element.id)}m
+                            </Text>
+                          )}
                         </View>
                       </TouchableOpacity>
                     );
@@ -386,4 +384,9 @@ const styles = StyleSheet.create({
     height: 20,
     justifyContent: "flex-end",
   },
+  duration: {
+    color: "#7E7E7E",
+    fontWeight: "400",
+    fontSize: 14
+  }
 });
