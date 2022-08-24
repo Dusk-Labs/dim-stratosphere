@@ -23,8 +23,6 @@ export const MovieContainer = ({
     fetchMediaDetails({ id, host: `http://${host}:8000`, token: userToken! })
   );
 
-  console.log(data);
-
   return (
     <View style={styles.movieContainer}>
       <Image

@@ -2,6 +2,9 @@ import { StyleSheet, View, ScrollView } from "react-native";
 import { Carousel } from "../components/Carousel";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { getDashboardData } from "../../api/GetDashboardData";
+import { useAuthContext } from "../context/AuthContext";
 
 type DashboardProps = {
   navigation: any;
@@ -9,13 +12,20 @@ type DashboardProps = {
 
 export const Dashboard = ({ navigation }: DashboardProps) => {
   const [nav] = useState(false);
+  const { host, userToken } = useAuthContext();
+
+  const { data } = useQuery(
+    ["getDashboardData"] as QueryKey,
+    () => getDashboardData({ host, userToken }),
+    {
+      enabled: userToken !== null && host !== "",
+    }
+  );
+
+  const sectionTitles = Object.keys(data || {});
 
   useEffect(() => {
-    if (nav) {
-      navigation.openDrawer();
-    } else {
-      navigation.closeDrawer();
-    }
+    nav ? navigation.openDrawer() : navigation.closeDrawer();
   }, [nav]);
 
   return (
@@ -23,12 +33,13 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
       <View style={styles.HomePage}>
         <AuthNavBar title={"Dashboard"} navigation={navigation} />
         <ScrollView style={styles.body}>
-          <Carousel
-            sectionTitle={"Continue Watching"}
-            navigation={navigation}
-          />
-          <Carousel sectionTitle="Freshly Added" navigation={navigation} />
-          <Carousel sectionTitle="Top Rated" navigation={navigation} />
+          {sectionTitles.map((sectionTitle: string) => (
+            <Carousel
+              key={sectionTitle}
+              sectionTitle={sectionTitle}
+              navigation={navigation}
+            />
+          ))}
         </ScrollView>
         {/* <TabMenu nav={nav} /> */}
       </View>

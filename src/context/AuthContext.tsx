@@ -32,6 +32,7 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     console.log("Se pidio el usertoken al storage <--------------");
     AsyncStorage.getItem("userToken").then((userToken) => {
+      console.log("El usertoken es: ", userToken);
       if (userToken) {
         setIsLoggedIn(true);
         setUserToken(userToken);

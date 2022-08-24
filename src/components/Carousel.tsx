@@ -17,7 +17,10 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
 
   const { data } = useQuery(
     ["getDashboardData"] as QueryKey,
-    async () => await getDashboardData({ host, userToken })
+    () => getDashboardData({ host, userToken }),
+    {
+      enabled: userToken !== null && host !== "",
+    }
   );
 
   useEffect(() => {
@@ -32,7 +35,7 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
       </View>
 
       <ScrollView style={styles.moviesSection} horizontal={true}>
-        {dashboardData.length > 0 &&
+        {dashboardData &&
           dashboardData?.map((file: FileProps) => {
             return (
               <TouchableOpacity
