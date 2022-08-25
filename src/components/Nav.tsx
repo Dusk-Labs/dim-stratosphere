@@ -63,9 +63,7 @@ export const Nav = ({ ...props }: NavProps) => {
               {user?.picture && (
                 <Image
                   source={
-                    user
-                      ? { uri: `http://${host}:8000${user.picture}` }
-                      : userImage
+                    { uri: `http://${host}:8000${user.picture}` }
                   }
                   style={styles.userImage}
                   resizeMode="contain"
