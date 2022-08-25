@@ -7,6 +7,7 @@ import {
   Image,
 } from "react-native";
 import React, { useState } from "react";
+import {rem} from "../../constants/units";
 
 type InputProps = {
   placeholder: string;
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     color: "#FFF",
     backgroundColor: "#353433",
     padding: 8,
-    marginBottom: 16,
+    marginBottom: rem,
     borderRadius: 10,
   },
   eye: {

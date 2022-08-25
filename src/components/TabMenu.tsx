@@ -5,6 +5,7 @@ import SettingsIcon from "./icons/SettingsIcon";
 import SearchIcon from "./icons/SearchIcon";
 import DownloadIcon from "./icons/DownloadIcon";
 import { useRouteContext } from "../context/RouteContext";
+import { rem } from "../../constants/units";
 
 type TabMenuProps = {
   navigation: any;
@@ -88,22 +89,22 @@ const styles = StyleSheet.create({
     height: 60,
   },
   textNav: {
-    height: 16,
+    height: rem,
     overflow: "hidden",
     color: "rgba(126, 126, 126, 1)",
     fontSize: 12,
   },
   tabManuNav: {
-    height: 16 * 4,
+    height: rem * 4,
     backgroundColor: "rgba(37, 37, 37, 1)",
     width: "100%",
-    marginTop: 16,
+    marginTop: rem,
     flexDirection: "row",
     alignItems: "center",
     padding: 8,
   },
   buttonNav: {
-    marginLeft: 16 * 2,
+    marginLeft: rem * 2,
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",

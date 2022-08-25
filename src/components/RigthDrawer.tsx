@@ -1,11 +1,12 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import DropDown from "./DropDown";
+import {rem} from "../../constants/units";
 
 export const RigthDrawer = () => {
   return (
     <View style={styles.rigthDrawer}>
-      <View style={{ ...styles.filterSection, marginTop: 16 * 2.5 }}>
+      <View style={{ ...styles.filterSection, marginTop: rem * 2.5 }}>
         <Text style={styles.filtersTitle}>Sort By</Text>
         <DropDown kind="Sort By" />
       </View>
@@ -37,7 +38,7 @@ const styles = StyleSheet.create({
   filtersTitle: {
     color: "white",
     fontSize: 12,
-    marginBottom: 16,
-    marginTop: 16,
+    marginBottom: rem,
+    marginTop: rem,
   },
 });

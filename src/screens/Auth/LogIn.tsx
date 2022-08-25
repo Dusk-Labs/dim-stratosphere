@@ -2,6 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
+import {rem} from "../../../constants/units";
 
 type LoginProps = NativeStackScreenProps<AuthStackParams, "LogIn">;
 
@@ -68,7 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignContent: "flex-end",
     flex: 1,
-    padding: 16,
+    padding: rem,
     width: "100%",
   },
   buttons: {

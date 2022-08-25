@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useRef, useState } from "react";
 import ArrowIcon from "./icons/ArrowIcon";
 import Animated, { EasingNode } from "react-native-reanimated";
+import {rem} from "../../constants/units";
 
 type DropDownProps = {
   kind: string;
@@ -83,8 +84,8 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "rgba(53, 52, 51, 1)",
     padding: 8,
-    paddingRight: 16,
-    paddingLeft: 16,
+    paddingRight: rem,
+    paddingLeft: rem,
     borderRadius: 10,
     flexDirection: "row",
     alignItems: "center",
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
   },
   body: {
     width: "100%",
-    padding: 16,
+    padding: rem,
     backgroundColor: "rgba(53, 52, 51, 1)",
     borderRadius: 0,
   },

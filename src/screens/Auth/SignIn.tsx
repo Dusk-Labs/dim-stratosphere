@@ -14,6 +14,7 @@ import { User, UserFormErrors } from "../../types";
 import { useAuthContext } from "../../context/AuthContext";
 import { PostSignIn } from "../../../api/Auth";
 import { QueryKey, useQuery } from "@tanstack/react-query";
+import {rem} from "../../../constants/units";
 
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
@@ -138,7 +139,7 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
             error={errors.password}
             onFocus={() => handleError("", "password")}
           />
-          <Text style={{ marginBottom: 16, color: "#FFF", fontSize: 14 }}>
+          <Text style={{ marginBottom: rem, color: "#FFF", fontSize: 14 }}>
             Connect to host
           </Text>
           <Input
@@ -205,14 +206,14 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: "relative",
-    marginBottom: 16,
+    marginBottom: rem,
   },
   signInBtn: {
     backgroundColor: "#EA963E",
     borderRadius: 10,
     width: "100%",
     padding: 8,
-    marginBottom: 16,
+    marginBottom: rem,
   },
   form: {
     width: "100%",
