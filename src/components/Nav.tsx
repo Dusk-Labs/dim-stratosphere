@@ -62,9 +62,7 @@ export const Nav = ({ ...props }: NavProps) => {
             <View style={styles.imageContainer}>
               {user?.picture && (
                 <Image
-                  source={
-                    { uri: `http://${host}:8000${user.picture}` }
-                  }
+                  source={{ uri: `http://${host}:8000${user.picture}` }}
                   style={styles.userImage}
                   resizeMode="contain"
                 />
