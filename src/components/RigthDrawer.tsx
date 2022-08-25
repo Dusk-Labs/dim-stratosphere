@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import React from "react";
 import DropDown from "./DropDown";
-import {rem} from "../../constants/units";
+import { rem } from "../../constants/units";
 
 export const RigthDrawer = () => {
   return (

@@ -7,7 +7,7 @@ import {
   Image,
 } from "react-native";
 import React, { useState } from "react";
-import {rem} from "../../constants/units";
+import { rem } from "../../constants/units";
 
 type InputProps = {
   placeholder: string;

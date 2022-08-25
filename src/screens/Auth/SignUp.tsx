@@ -13,7 +13,7 @@ import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
 import { PostSignUp } from "../../../api/Auth";
 import { QueryKey, useQuery } from "@tanstack/react-query";
-import {rem} from "../../../constants/units";
+import { rem } from "../../../constants/units";
 
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 

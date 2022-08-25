@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useRef, useState } from "react";
 import ArrowIcon from "./icons/ArrowIcon";
 import Animated, { EasingNode } from "react-native-reanimated";
-import {rem} from "../../constants/units";
+import { rem } from "../../constants/units";
 
 type DropDownProps = {
   kind: string;

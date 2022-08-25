@@ -14,7 +14,7 @@ import { User, UserFormErrors } from "../../types";
 import { useAuthContext } from "../../context/AuthContext";
 import { PostSignIn } from "../../../api/Auth";
 import { QueryKey, useQuery } from "@tanstack/react-query";
-import {rem} from "../../../constants/units";
+import { rem } from "../../../constants/units";
 
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 

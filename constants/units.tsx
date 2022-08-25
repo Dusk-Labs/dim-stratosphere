@@ -1,1 +1,1 @@
-export const rem=16;
+export const rem = 16;
