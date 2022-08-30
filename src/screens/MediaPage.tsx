@@ -38,7 +38,6 @@ export const MediaPage = ({ navigation, route }: any) => {
       })
       .then((data) => {
         setData(data);
-        // console.log(data, "media")
       });
     setSeasonNumber(1);
     setFirst(true);
@@ -60,7 +59,6 @@ export const MediaPage = ({ navigation, route }: any) => {
         })
         .then((data) => {
           setSeason(data);
-          // console.log(data, "season")
         });
     } else {
       setSeason(null);
@@ -96,7 +94,6 @@ export const MediaPage = ({ navigation, route }: any) => {
         })
         .then((data) => {
           setEpisodes(data);
-          // console.log(data[0].id, "episodes")
         });
     }
   }, [season, seasonNumber]);
@@ -119,7 +116,6 @@ export const MediaPage = ({ navigation, route }: any) => {
           .then((responses) => Promise.all(responses.map((res) => res.json())))
           .then((final) => {
             setEpisodesFiles(final);
-            // console.log(final);
           });
       }
     }
