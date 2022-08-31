@@ -22,7 +22,10 @@ export const PostSignIn = async (user: User) => {
     throw new Error("Something went wrong");
   }
 
-  return await response.json();
+  const data = await response.json();
+  const token = JSON.stringify(data.token);
+
+  return token;
 };
 
 export const PostSignUp = async (user: User) => {
@@ -48,5 +51,8 @@ export const PostSignUp = async (user: User) => {
     throw new Error("Something went wrong");
   }
 
-  return await response.json();
+  const data = await response.json();
+  const username = JSON.stringify(data.username);
+
+  return username;
 };
