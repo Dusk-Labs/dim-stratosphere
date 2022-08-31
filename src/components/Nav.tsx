@@ -26,25 +26,43 @@ export const Nav = ({ ...props }: NavProps) => {
     picture: null,
   });
   const [libraries, setLibraries] = useState<Array<Library>>([]);
+  const [enableGetLibraries, setEnableGetLibraries] = useState<boolean>(false);
+  const [enableGetWhoAmI, setEnableGetWhoAmI] = useState<boolean>(false);
 
   const userPicture = { uri: `${host}${user.picture}` };
 
   const profileImage = user.picture !== null ? userPicture : userImage;
 
-  const { data: librariesFetched } = useQuery(
+  useQuery(
     ["getLibraries"] as QueryKey,
-    async () => host && userToken && (await getLibraries({ host, userToken }))
+    async () => await getLibraries({ host, userToken }),
+    {
+      enabled: enableGetLibraries,
+      onSuccess: (data) => {
+        setLibraries(data);
+        setEnableGetLibraries(false);
+      },
+    }
   );
 
-  const { data: whoAmI } = useQuery(
+  useQuery(
     ["getWhoAmI"] as QueryKey,
-    async () => host && userToken && (await getWhoAmI({ host, userToken }))
+    async () => await getWhoAmI({ host, userToken }),
+    {
+      enabled: enableGetWhoAmI,
+      onSuccess: (data) => {
+        setUser(data);
+        setEnableGetWhoAmI(false);
+      },
+    }
   );
 
   useEffect(() => {
-    librariesFetched && setLibraries(librariesFetched);
-    whoAmI && setUser(whoAmI);
-  }, [librariesFetched, whoAmI]);
+    if (host && userToken) {
+      setEnableGetWhoAmI(true);
+      setEnableGetLibraries(true);
+    }
+  }, [host, userToken]);
 
   return (
     <>
