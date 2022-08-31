@@ -1,7 +1,7 @@
 export type User = {
+  host: string;
   username: string;
   password: string;
-  host: string;
   inviteToken?: string;
 };
 

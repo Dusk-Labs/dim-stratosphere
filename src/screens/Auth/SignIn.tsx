@@ -43,8 +43,9 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
 
   const { refetch } = useQuery(
     ["signIn"] as QueryKey,
-    async () => await PostSignIn({ user }),
+    async () => await PostSignIn({ ...user, host: HostHandler(user.host) }),
     {
+      // TODO (rodriM): change for state and useEffect instead of refetch()
       // query will not be executed when component is mounted
       enabled: false,
     }
@@ -110,24 +111,10 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
   };
 
   const signInMethod = () => {
-    console.log(user);
     refetch().then((res: fetchProps) => {
-      console.log(JSON.stringify(res));
-      // res.data && signIn({ userToken: res.data, host: HostHandler(user.host) });
-      // fixing in next commit. Neec HostHandler(user.host) value to fetch...
-      res.data && signIn({ userToken: res.data, host: user.host });
-      setHost(user.host);
+      res.data && signIn({ userToken: res.data, host: HostHandler(user.host) });
+      setHost(HostHandler(user.host));
     });
-  };
-
-  const formatHostOnBlur = () => {
-    if (!hostRegex.test(user.host)) {
-      handleError("Host is not valid", "host");
-    } else {
-      // not good, to implement better in next commit
-      const formatedHost = HostHandler(user.host);
-      setUser({ ...user, host: formatedHost });
-    }
   };
 
   const handleOnChangeText = (text: string, input: string) => {
@@ -165,7 +152,6 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
             placeholder="Example 127.0.0.1"
             handleOnChangeText={(text) => handleOnChangeText(text, "host")}
             error={errors.host}
-            onBlur={() => formatHostOnBlur()}
             onFocus={() => handleError("", "host")}
           />
           {errors.host === "" && (

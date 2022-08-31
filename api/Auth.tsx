@@ -1,14 +1,6 @@
 import { User } from "../src/types";
 
-type SignInrops = {
-  user: User;
-};
-
-type SignUpProps = {
-  user: User;
-};
-
-export const PostSignIn = async ({ user }: SignInrops) => {
+export const PostSignIn = async (user: User) => {
   const options = {
     method: "POST",
     headers: {
@@ -43,7 +35,7 @@ export const PostSignIn = async ({ user }: SignInrops) => {
   return userToken;
 };
 
-export const PostSignUp = async ({ user }: SignUpProps) => {
+export const PostSignUp = async (user: User) => {
   const options = {
     method: "POST",
     headers: {
