@@ -15,24 +15,14 @@ export const PostSignIn = async (user: User) => {
   const loginPath = "/api/v1/auth/login";
   const signInUrl = user.host + loginPath;
 
-  let userToken: string | null = null;
-  signInUrl !== "" &&
-    (await fetch(signInUrl, options)
-      .then((response) => {
-        if (response.status === 200) {
-          return response.json();
-        } else {
-          throw new Error("Something went wrong");
-        }
-      })
-      .then(async (data) => {
-        userToken = JSON.stringify(data.token);
-      })
-      .catch((error) => {
-        alert("Error signing in: " + error);
-      }));
+  const response = await fetch(signInUrl, options);
 
-  return userToken;
+  if (response.status !== 200) {
+    console.log("Failed to sign in: ", response.body);
+    throw new Error("Something went wrong");
+  }
+
+  return await response.json();
 };
 
 export const PostSignUp = async (user: User) => {
@@ -51,20 +41,12 @@ export const PostSignUp = async (user: User) => {
   const signUpPath = "/api/v1/auth/register";
   const signUpUrl = user.host + signUpPath;
 
-  let username: string | null = null;
-  await fetch(signUpUrl, options)
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        throw new Error("Something went wrong");
-      }
-    })
-    .then(async (data) => {
-      username = JSON.stringify(data.username);
-    })
-    .catch((error) => {
-      alert("Error signing up: " + error);
-    });
-  return username;
+  const response = await fetch(signUpUrl, options);
+
+  if (response.status !== 200) {
+    console.log("Failed to sign up: ", response.body);
+    throw new Error("Something went wrong");
+  }
+
+  return await response.json();
 };
