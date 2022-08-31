@@ -9,6 +9,7 @@ import { QueryKey, useQuery } from "@tanstack/react-query";
 import { Library, getLibraries } from "../../api/GetLibraries";
 import { getWhoAmI } from "../../api/GetWhoAmI";
 import { NavigationType, WhoAmI } from "../types";
+import { rem } from "../../constants/units";
 
 const userImage = require("../../assets/logo.png");
 
@@ -139,7 +140,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontWeight: "400",
-    marginLeft: 16,
+    marginLeft: rem,
     fontSize: 14,
     color: "white",
   },
@@ -152,19 +153,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
-    paddingRight: 16,
-    paddingLeft: 16,
+    paddingRight: rem,
+    paddingLeft: rem,
   },
   body: {
-    padding: 16,
-    paddingTop: 16 * 2,
+    padding: rem,
+    paddingTop: rem * 2,
     flex: 1,
   },
   libraries: {
     color: "#EA963E",
     fontWeight: "500",
     fontSize: 12,
-    marginBottom: 16,
+    marginBottom: rem,
   },
   logOutIcon: {
     height: 20,
@@ -183,13 +184,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
-    marginRight: 16,
+    marginRight: rem,
     backgroundColor: "#de9636",
   },
   header: {
     width: "100%",
-    marginTop: 16 * 2,
-    height: 16 * 5,
+    marginTop: rem * 2,
+    height: rem * 5,
     justifyContent: "center",
     flexDirection: "row",
     borderBottomColor: "#333333",
@@ -200,7 +201,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingLeft: 16,
+    paddingLeft: rem,
   },
   rigth: {
     flex: 1,
@@ -229,13 +230,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   configBtn: {
-    marginRight: 16,
+    marginRight: rem,
   },
   logOutBtn: {
-    marginRight: 16,
+    marginRight: rem,
   },
   library: {
-    marginTop: 16,
+    marginTop: rem,
     width: "100%",
   },
 });

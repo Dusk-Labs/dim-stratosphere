@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React from "react";
+import { rem } from "../../constants/units";
 import { NavigationType } from "../types";
 
 type NavBarProps = {
@@ -29,13 +30,13 @@ export const Navbar = ({ navigation, title }: NavBarProps) => {
 
 const styles = StyleSheet.create({
   back: {
-    padding: 16,
+    padding: rem,
     borderRadius: 10,
     color: "#fff",
   },
   nav: {
     flexDirection: "row",
-    marginTop: 2 * 16,
+    marginTop: 2 * rem,
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",

@@ -2,6 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import FilterSliderIcon from "../components/icons/FilterSliderIcon";
 import { NavigationType } from "../types";
+import { rem } from "../../constants/units";
 
 const navIcon = require("../../assets/navIcon.png");
 
@@ -43,13 +44,13 @@ export const AuthNavBar = ({
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 16 * 2,
+    marginTop: rem * 2,
     padding: 8,
     position: "relative",
     width: "100%",
     alignContent: "center",
     alignItems: "center",
-    height: 16 * 5,
+    height: rem * 5,
     justifyContent: "center",
     flexDirection: "row",
   },
@@ -61,7 +62,7 @@ const styles = StyleSheet.create({
   title: {
     color: "white",
     fontWeight: "600",
-    fontSize: 16,
+    fontSize: rem,
     marginBottom: 2,
   },
   button: {

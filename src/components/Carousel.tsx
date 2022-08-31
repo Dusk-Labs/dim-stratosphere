@@ -6,6 +6,7 @@ import { QueryKey, useQuery } from "@tanstack/react-query";
 import { FileProps, getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
 import { NavigationType } from "../types";
+import { rem } from "../../constants/units";
 
 type CarouselProps = {
   sectionTitle?: string;
@@ -74,8 +75,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: "white",
     fontWeight: "700",
-    fontSize: 16,
-    marginBottom: 16,
+    fontSize: rem,
+    marginBottom: rem,
     marginLeft: 8,
   },
 });
