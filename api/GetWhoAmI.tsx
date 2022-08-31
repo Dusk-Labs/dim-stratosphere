@@ -11,9 +11,9 @@ export const getWhoAmI = async ({
 }: GetWhoAmIProps): Promise<WhoAmI> => {
   const whoAmIUrl = `${host}/api/v1/auth/whoami`;
   const options = {
+    method: "GET",
     headers: {
       "Content-Type": "application/json",
-      method: "GET",
       Authorization: userToken as string,
     },
   };
