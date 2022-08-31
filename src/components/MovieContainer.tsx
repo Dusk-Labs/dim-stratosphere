@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import React from "react";
-import { Media, fetchMediaDetails } from "../../api/media/Media";
+import { fetchMediaDetails } from "../../api/media/Media";
 import { useAuthContext } from "../context/AuthContext";
 import { useQuery } from "@tanstack/react-query";
 

@@ -12,14 +12,21 @@ export const Movies = ({ route, navigation }: any) => {
   const { host, userToken } = useAuthContext();
   const [movies, setMovies] = useState();
 
-  const { data } = useQuery(
+  const { refetch } = useQuery(
     ["getMovies"] as QueryKey,
-    async () => await getMovies({ host, id, userToken })
+    async () => await getMovies({ host, id, userToken }),
+    {
+      onSuccess: (data) => {
+        setMovies(data[name]);
+      },
+    }
   );
 
   useEffect(() => {
-    data && setMovies(data[name]);
-  }, [data]);
+    refetch().then((data: any) => {
+      setMovies(data[name]);
+    });
+  }, [id]);
 
   return (
     <View style={styles.moviesPage}>
