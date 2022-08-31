@@ -15,6 +15,7 @@ type InputProps = {
   handleOnChangeText?: (text: string) => void;
   error?: string;
   onFocus?: () => void;
+  onBlur?: () => void;
 };
 
 export const Input = ({
@@ -23,6 +24,7 @@ export const Input = ({
   handleOnChangeText,
   error,
   onFocus,
+  onBlur,
   ...props
 }: InputProps) => {
   const [hidePassword, setHidePassword] = useState<boolean>(
@@ -44,6 +46,7 @@ export const Input = ({
             (text) => handleOnChangeText && handleOnChangeText(text) // ?
           }
           onFocus={onFocus}
+          onBlur={onBlur}
           {...props}
         />
         {showAndHidePassword && (

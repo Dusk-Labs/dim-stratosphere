@@ -14,6 +14,7 @@ import { User, UserFormErrors } from "../../types";
 import { useAuthContext } from "../../context/AuthContext";
 import { PostSignIn } from "../../../api/Auth";
 import { QueryKey, useQuery } from "@tanstack/react-query";
+import { HostHandler } from "../../components/utils/HostHandler";
 
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
@@ -61,13 +62,18 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
     };
   }, []);
 
-  // TODO Remove hostRegex & validate method
-
+  /*
+   * regex for diferrent host options:
+   * 1. http://127.1.1.1:8096
+   * 2. http://127.1.1.1
+   * 3. 127.1.1.1:8096
+   * 4. 127.1.1.1
+   * if not, invalid host
+   */
   const hostRegex =
-    /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    /^(http:\/\/)?(https:\/\/)?([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)(:[0-9]+)?$/;
 
-  // const hostRegex =
-  // /^(?:(?:https?|http|ftp):\/\/)?(?:(?!(?:10|127)(?:\.\d{1,3}){3})(?!(?:169\.254|192\.168)(?:\.\d{1,3}){2})(?!172\.(?:1[6-9]|2\d|3[0-1])(?:\.\d{1,3}){2})(?:[1-9]\d?|1\d\d|2[01]\d|22[0-3])(?:\.(?:1?\d{1,2}|2[0-4]\d|25[0-5])){2}(?:\.(?:[1-9]\d?|1\d\d|2[0-4]\d|25[0-4]))|(?:(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)(?:\.(?:[a-z\u00a1-\uffff0-9]-*)*[a-z\u00a1-\uffff0-9]+)*(?:\.(?:[a-z\u00a1-\uffff]{2,})))(?::\d{2,5})?(?:\/\S*)?$/;
+  // TODO (rodriM): Move hostRegex & validate method to another component
 
   const validate = () => {
     Keyboard.dismiss();
@@ -95,19 +101,32 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
       handleError("Host is required", "host");
       valid = false;
     } else if (!hostRegex.test(user.host)) {
-      handleError("Host must be a valid IP address", "host");
+      handleError("Host is not valid", "host");
       valid = false;
     }
 
     if (valid) signInMethod();
   };
 
-  const signInMethod = async () => {
-    await refetch().then((res: fetchProps) => {
+  const signInMethod = () => {
+    console.log(user);
+    refetch().then((res: fetchProps) => {
       console.log(JSON.stringify(res));
+      // res.data && signIn({ userToken: res.data, host: HostHandler(user.host) });
+      // fixing in next commit. Neec HostHandler(user.host) value to fetch...
       res.data && signIn({ userToken: res.data, host: user.host });
       setHost(user.host);
     });
+  };
+
+  const formatHostOnBlur = () => {
+    if (!hostRegex.test(user.host)) {
+      handleError("Host is not valid", "host");
+    } else {
+      // not good, to implement better in next commit
+      const formatedHost = HostHandler(user.host);
+      setUser({ ...user, host: formatedHost });
+    }
   };
 
   const handleOnChangeText = (text: string, input: string) => {
@@ -145,6 +164,7 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
             placeholder="Example 127.0.0.1"
             handleOnChangeText={(text) => handleOnChangeText(text, "host")}
             error={errors.host}
+            onBlur={() => formatHostOnBlur()}
             onFocus={() => handleError("", "host")}
           />
           {errors.host === "" && (

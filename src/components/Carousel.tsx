@@ -5,10 +5,11 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { FileProps, getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
+import { NavigationType } from "../types";
 
 type CarouselProps = {
   sectionTitle?: string;
-  navigation?: any;
+  navigation?: NavigationType;
 };
 
 export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {

@@ -19,22 +19,26 @@ export const PostSignIn = async ({ user }: SignInrops) => {
       password: user.password.trim(),
     }),
   };
-  const signInUrl = `http://${user.host}:8000/api/v1/auth/login`;
+
+  const loginPath = "/api/v1/auth/login";
+  const signInUrl = user.host + loginPath;
+
   let userToken: string | null = null;
-  await fetch(signInUrl, options)
-    .then((response) => {
-      if (response.status === 200) {
-        return response.json();
-      } else {
-        throw new Error("Something went wrong");
-      }
-    })
-    .then(async (data) => {
-      userToken = JSON.stringify(data.token);
-    })
-    .catch((error) => {
-      alert("Error signing up: " + error);
-    });
+  signInUrl !== "" &&
+    (await fetch(signInUrl, options)
+      .then((response) => {
+        if (response.status === 200) {
+          return response.json();
+        } else {
+          throw new Error("Something went wrong");
+        }
+      })
+      .then(async (data) => {
+        userToken = JSON.stringify(data.token);
+      })
+      .catch((error) => {
+        alert("Error signing in: " + error);
+      }));
 
   return userToken;
 };
@@ -51,7 +55,10 @@ export const PostSignUp = async ({ user }: SignUpProps) => {
       invite_token: user.inviteToken,
     }),
   };
-  const signUpUrl = `http://${user.host}:8000/api/v1/auth/register`;
+
+  const signUpPath = "/api/v1/auth/register";
+  const signUpUrl = user.host + signUpPath;
+
   let username: string | null = null;
   await fetch(signUpUrl, options)
     .then((response) => {

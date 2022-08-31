@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import FilterSliderIcon from "../components/icons/FilterSliderIcon";
+import { NavigationType } from "../types";
 
 const navIcon = require("../../assets/navIcon.png");
 
 type AuthNavBarProps = {
   title: string;
-  navigation: any;
+  navigation: NavigationType;
   moviesOrShows?: boolean;
 };
 

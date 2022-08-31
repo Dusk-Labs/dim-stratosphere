@@ -46,27 +46,24 @@ export interface Media {
 type MediaDetailsProps = {
   id: number;
   host: string;
-  token: string;
+  userToken: string | null;
 };
 
 export const fetchMediaDetails = async ({
   id,
   host,
-  token,
+  userToken,
 }: MediaDetailsProps): Promise<Media> => {
   const url = `${host}/api/v1/media/${id}`;
-  console.log(url);
-
-  // FIXME: The JSON.parse is a bad idea, the token should already be pre-parsed when supplied.
   const options = {
     method: "GET",
     headers: {
-      Authorization: JSON.parse(token as string),
+      Authorization: userToken as string,
       "Content-Type": "application/json",
     },
   };
 
-  const response = await fetch(`${host}/api/v1/media/${id}`, options);
+  const response = await fetch(url, options);
 
   if (response.status !== 200) {
     console.log("Failed to query media by id: " + response.json());

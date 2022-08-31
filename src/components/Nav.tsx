@@ -8,24 +8,27 @@ import { useAuthContext } from "../context/AuthContext";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { Library, getLibraries } from "../../api/GetLibraries";
 import { getWhoAmI } from "../../api/GetWhoAmI";
+import { NavigationType, WhoAmI } from "../types";
 
 const userImage = require("../../assets/logo.png");
 
 type NavProps = {
-  navigation: any;
-};
-
-type UserType = {
-  picture: string;
-  roles: Array<string>;
-  spentWatching: number;
-  username: string;
+  navigation: NavigationType;
 };
 
 export const Nav = ({ ...props }: NavProps) => {
   const { signOut, host, userToken } = useAuthContext();
-  const [user, setUser] = useState<UserType>();
+  const [user, setUser] = useState<WhoAmI>({
+    username: "Loading...",
+    roles: [],
+    spentWatching: 0,
+    picture: null,
+  });
   const [libraries, setLibraries] = useState<Array<Library>>([]);
+
+  const userPicture = { uri: `${host}${user.picture}` };
+
+  const profileImage = user.picture !== null ? userPicture : userImage;
 
   const { data: librariesFetched } = useQuery(
     ["getLibraries"] as QueryKey,
@@ -50,9 +53,7 @@ export const Nav = ({ ...props }: NavProps) => {
             <View style={styles.imageContainer}>
               {user?.picture && (
                 <Image
-                  source={
-                    user ? `http://${host}:8000${user.picture}` : userImage
-                  }
+                  source={profileImage}
                   style={styles.userImage}
                   resizeMode="contain"
                 />

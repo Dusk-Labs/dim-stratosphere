@@ -5,9 +5,10 @@ import { AuthNavBar } from "../components/AuthNavBar";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
+import { NavigationType } from "../types";
 
 type DashboardProps = {
-  navigation: any;
+  navigation: NavigationType;
 };
 
 export const Dashboard = ({ navigation }: DashboardProps) => {

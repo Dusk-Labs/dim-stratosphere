@@ -1,8 +1,9 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import React from "react";
+import { NavigationType } from "../types";
 
 type NavBarProps = {
-  navigation: any;
+  navigation: NavigationType;
   title: string;
 };
 

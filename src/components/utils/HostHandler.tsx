@@ -3,13 +3,13 @@ import Url from "url-parse";
 // url example obj = {
 //   auth?: "";
 //   hash?: "";
-//   host?: "192.123.1.1:8080";
+//   host?: "192.123.1.1:8000";
 //   hostname?: "192.123.1.1";
-//   href?: "http://192.123.1.1:8080/";
-//   origin?: "http://192.123.1.1:8080";
+//   href?: "http://192.123.1.1:8000/";
+//   origin?: "http://192.123.1.1:8000";
 //   password?: "";
 //   pathname?: "/";
-//   port?: "8080";
+//   port?: "8000";
 //   protocol?: "http:";
 //   query?: "";
 //   slashes?: true;
@@ -25,7 +25,7 @@ export const HostHandler = (host: string) => {
   if (!includesProtocol) url = new Url(`http://${host}`);
   if (includesOnlySlashes) url = new Url(`http${host}`);
 
-  !url.port && url?.set("port", "8080");
+  !url.port && url?.set("port", "8000");
 
   return url.origin;
 };

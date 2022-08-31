@@ -1,27 +1,23 @@
+import { WhoAmI } from "../src/types";
+
 type GetWhoAmIProps = {
   host: string;
   userToken: string | null;
-};
-
-type WhoAmI = {
-  picture: any;
-  spentWatching: number;
-  username: String;
-  roles: Array<String>;
 };
 
 export const getWhoAmI = async ({
   host,
   userToken,
 }: GetWhoAmIProps): Promise<WhoAmI> => {
+  const whoAmIUrl = `${host}/api/v1/auth/whoami`;
   const options = {
-    method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: JSON.parse(userToken as string),
+      method: "GET",
+      Authorization: userToken as string,
     },
   };
-  const whoAmIUrl = `http://${host}:8000/api/v1/auth/whoami`;
+
   const response = await fetch(whoAmIUrl, options);
 
   if (response.status !== 200) {

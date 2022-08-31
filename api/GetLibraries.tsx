@@ -14,14 +14,15 @@ export const getLibraries = async ({
   host,
   userToken,
 }: GetLibrariesProps): Promise<Array<Library>> => {
+  const librariesUrl = `${host}/api/v1/library`;
   const options = {
     method: "GET",
     headers: {
+      Authorization: userToken as string,
       "Content-Type": "application/json",
-      Authorization: JSON.parse(userToken as string),
     },
   };
-  const librariesUrl = `http://${host}:8000/api/v1/library`;
+
   const response = await fetch(librariesUrl, options);
 
   if (response.status !== 200) {

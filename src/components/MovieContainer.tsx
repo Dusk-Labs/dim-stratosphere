@@ -20,13 +20,13 @@ export const MovieContainer = ({
   const { host, userToken } = useAuthContext();
   // FIXME (Val): ideally the dashboard api would return the year as its cheap to obtain.
   const { data } = useQuery(["media", id], () =>
-    fetchMediaDetails({ id, host: `http://${host}:8000`, token: userToken! })
+    fetchMediaDetails({ id, host, userToken })
   );
 
   return (
     <View style={styles.movieContainer}>
       <Image
-        source={{ uri: `http://${host}:8000/${picture}` }}
+        source={{ uri: `${host}/${picture}` }}
         style={{
           ...styles.movieImage,
           width: Dimensions.get("window").width / 3.4,

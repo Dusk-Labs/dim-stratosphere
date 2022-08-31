@@ -5,9 +5,10 @@ import SettingsIcon from "./icons/SettingsIcon";
 import SearchIcon from "./icons/SearchIcon";
 import DownloadIcon from "./icons/DownloadIcon";
 import { useRouteContext } from "../context/RouteContext";
+import { NavigationType } from "../types";
 
 type TabMenuProps = {
-  navigation: any;
+  navigation: NavigationType;
 };
 
 export const TabMenu = ({ ...props }: TabMenuProps) => {

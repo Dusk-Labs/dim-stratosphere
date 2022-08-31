@@ -24,10 +24,10 @@ export const getDashboardData = async ({
     method: "GET",
     headers: {
       "Content-Type": "application/json",
-      Authorization: JSON.parse(userToken as string),
+      Authorization: userToken,
     },
   };
-  const dashboardUrl = `http://${host}:8000/api/v1/dashboard`;
+  const dashboardUrl = `${host}/api/v1/dashboard`;
 
   const response = await fetch(dashboardUrl, options);
   if (response.status !== 200) {
