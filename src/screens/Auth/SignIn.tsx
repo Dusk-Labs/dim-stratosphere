@@ -19,13 +19,9 @@ import { rem } from "../../../constants/units";
 
 type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
-type fetchProps = {
-  // data = token
-  data: any;
-};
-
 export const SignIn = ({ navigation, route }: SignInProps) => {
   const [isKeyboardOn, setIsKeyboardOn] = useState(false);
+  const [enableSignIn, setEnableSignIn] = useState<boolean>(false);
 
   const [user, setUser] = useState<User>({
     username: "",
@@ -41,13 +37,17 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
 
   const { signIn, setHost } = useAuthContext();
 
-  const { refetch } = useQuery(
+  useQuery(
     ["signIn"] as QueryKey,
     async () => await PostSignIn({ ...user, host: HostHandler(user.host) }),
     {
-      // TODO (rodriM): change for state and useEffect instead of refetch()
-      // query will not be executed when component is mounted
-      enabled: false,
+      enabled: enableSignIn,
+      onSuccess: (data: string) => {
+        signIn({
+          userToken: data,
+          host: HostHandler(user.host),
+        });
+      },
     }
   );
 
@@ -111,10 +111,8 @@ export const SignIn = ({ navigation, route }: SignInProps) => {
   };
 
   const signInMethod = () => {
-    refetch().then((res: fetchProps) => {
-      res.data && signIn({ userToken: res.data, host: HostHandler(user.host) });
-      setHost(HostHandler(user.host));
-    });
+    setEnableSignIn(true);
+    setHost(HostHandler(user.host));
   };
 
   const handleOnChangeText = (text: string, input: string) => {
