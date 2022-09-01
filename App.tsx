@@ -9,9 +9,14 @@ import { View } from "react-native";
 import { RouteContextProvider } from "./src/context/RouteContext";
 import { StatusBar } from "expo-status-bar";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import * as NavigationBar from "expo-navigation-bar";
 
 function App() {
   const { isLoggedIn } = useAuthContext();
+
+  isLoggedIn
+    ? NavigationBar.setBackgroundColorAsync("rgba(37, 37, 37, 1)")
+    : NavigationBar.setBackgroundColorAsync("rgba(14, 13, 11, 1)");
 
   const renderStack = () => {
     return isLoggedIn ? (
