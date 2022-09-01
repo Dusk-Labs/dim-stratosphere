@@ -121,7 +121,6 @@ export const MediaPage = ({ navigation, route }: any) => {
     }
   }, [episodes]);
 
- 
   function handleDescription(description) {
     if (isReadMoreActive) {
       return description;

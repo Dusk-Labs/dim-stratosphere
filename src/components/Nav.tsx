@@ -121,7 +121,9 @@ export const Nav = ({ ...props }: NavProps) => {
                       </View>
                       <Text style={styles.sectionTitle}>{element.name}</Text>
                     </View>
-                    <Text style={styles.itemsNumber}>{element.media_count}</Text>
+                    <Text style={styles.itemsNumber}>
+                      {element.media_count}
+                    </Text>
                   </View>
                 </TouchableOpacity>
               );
