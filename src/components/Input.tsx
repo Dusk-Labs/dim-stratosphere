@@ -7,22 +7,25 @@ import {
   Image,
 } from "react-native";
 import React, { useState } from "react";
+import { rem } from "../../constants/units";
 
-interface InputProps {
+type InputProps = {
   placeholder: string;
   secureTextEntry?: boolean;
   showAndHidePassword?: boolean;
   handleOnChangeText?: (text: string) => void;
   error?: string;
   onFocus?: () => void;
-}
+  onBlur?: () => void;
+};
 
-const Input = ({
+export const Input = ({
   placeholder,
   showAndHidePassword,
   handleOnChangeText,
   error,
   onFocus,
+  onBlur,
   ...props
 }: InputProps) => {
   const [hidePassword, setHidePassword] = useState<boolean>(
@@ -41,9 +44,10 @@ const Input = ({
           ]}
           secureTextEntry={hidePassword}
           onChangeText={
-            (text) => handleOnChangeText && handleOnChangeText(text) //?
+            (text) => handleOnChangeText && handleOnChangeText(text) // ?
           }
           onFocus={onFocus}
+          onBlur={onBlur}
           {...props}
         />
         {showAndHidePassword && (
@@ -65,14 +69,12 @@ const Input = ({
   );
 };
 
-export default Input;
-
 const styles = StyleSheet.create({
   input: {
     color: "#FFF",
     backgroundColor: "#353433",
     padding: 8,
-    marginBottom: 16,
+    marginBottom: rem,
     borderRadius: 10,
   },
   eye: {

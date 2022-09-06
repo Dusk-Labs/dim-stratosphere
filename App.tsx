@@ -1,72 +1,51 @@
-import { StatusBar } from "expo-status-bar";
-import LogIn from "./src/screens/Auth/LogIn";
-import SignIn from "./src/screens/Auth/SignIn";
-import SignUp from "./src/screens/Auth/SignUp";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import Dashboard from "./src/screens/Dashboard";
+import "react-native-gesture-handler";
+import React from "react";
+
 import { AuthContextProvider, useAuthContext } from "./src/context/AuthContext";
+import { AuthStackScreens } from "./src/router/stacks/AuthStackScreens";
+import { DrawerStackScreens } from "./src/router/stacks/DrawerStackScreens";
+import { NavigationContainer } from "@react-navigation/native";
+import { View } from "react-native";
+import { RouteContextProvider } from "./src/context/RouteContext";
+import { StatusBar } from "expo-status-bar";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import * as NavigationBar from "expo-navigation-bar";
 
-export type MainStackParams = {
-  Dashboard: { title: string };
-};
-
-export type AuthStackParams = {
-  LogIn: { title: string };
-  SignIn: { title: string };
-  SignUp: { title: string };
-};
-
-const AuthStack = createNativeStackNavigator<AuthStackParams>();
-const MainStack = createNativeStackNavigator<MainStackParams>();
-
-const AuthStackScreens = () => {
-  return (
-    <AuthStack.Navigator
-      screenOptions={{
-        headerShown: false,
-        animation: "none",
-      }}
-    >
-      <AuthStack.Screen name="LogIn" component={LogIn} />
-      <AuthStack.Screen name="SignIn" component={SignIn} />
-      <AuthStack.Screen name="SignUp" component={SignUp} />
-    </AuthStack.Navigator>
-  );
-};
-
-const MainStackScreens = () => {
-  return (
-    <MainStack.Navigator
-      screenOptions={{
-        headerShown: false,
-        animation: "none",
-      }}
-    >
-      <MainStack.Screen name="Dashboard" component={Dashboard} />
-    </MainStack.Navigator>
-  );
-};
-
-export function App() {
+function App() {
   const { isLoggedIn } = useAuthContext();
 
+  isLoggedIn
+    ? NavigationBar.setBackgroundColorAsync("rgba(37, 37, 37, 1)")
+    : NavigationBar.setBackgroundColorAsync("rgba(14, 13, 11, 1)");
+
   const renderStack = () => {
-    return isLoggedIn ? <MainStackScreens /> : <AuthStackScreens />;
+    return isLoggedIn ? (
+      <RouteContextProvider>
+        <DrawerStackScreens />
+      </RouteContextProvider>
+    ) : (
+      <AuthStackScreens />
+    );
   };
+
+  const queryClient = new QueryClient();
 
   return (
     <>
       <StatusBar style="light" />
-      <NavigationContainer>{renderStack()}</NavigationContainer>
+      <QueryClientProvider client={queryClient}>
+        <NavigationContainer>{renderStack()}</NavigationContainer>
+      </QueryClientProvider>
     </>
   );
 }
 
 export default function AppContainer() {
   return (
-    <AuthContextProvider>
-      <App />
-    </AuthContextProvider>
+    <View style={{ flex: 1, backgroundColor: "black" }}>
+      <AuthContextProvider>
+        <App />
+      </AuthContextProvider>
+    </View>
   );
 }

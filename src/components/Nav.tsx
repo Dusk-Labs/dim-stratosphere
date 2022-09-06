@@ -1,18 +1,68 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import SettingsIcon from "./icons/SettingsIcon";
-const userImage = require("../../assets/logo.png");
-const logOutIcon = require("../../assets/logOutIcon.png");
-const moviesIcon = require("../../assets/moviesIcon.png");
-const showsIcon = require("../../assets/showsIcon.png");
+import MoviesICon from "./icons/MoviesIcon";
+import ShowsIcon from "./icons/ShowsIcon";
+import LogOutIcon from "./icons/LogOutIcon";
+import { useAuthContext } from "../context/AuthContext";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { Library, getLibraries } from "../../api/GetLibraries";
+import { getWhoAmI } from "../../api/GetWhoAmI";
+import { NavigationType, WhoAmI } from "../types";
+import { rem } from "../../constants/units";
 
-const Nav = () => {
-  const [testState, setTestState] = useState(true);
+const userImage = require("../../assets/logo.png");
+
+type NavProps = {
+  navigation: NavigationType;
+};
+
+export const Nav = ({ ...props }: NavProps) => {
+  const { signOut, host, userToken } = useAuthContext();
+  const [user, setUser] = useState<WhoAmI>({
+    username: "Loading...",
+    roles: [],
+    spentWatching: 0,
+    picture: null,
+  });
+  const [libraries, setLibraries] = useState<Array<Library>>([]);
+  const [enableGetLibraries, setEnableGetLibraries] = useState<boolean>(false);
+  const [enableGetWhoAmI, setEnableGetWhoAmI] = useState<boolean>(false);
+
+  const userPicture = { uri: `${host}${user.picture}` };
+
+  const profileImage = user.picture !== null ? userPicture : userImage;
+
+  useQuery(
+    ["getLibraries"] as QueryKey,
+    async () => await getLibraries({ host, userToken }),
+    {
+      enabled: enableGetLibraries,
+      onSuccess: (data) => {
+        setLibraries(data);
+        setEnableGetLibraries(false);
+      },
+    }
+  );
+
+  useQuery(
+    ["getWhoAmI"] as QueryKey,
+    async () => await getWhoAmI({ host, userToken }),
+    {
+      enabled: enableGetWhoAmI,
+      onSuccess: (data) => {
+        setUser(data);
+        setEnableGetWhoAmI(false);
+      },
+    }
+  );
+
   useEffect(() => {
-    alert("hola");
-  }, [testState]);
-  const timeWatched = 2;
-  const userName = "Rodrigo";
+    if (host && userToken) {
+      setEnableGetWhoAmI(true);
+      setEnableGetLibraries(true);
+    }
+  }, [host, userToken]);
 
   return (
     <>
@@ -20,55 +70,84 @@ const Nav = () => {
         <View style={styles.header}>
           <View style={styles.left}>
             <View style={styles.imageContainer}>
-              <Image
-                source={userImage}
-                style={styles.userImage}
-                resizeMode="contain"
-              ></Image>
+              {user?.picture && (
+                <Image
+                  source={profileImage}
+                  style={styles.userImage}
+                  resizeMode="contain"
+                />
+              )}
             </View>
             <View style={styles.useInfo}>
-              <Text style={styles.userName}>{userName}</Text>
-              <Text style={styles.timeWatched}>Watched {timeWatched}h</Text>
+              <Text style={styles.userName}>{user?.username}</Text>
+              <Text style={styles.timeWatched}>
+                Watched {user?.spentWatching}h
+              </Text>
             </View>
           </View>
           <View style={styles.rigth}>
-            <TouchableOpacity style={styles.configBtn}>
+            <TouchableOpacity
+              style={styles.configBtn}
+              onPress={() => {
+                props.navigation.navigate("Settings");
+              }}
+            >
               <SettingsIcon color={"#7E7E7E"} />
             </TouchableOpacity>
-            <TouchableOpacity style={styles.logOutBtn}>
-              <Image source={logOutIcon} style={styles.logOutIcon} />
+            <TouchableOpacity
+              style={styles.logOutBtn}
+              onPress={() => {
+                signOut();
+              }}
+            >
+              <LogOutIcon color={"#7E7E7E"} />
             </TouchableOpacity>
           </View>
         </View>
         <View style={styles.body}>
           <Text style={styles.libraries}>LIBRARIES</Text>
-          <View style={styles.section}>
-            <View style={styles.iconAndText}>
-              <Image source={moviesIcon} />
-              <Text style={styles.sectionTitle}>Movies</Text>
-            </View>
-            <Text style={styles.itemsNumber}>132</Text>
-          </View>
-          <View style={{ ...styles.section, marginTop: 16 * 1.5 }}>
-            <View style={styles.iconAndText}>
-              <Image source={showsIcon} />
-              <Text style={styles.sectionTitle}>Movies</Text>
-            </View>
-            <Text style={styles.itemsNumber}>80</Text>
-          </View>
+
+          {libraries &&
+            libraries.map((library: Library) => {
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    props.navigation.navigate("Movies", {
+                      name: library.name,
+                      id: library.id,
+                    });
+                  }}
+                  style={styles.library}
+                  key={library.id}
+                >
+                  <View style={styles.section}>
+                    <View style={styles.iconAndText}>
+                      <View>
+                        {library.media_type === "movie" ? (
+                          <MoviesICon color="#7E7E7E" />
+                        ) : (
+                          <ShowsIcon color={"#7E7E7E"} />
+                        )}
+                      </View>
+                      <Text style={styles.sectionTitle}>{library.name}</Text>
+                    </View>
+                    <Text style={styles.itemsNumber}>
+                      {library.media_count || 0}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+              );
+            })}
         </View>
       </View>
     </>
   );
 };
 
-export default Nav;
-
 const styles = StyleSheet.create({
   itemsNumber: {
     backgroundColor: "rgba(234, 150, 62, 0.5)",
     borderRadius: 30,
-    paddingTop: 2,
     paddingHorizontal: 8,
     textAlign: "center",
     justifyContent: "center",
@@ -79,7 +158,7 @@ const styles = StyleSheet.create({
   },
   sectionTitle: {
     fontWeight: "400",
-    marginLeft: 16,
+    marginLeft: rem,
     fontSize: 14,
     color: "white",
   },
@@ -92,28 +171,27 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignContent: "center",
     alignItems: "center",
+    paddingRight: rem,
+    paddingLeft: rem,
   },
   body: {
-    padding: 16,
-    paddingTop: 16 * 2,
+    padding: rem,
+    paddingTop: rem * 2,
+    flex: 1,
   },
   libraries: {
     color: "#EA963E",
     fontWeight: "500",
     fontSize: 12,
-    marginBottom: 16 * 2,
+    marginBottom: rem,
   },
   logOutIcon: {
     height: 20,
     width: 20,
   },
   nav: {
-    width: "80%",
-    position: "absolute",
     flex: 1,
     backgroundColor: "#252525",
-    height: "100%",
-    zIndex: 9,
   },
   imageContainer: {
     borderColor: "white",
@@ -124,12 +202,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
-    marginRight: 16,
+    marginRight: rem,
+    backgroundColor: "#de9636",
   },
   header: {
     width: "100%",
-    marginTop: 16 * 2,
-    height: "10%",
+    marginTop: rem * 2,
+    height: rem * 5,
     justifyContent: "center",
     flexDirection: "row",
     borderBottomColor: "#333333",
@@ -140,7 +219,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "center",
-    paddingLeft: 16,
+    paddingLeft: rem,
   },
   rigth: {
     flex: 1,
@@ -153,6 +232,8 @@ const styles = StyleSheet.create({
     borderRadius: 50,
     width: 40,
     height: 40,
+    borderColor: "white",
+    borderWidth: 2,
   },
   useInfo: {
     flexDirection: "column",
@@ -167,9 +248,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   configBtn: {
-    marginRight: 16,
+    marginRight: rem,
   },
   logOutBtn: {
-    marginRight: 16,
+    marginRight: rem,
+  },
+  library: {
+    marginTop: rem,
+    width: "100%",
   },
 });

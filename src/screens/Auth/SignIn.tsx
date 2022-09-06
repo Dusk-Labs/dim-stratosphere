@@ -5,18 +5,24 @@ import {
   TouchableOpacity,
   Keyboard,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar } from "../../components/Navbar";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParams } from "../../../App";
-import Input from "../../components/Input";
+import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
+import { Input } from "../../components/Input";
 import { User, UserFormErrors } from "../../types";
 import { useAuthContext } from "../../context/AuthContext";
-import { PostSignIn } from "../../../api/auth/Auth";
+import { PostSignIn } from "../../../api/Auth";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { HostHandler } from "../../components/utils/HostHandler";
+import { rem } from "../../../constants/units";
 
-type SignInProps = NativeStackScreenProps<StackParams, "SignIn">;
+type SignInProps = NativeStackScreenProps<AuthStackParams, "SignIn">;
 
-const SignIn = ({ navigation, route }: SignInProps) => {
+export const SignIn = ({ navigation, route }: SignInProps) => {
+  const [isKeyboardOn, setIsKeyboardOn] = useState(false);
+  const [enableSignIn, setEnableSignIn] = useState<boolean>(false);
+
   const [user, setUser] = useState<User>({
     username: "",
     password: "",
@@ -29,10 +35,47 @@ const SignIn = ({ navigation, route }: SignInProps) => {
     host: "",
   });
 
-  const { signIn } = useAuthContext();
+  const { signIn, setHost } = useAuthContext();
 
+  useQuery(
+    ["signIn"] as QueryKey,
+    async () => await PostSignIn({ ...user, host: HostHandler(user.host) }),
+    {
+      enabled: enableSignIn,
+      onSuccess: (data: string) => {
+        signIn({
+          userToken: data,
+          host: HostHandler(user.host),
+        });
+      },
+    }
+  );
+
+  useEffect(() => {
+    Keyboard.addListener("keyboardDidShow", () => {
+      setIsKeyboardOn(true);
+    });
+    Keyboard.addListener("keyboardDidHide", () => {
+      setIsKeyboardOn(false);
+    });
+    return () => {
+      Keyboard.removeAllListeners("keyboardDidHide");
+      Keyboard.removeAllListeners("keyboardDidShow");
+    };
+  }, []);
+
+  /*
+   * regex for diferrent host options:
+   * 1. http://127.1.1.1:8096
+   * 2. http://127.1.1.1
+   * 3. 127.1.1.1:8096
+   * 4. 127.1.1.1
+   * if not, invalid host
+   */
   const hostRegex =
-    /^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/;
+    /^(http:\/\/)?(https:\/\/)?([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)\.([a-zA-Z0-9]+)(:[0-9]+)?$/;
+
+  // TODO (rodriM): Move hostRegex & validate method to another component
 
   const validate = () => {
     Keyboard.dismiss();
@@ -60,32 +103,16 @@ const SignIn = ({ navigation, route }: SignInProps) => {
       handleError("Host is required", "host");
       valid = false;
     } else if (!hostRegex.test(user.host)) {
-      handleError("Host must be a valid IP address", "host");
+      handleError("Host is not valid", "host");
       valid = false;
     }
 
     if (valid) signInMethod();
   };
 
-  const signInMethod = async () => {
-    const signInUrl = `http://${user.host}/api/v1/auth/login`;
-    const options = {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        username: user.username,
-        password: user.password,
-      }),
-    };
-
-    const userToken = await PostSignIn({
-      signInUrl: signInUrl,
-      options: options,
-    });
-
-    userToken && signIn({ userToken: userToken });
+  const signInMethod = () => {
+    setEnableSignIn(true);
+    setHost(HostHandler(user.host));
   };
 
   const handleOnChangeText = (text: string, input: string) => {
@@ -116,7 +143,7 @@ const SignIn = ({ navigation, route }: SignInProps) => {
             error={errors.password}
             onFocus={() => handleError("", "password")}
           />
-          <Text style={{ marginBottom: 16, color: "#FFF", fontSize: 14 }}>
+          <Text style={{ marginBottom: rem, color: "#FFF", fontSize: 14 }}>
             Connect to host
           </Text>
           <Input
@@ -132,28 +159,30 @@ const SignIn = ({ navigation, route }: SignInProps) => {
           )}
         </View>
         <View style={styles.bottomFromBottom}>
-          <View style={styles.footer}>
-            <TouchableOpacity
-              style={styles.signInBtn}
-              onPress={() => validate()}
-            >
-              <Text style={{ color: "#FFF", textAlign: "center" }}>
-                Sign in
-              </Text>
-            </TouchableOpacity>
-            <View style={styles.finalText}>
-              <Text style={{ color: "#FFF", opacity: 0.5 }}>
-                Don't have an account yet?
-              </Text>
+          {!isKeyboardOn && (
+            <View style={styles.footer}>
               <TouchableOpacity
-                onPress={() =>
-                  navigation.navigate("SignUp", { title: "Sign Up" })
-                }
+                style={styles.signInBtn}
+                onPress={() => validate()}
               >
-                <Text style={{ color: "#EA963E" }}> Sign up here</Text>
+                <Text style={{ color: "#FFF", textAlign: "center" }}>
+                  Sign in
+                </Text>
               </TouchableOpacity>
+              <View style={styles.finalText}>
+                <Text style={{ color: "#FFF", opacity: 0.5 }}>
+                  Don&apos;t have an account yet?
+                </Text>
+                <TouchableOpacity
+                  onPress={() =>
+                    navigation.navigate("SignUp", { title: "Sign Up" })
+                  }
+                >
+                  <Text style={{ color: "#EA963E" }}> Sign up here</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          </View>
+          )}
         </View>
       </View>
     </View>
@@ -166,7 +195,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     flex: 1,
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: "rgba(14, 13, 11, 1)",
     paddingRight: "1%",
     paddingLeft: "1%",
   },
@@ -181,14 +210,14 @@ const styles = StyleSheet.create({
   },
   footer: {
     position: "relative",
-    marginBottom: 16,
+    marginBottom: rem,
   },
   signInBtn: {
     backgroundColor: "#EA963E",
     borderRadius: 10,
     width: "100%",
     padding: 8,
-    marginBottom: 16,
+    marginBottom: rem,
   },
   form: {
     width: "100%",
@@ -204,5 +233,3 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
-
-export default SignIn;

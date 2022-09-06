@@ -1,12 +1,14 @@
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
-import React, { FC } from "react";
+import React from "react";
+import { rem } from "../../constants/units";
+import { NavigationType } from "../types";
 
-interface NavBarProps {
-  navigation: any;
+type NavBarProps = {
+  navigation: NavigationType;
   title: string;
-}
+};
 
-export const Navbar: FC<NavBarProps> = ({ navigation, title }) => {
+export const Navbar = ({ navigation, title }: NavBarProps) => {
   return (
     <>
       <View style={styles.nav}>
@@ -26,17 +28,15 @@ export const Navbar: FC<NavBarProps> = ({ navigation, title }) => {
   );
 };
 
-export default Navbar;
-
 const styles = StyleSheet.create({
   back: {
-    padding: 16,
+    padding: rem,
     borderRadius: 10,
     color: "#fff",
   },
   nav: {
     flexDirection: "row",
-    marginTop: 2 * 16,
+    marginTop: 2 * rem,
     justifyContent: "flex-start",
     alignItems: "center",
     width: "100%",

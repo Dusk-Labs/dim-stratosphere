@@ -1,11 +1,12 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import React from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { StackParams } from "../../../App";
+import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
+import { rem } from "../../../constants/units";
 
-type LoginProps = NativeStackScreenProps<StackParams, "LogIn">;
+type LoginProps = NativeStackScreenProps<AuthStackParams, "LogIn">;
 
-const LogIn = ({ navigation }: LoginProps) => {
+export const LogIn = ({ navigation }: LoginProps) => {
   return (
     <View style={styles.login}>
       <View style={styles.top}>
@@ -34,6 +35,7 @@ const LogIn = ({ navigation }: LoginProps) => {
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   top: {
     justifyContent: "center",
@@ -56,7 +58,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     flex: 1,
     justifyContent: "center",
-    backgroundColor: "black",
+    backgroundColor: "rgba(14, 13, 11, 1)",
   },
   subtitle: {
     color: "#fff",
@@ -67,7 +69,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
     alignContent: "flex-end",
     flex: 1,
-    padding: 16,
+    padding: rem,
     width: "100%",
   },
   buttons: {
@@ -92,4 +94,3 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
 });
-export default LogIn;

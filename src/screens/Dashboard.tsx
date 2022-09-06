@@ -1,47 +1,59 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Carousel from "../components/Carousel";
+import { StyleSheet, View, ScrollView } from "react-native";
+import { Carousel } from "../components/Carousel";
 import React, { useEffect, useState } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthContext } from "../context/AuthContext";
-import AuthNavBar from "../components/AuthNavBar";
-import Nav from "../components/Nav";
-import TabMenu from "../components/TabMenu";
+import { AuthNavBar } from "../components/AuthNavBar";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { getDashboardData } from "../../api/GetDashboardData";
+import { useAuthContext } from "../context/AuthContext";
+import { NavigationType } from "../types";
 
-const Dashboard = () => {
-  const context = React.useContext(AuthContext);
-  const [nav, setNav] = useState(false);
+type DashboardProps = {
+  navigation: NavigationType;
+};
 
-  const signOutFunc = async () => {
-    context?.signOut();
-  };
+export const Dashboard = ({ navigation }: DashboardProps) => {
+  const [nav] = useState(false);
+  const { host, userToken } = useAuthContext();
+
+  const { data } = useQuery(
+    ["getDashboardData"] as QueryKey,
+    () => getDashboardData({ host, userToken }),
+    {
+      enabled: userToken !== null && host !== "",
+    }
+  );
+
+  const sectionTitles = Object.keys(data || {});
+
+  useEffect(() => {
+    nav ? navigation.openDrawer() : navigation.closeDrawer();
+  }, [nav]);
 
   return (
     <>
-      <View style={nav ? styles.HomePageNav : styles.HomePage}>
-        <TouchableOpacity onPress={() => signOutFunc()}>
-          <Text style={styles.signOut}>Sign Out</Text>
-        </TouchableOpacity>
-        <AuthNavBar title={"Dashboard"} setNav={setNav} nav={nav} />
-        <View style={styles.body}>
-          <Carousel sectionTitle="Continue Watching" nav={nav} />
-          <Carousel sectionTitle="Freshly Added" nav={nav} />
-        </View>
-        <TabMenu nav={nav} />
+      <View style={styles.HomePage}>
+        <AuthNavBar title={"Dashboard"} navigation={navigation} />
+        <ScrollView style={styles.body}>
+          {sectionTitles.map((sectionTitle: string) => (
+            <Carousel
+              key={sectionTitle}
+              sectionTitle={sectionTitle}
+              navigation={navigation}
+            />
+          ))}
+        </ScrollView>
+        {/* <TabMenu nav={nav} /> */}
       </View>
-      {nav && <Nav />}
     </>
   );
 };
 
-export default Dashboard;
-
 const styles = StyleSheet.create({
   HomePage: {
     justifyContent: "space-evenly",
-    alignContent: "center",
     flex: 1,
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: "rgba(14, 13, 11, 1)",
   },
   body: {
     flex: 1,
@@ -54,7 +66,7 @@ const styles = StyleSheet.create({
     alignContent: "center",
     flex: 1,
     alignItems: "center",
-    backgroundColor: "black",
+    backgroundColor: "rgba(14, 13, 11, 1)",
     paddingRight: "0%",
     paddingLeft: 8,
   },

@@ -1,42 +1,65 @@
-import { StyleSheet, Text, View, Image, ScrollView } from "react-native";
-import React, { FC } from "react";
-import MovieContainer from "./MovieContainer";
-import { movies } from "../movies";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
+import React, { useEffect, useState } from "react";
+import { MovieContainer } from "./MovieContainer";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { FileProps, getDashboardData } from "../../api/GetDashboardData";
+import { useAuthContext } from "../context/AuthContext";
+import { NavigationType } from "../types";
+import { rem } from "../../constants/units";
 
-interface CarouselProps {
+type CarouselProps = {
   sectionTitle?: string;
-  nav: boolean;
-}
+  navigation?: NavigationType;
+};
 
-const Carousel: FC<CarouselProps> = ({ sectionTitle, nav }) => {
+export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
+  const [dashboardData, setDashboardData] = useState<Array<FileProps>>([]);
+  const { host, userToken } = useAuthContext();
+
+  const { data } = useQuery(
+    ["getDashboardData"] as QueryKey,
+    () => getDashboardData({ host, userToken }),
+    {
+      enabled: userToken !== null && host !== "",
+    }
+  );
+
+  useEffect(() => {
+    const title: string = sectionTitle?.toUpperCase() || "";
+    data && setDashboardData(data[title]);
+  }, [data]);
+
   return (
     <View style={styles.container}>
-      <View
-        style={
-          nav
-            ? { ...styles.titleSection, flexWrap: "wrap" }
-            : styles.titleSection
-        }
-      >
+      <View style={styles.titleSection}>
         <Text style={styles.sectionTitle}>{sectionTitle}</Text>
       </View>
+
       <ScrollView style={styles.moviesSection} horizontal={true}>
-        {movies.map((element) => {
-          return (
-            <MovieContainer
-              key={element.title}
-              title={element.title}
-              picture={element.picture}
-              reference={element.reference}
-            />
-          );
-        })}
+        {dashboardData &&
+          dashboardData?.map((file: FileProps) => {
+            return (
+              <TouchableOpacity
+                key={file.id}
+                onPress={() => {
+                  alert(file.name);
+                }}
+              >
+                <MovieContainer
+                  id={file.id}
+                  key={file.id}
+                  title={file.name}
+                  picture={file.poster_path}
+                  reference={file.id}
+                />
+              </TouchableOpacity>
+            );
+          })}
       </ScrollView>
     </View>
   );
 };
-
-export default Carousel;
 
 const styles = StyleSheet.create({
   container: {
@@ -52,8 +75,8 @@ const styles = StyleSheet.create({
   sectionTitle: {
     color: "white",
     fontWeight: "700",
-    fontSize: 16,
-    marginBottom: 16,
+    fontSize: rem,
+    marginBottom: rem,
     marginLeft: 8,
   },
 });

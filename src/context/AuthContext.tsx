@@ -1,35 +1,61 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useContext, useEffect, useState } from "react";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 
-export interface AuthContextProps {
-  signIn: ({ userToken }: { userToken: string }) => Promise<void>;
+export type AuthContextProps = {
+  signIn: ({
+    userToken,
+    host,
+  }: {
+    userToken: string;
+    host: string;
+  }) => Promise<void>;
   signOut: () => void;
   isLoggedIn: boolean;
   userToken: string | null;
-}
+  host: string;
+  setHost: (value: string) => void;
+};
+
+type AuthProviderProps = {
+  children: ReactElement;
+};
 
 export const AuthContext = React.createContext<AuthContextProps>(
   {} as AuthContextProps
 );
 
-export const AuthContextProvider: React.FC = ({ children }) => {
+export const AuthContextProvider = ({ children }: AuthProviderProps) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userToken, setUserToken] = useState<string | null>(null);
+  const [host, setHost] = useState("");
 
   useEffect(() => {
     AsyncStorage.getItem("userToken").then((userToken) => {
       if (userToken) {
         setIsLoggedIn(true);
-        setUserToken(userToken);
+        setUserToken(JSON.parse(userToken));
+        AsyncStorage.getItem("host").then((host) => {
+          setHost(host as string);
+        });
       }
     });
   }, []);
 
-  const signIn = async ({ userToken }: { userToken: string }) => {
-    console.log("2 userToken", userToken);
+  const signIn = async ({
+    userToken,
+    host,
+  }: {
+    userToken: string;
+    host: string;
+  }) => {
+    console.log("userToken: ", userToken);
+    console.log("host: ", host);
     await AsyncStorage.setItem("userToken", userToken).then(() => {
-      setUserToken(userToken);
+      setUserToken(JSON.parse(userToken));
       setIsLoggedIn(true);
+    });
+    await AsyncStorage.setItem("host", host).then(() => {
+      setHost(host);
     });
   };
 
@@ -37,6 +63,9 @@ export const AuthContextProvider: React.FC = ({ children }) => {
     await AsyncStorage.removeItem("userToken").then(() => {
       setIsLoggedIn(false);
       setUserToken(null);
+    });
+    await AsyncStorage.removeItem("host").then(() => {
+      setHost("");
     });
   };
 
@@ -47,6 +76,8 @@ export const AuthContextProvider: React.FC = ({ children }) => {
         signOut,
         isLoggedIn,
         userToken,
+        host,
+        setHost,
       }}
     >
       {children}
@@ -56,5 +87,9 @@ export const AuthContextProvider: React.FC = ({ children }) => {
 
 // hook to get the AuthContext
 export const useAuthContext = () => {
-  return useContext(AuthContext) as AuthContextProps;
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error("useAuthContext must be used within a AuthContextProvider");
+  }
+  return context as AuthContextProps;
 };

@@ -1,34 +1,51 @@
-import { StyleSheet, Text, View, Image } from "react-native";
-import React, { FC } from "react";
+import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
+import React from "react";
+import { fetchMediaDetails } from "../../api/media/Media";
+import { useAuthContext } from "../context/AuthContext";
+import { useQuery } from "@tanstack/react-query";
 
-interface MovieContainerProps {
+type MovieContainerProps = {
+  id: number;
   title: string;
   picture: HTMLImageElement;
-  reference: string;
-}
+  reference: string | number;
+};
 
-const MovieContainer: FC<MovieContainerProps> = ({
+export const MovieContainer = ({
+  id,
   title,
   picture,
   reference,
-}) => {
+}: MovieContainerProps) => {
+  const { host, userToken } = useAuthContext();
+  // FIXME (Val): ideally the dashboard api would return the year as its cheap to obtain.
+  const { data } = useQuery(["media", id], () =>
+    fetchMediaDetails({ id, host, userToken })
+  );
+
   return (
     <View style={styles.movieContainer}>
-      <Image source={picture} style={styles.movieImage} />
+      <Image
+        source={{ uri: `${host}/${picture}` }}
+        style={{
+          ...styles.movieImage,
+          width: Dimensions.get("window").width / 3.4,
+        }}
+      />
       <Text style={styles.title}>{title}</Text>
-      <Text style={styles.reference}>{reference}</Text>
+      {data?.year && <Text style={styles.reference}>{data.year}</Text>}
     </View>
   );
 };
 
-export default MovieContainer;
-
 const styles = StyleSheet.create({
   movieContainer: {
     position: "relative",
-    backgroundColor: "black",
-    flex: 1,
-    padding: 8,
+    paddingBottom: 8,
+    paddingTop: 8,
+    marginRight: 8,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
   },
   title: {
     marginTop: 8,
@@ -45,6 +62,6 @@ const styles = StyleSheet.create({
   },
   movieImage: {
     aspectRatio: 0.63,
-    height: "80%",
+    borderRadius: 5,
   },
 });
