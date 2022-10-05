@@ -22,7 +22,7 @@ export const MovieContainer = ({
     <View style={styles.movieContainer}>
       {picture ? (
         <Image
-        source={{ uri: `${host}/${picture}` }}
+          source={{ uri: `${host}/${picture}` }}
           style={{
             ...styles.movieImage,
             width: Dimensions.get("window").width / 3.5,

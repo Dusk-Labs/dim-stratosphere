@@ -1,9 +1,4 @@
-import {
-  StyleSheet,
-  View,
-  FlatList,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
@@ -42,7 +37,10 @@ export const Movies = ({ route, navigation }: any) => {
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                alert(item.name);
+                navigation.navigate("MediaPage", {
+                  name: item.name,
+                  id: item.id,
+                });
               }}
             >
               <MovieContainer
