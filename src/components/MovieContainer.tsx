@@ -1,14 +1,13 @@
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
 import React from "react";
-import { fetchMediaDetails } from "../../api/media/Media";
 import { useAuthContext } from "../context/AuthContext";
-import { useQuery } from "@tanstack/react-query";
+import DimIcon from "../components/icons/DimIcon";
 
 type MovieContainerProps = {
   id: number;
   title: string;
-  picture: HTMLImageElement;
-  reference: string | number;
+  picture: HTMLImageElement | null | undefined;
+  reference: string;
 };
 
 export const MovieContainer = ({
@@ -17,23 +16,35 @@ export const MovieContainer = ({
   picture,
   reference,
 }: MovieContainerProps) => {
-  const { host, userToken } = useAuthContext();
-  // FIXME (Val): ideally the dashboard api would return the year as its cheap to obtain.
-  const { data } = useQuery(["media", id], () =>
-    fetchMediaDetails({ id, host, userToken })
-  );
+  const { host } = useAuthContext();
 
   return (
     <View style={styles.movieContainer}>
-      <Image
+      {picture ? (
+        <Image
         source={{ uri: `${host}/${picture}` }}
-        style={{
-          ...styles.movieImage,
-          width: Dimensions.get("window").width / 3.4,
-        }}
-      />
-      <Text style={styles.title}>{title}</Text>
-      {data?.year && <Text style={styles.reference}>{data.year}</Text>}
+          style={{
+            ...styles.movieImage,
+            width: Dimensions.get("window").width / 3.5,
+          }}
+          resizeMode="contain"
+        />
+      ) : (
+        <View
+          style={{
+            ...styles.iconContainer,
+            width: Dimensions.get("window").width / 3.5,
+          }}
+        >
+          <DimIcon color="white" width={70} heigth={40} />
+        </View>
+      )}
+      <Text
+        style={{ ...styles.title, width: Dimensions.get("window").width / 3.5 }}
+      >
+        {title}
+      </Text>
+      <Text style={styles.reference}>{reference}</Text>
     </View>
   );
 };
@@ -43,9 +54,10 @@ const styles = StyleSheet.create({
     position: "relative",
     paddingBottom: 8,
     paddingTop: 8,
-    marginRight: 8,
     justifyContent: "flex-start",
     alignItems: "flex-start",
+    paddingRight: 8,
+    paddingLeft: 8,
   },
   title: {
     marginTop: 8,
@@ -53,7 +65,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: "white",
     fontWeight: "400",
-    width: 120,
   },
   reference: {
     fontSize: 14,
@@ -62,6 +73,13 @@ const styles = StyleSheet.create({
   },
   movieImage: {
     aspectRatio: 0.63,
+    borderRadius: 5,
+  },
+  iconContainer: {
+    aspectRatio: 0.63,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#252525",
     borderRadius: 5,
   },
 });

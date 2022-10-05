@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
-    marginRight: rem,
+    marginRight: 16,
     backgroundColor: "#de9636",
   },
   header: {

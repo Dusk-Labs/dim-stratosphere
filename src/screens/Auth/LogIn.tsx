@@ -3,6 +3,7 @@ import React from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParams } from "../../router/stacks/AuthStackScreens";
 import { rem } from "../../../constants/units";
+import DimIcon from "../../components/icons/DimIcon";
 
 type LoginProps = NativeStackScreenProps<AuthStackParams, "LogIn">;
 
@@ -10,11 +11,17 @@ export const LogIn = ({ navigation }: LoginProps) => {
   return (
     <View style={styles.login}>
       <View style={styles.top}>
-        <Image
-          style={styles.logo}
-          resizeMode="contain"
-          source={require("../../../assets/logo.png")}
-        />
+        <View
+          style={{
+            height: 100,
+            width: 100,
+            marginBottom: 24,
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <DimIcon color="white" />
+        </View>
         <Text style={styles.title}>Dim</Text>
         <Text style={styles.subtitle}>Self-hosted media manager</Text>
       </View>
@@ -39,7 +46,6 @@ export const LogIn = ({ navigation }: LoginProps) => {
 const styles = StyleSheet.create({
   top: {
     justifyContent: "center",
-    alignContent: "center",
     alignItems: "center",
     flex: 1,
   },

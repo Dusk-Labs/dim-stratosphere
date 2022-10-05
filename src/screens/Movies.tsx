@@ -1,9 +1,13 @@
-import { StyleSheet, View, FlatList } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
 import { MovieContainer } from "../components/MovieContainer";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { getMovies } from "../../api/GetMovies";
 
@@ -52,9 +56,9 @@ export const Movies = ({ route, navigation }: any) => {
           )}
           numColumns={3}
           columnWrapperStyle={{
-            paddingRight: 8,
-            paddingLeft: 8,
             justifyContent: "space-between",
+            paddingLeft: 4,
+            paddingRight: 4,
           }}
         />
       </View>

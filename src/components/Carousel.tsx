@@ -1,12 +1,20 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { MovieContainer } from "./MovieContainer";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { FileProps, getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
 import { NavigationType } from "../types";
 import { rem } from "../../constants/units";
+import { movies } from "../movies";
+
+const logo = require("../../assets/logo.png");
 
 type CarouselProps = {
   sectionTitle?: string;
@@ -35,8 +43,11 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
       <View style={styles.titleSection}>
         <Text style={styles.sectionTitle}>{sectionTitle}</Text>
       </View>
-
-      <ScrollView style={styles.moviesSection} horizontal={true}>
+      <ScrollView
+        style={styles.moviesSection}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+      >
         {dashboardData &&
           dashboardData?.map((file: FileProps) => {
             return (

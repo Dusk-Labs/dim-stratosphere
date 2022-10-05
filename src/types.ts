@@ -12,7 +12,9 @@ export type UserFormErrors = {
 };
 
 export type IconInteface = {
-  color: string;
+  color?: string;
+  width?: number;
+  heigth?: number;
 };
 
 export type WhoAmI = {
