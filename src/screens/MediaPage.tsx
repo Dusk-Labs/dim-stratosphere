@@ -4,16 +4,15 @@ import {
   View,
   Image,
   ScrollView,
-  DevSettings,
   TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
-import { LinearGradient } from "expo-linear-gradient";
 import DropDown from "../components/DropDown";
 import ReadMoreIcon from "../components/icons/ReadMore";
 import DimIcon from "../components/icons/DimIcon";
+import { LinearGradient } from "expo-linear-gradient";
 
 export const MediaPage = ({ navigation, route }: any) => {
   const { name, id } = route.params;
@@ -29,10 +28,10 @@ export const MediaPage = ({ navigation, route }: any) => {
   useEffect(() => {
     const config = {
       headers: {
-        Authorization: JSON.parse(userToken as string),
+        Authorization: userToken,
       },
     } as any;
-    fetch(`http://${host}:8000/api/v1/media/${id}`, config)
+    fetch(`${host}/api/v1/media/${id}`, config)
       .then((response) => {
         return response.json();
       })
@@ -50,10 +49,10 @@ export const MediaPage = ({ navigation, route }: any) => {
     if (data && data.media_type === "tv") {
       const config = {
         headers: {
-          Authorization: JSON.parse(userToken as string),
+          Authorization:userToken,
         },
       } as any;
-      fetch(`http://${host}:8000/api/v1/tv/${id}/season`, config)
+      fetch(`${host}/api/v1/tv/${id}/season`, config)
         .then((response) => {
           return response.json();
         })
@@ -84,11 +83,11 @@ export const MediaPage = ({ navigation, route }: any) => {
     if (season) {
       const config = {
         headers: {
-          Authorization: JSON.parse(userToken as string),
+          Authorization: userToken,
         },
       } as any;
       const thisSeason = handleRigthSeason(season);
-      fetch(`http://${host}:8000/api/v1/season/${thisSeason}/episodes`, config)
+      fetch(`${host}/api/v1/season/${thisSeason}/episodes`, config)
         .then((response) => {
           return response.json();
         })
@@ -103,14 +102,14 @@ export const MediaPage = ({ navigation, route }: any) => {
       if (episodes) {
         const config = {
           headers: {
-            Authorization: JSON.parse(userToken as string),
+            Authorization: userToken,
           },
         } as any;
         const idArray = episodes.map((element) => {
           return element.id;
         });
         const requests = idArray.map((id) => {
-          return fetch(`http://${host}:8000/api/v1/media/${id}/files`, config);
+          return fetch(`${host}/api/v1/media/${id}/files`, config);
         });
         Promise.all(requests)
           .then((responses) => Promise.all(responses.map((res) => res.json())))
@@ -156,7 +155,7 @@ export const MediaPage = ({ navigation, route }: any) => {
             <View style={styles.top}>
               <View style={styles.topLeft}>
                 <Image
-                  source={{ uri: `http://${host}:8000/${data.poster_path}` }}
+                  source={{ uri: `${host}/${data.poster_path}` }}
                   style={styles.poster}
                 />
               </View>
@@ -222,7 +221,7 @@ export const MediaPage = ({ navigation, route }: any) => {
                           {element.thumbnail_url ? (
                             <Image
                               source={{
-                                uri: `http://${host}:8000/${element.thumbnail_url}`,
+                                uri: `${host}/${element.thumbnail_url}`,
                               }}
                               style={styles.episodePoster}
                             />
