@@ -12,9 +12,6 @@ import { FileProps, getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
 import { NavigationType } from "../types";
 import { rem } from "../../constants/units";
-import { movies } from "../movies";
-
-const logo = require("../../assets/logo.png");
 
 type CarouselProps = {
   sectionTitle?: string;
