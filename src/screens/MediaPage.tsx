@@ -49,7 +49,7 @@ export const MediaPage = ({ navigation, route }: any) => {
     if (data && data.media_type === "tv") {
       const config = {
         headers: {
-          Authorization:userToken,
+          Authorization: userToken,
         },
       } as any;
       fetch(`${host}/api/v1/tv/${id}/season`, config)
