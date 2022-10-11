@@ -7,7 +7,7 @@ type MovieContainerProps = {
   id: number;
   title: string;
   picture: HTMLImageElement | null | undefined;
-  reference: string;
+  reference: number | string;
 };
 
 export const MovieContainer = ({
