@@ -62,9 +62,6 @@ export const MediaPage = ({ navigation, route }: any) => {
     } else {
       setSeason(null);
       setEpisodes(null);
-      if (first) {
-        setFirst(false);
-      }
     }
   }, [data]);
 

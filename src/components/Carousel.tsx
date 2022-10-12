@@ -38,7 +38,7 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.titleSection}>
-        <Text style={styles.sectionTitle}>{sectionTitle}</Text>
+        <Text style={styles.sectionTitle}>{sectionTitle?.toLowerCase()}</Text>
       </View>
       <ScrollView
         style={styles.moviesSection}
