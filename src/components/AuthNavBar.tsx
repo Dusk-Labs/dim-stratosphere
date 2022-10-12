@@ -10,12 +10,14 @@ type AuthNavBarProps = {
   title: string;
   navigation: NavigationType;
   moviesOrShows?: boolean;
+  position?: "absolute" | "relative"|undefined;
 };
 
 export const AuthNavBar = ({
   title,
   navigation,
   moviesOrShows,
+  position
 }: AuthNavBarProps) => {
   function handleTitle(title: string) {
     let newTitle = title;
@@ -25,7 +27,7 @@ export const AuthNavBar = ({
     return newTitle;
   }
   return (
-    <View style={styles.container}>
+    <View style={position?{...styles.container,position:position}:styles.container}>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {

@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView,Dimensions } from "react-native";
+import { StyleSheet, View, ScrollView, Dimensions } from "react-native";
 import { Carousel } from "../components/Carousel";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
@@ -6,7 +6,7 @@ import { QueryKey, useQuery } from "@tanstack/react-query";
 import { getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
 import { NavigationType } from "../types";
-import  BannerCard  from "../components/BannerCard";
+import BannerCard from "../components/BannerCard";
 
 type DashboardProps = {
   navigation: NavigationType;
@@ -14,7 +14,7 @@ type DashboardProps = {
 
 export const Dashboard = ({ navigation }: DashboardProps) => {
   const [nav] = useState(false);
-  const [banner,setBanner]=useState()
+  const [banner, setBanner] = useState();
   const { host, userToken } = useAuthContext();
   const { data } = useQuery(
     ["getDashboardData"] as QueryKey,
@@ -29,8 +29,12 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
         Authorization: userToken,
       },
     } as any;
-fetch(`${host}/api/v1/dashboard/banner`,config).then((res)=>res.json()).then((res)=>{setBanner(res);console.log(res[0])})
-  }, [data]);
+    fetch(`${host}/api/v1/dashboard/banner`, config)
+      .then((res) => res.json())
+      .then((res) => {
+        setBanner(res);
+      });
+  }, [host]);
 
   const sectionTitles = Object.keys(data || {});
 
@@ -41,8 +45,15 @@ fetch(`${host}/api/v1/dashboard/banner`,config).then((res)=>res.json()).then((re
   return (
     <>
       <View style={styles.HomePage}>
-        {banner && <BannerCard backDrop={banner[0].backdrop} title={banner[0].title} year={banner[0].year} genres={banner[0].genres}/>}
-         <AuthNavBar title={"Dashboard"} navigation={navigation} />
+        {banner && (
+          <BannerCard
+            backDrop={banner[0].backdrop}
+            title={banner[0].title}
+            year={banner[0].year}
+            genres={banner[0].genres}
+          />
+        )}
+        <AuthNavBar title={"Dashboard"} navigation={navigation} position={"absolute"}/>
         <ScrollView style={styles.body}>
           {sectionTitles.map((sectionTitle: string) => (
             <Carousel
