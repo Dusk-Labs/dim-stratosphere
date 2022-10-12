@@ -53,7 +53,11 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
             genres={banner[0].genres}
           />
         )}
-        <AuthNavBar title={"Dashboard"} navigation={navigation} position={"absolute"}/>
+        <AuthNavBar
+          title={"Dashboard"}
+          navigation={navigation}
+          position={"absolute"}
+        />
         <ScrollView style={styles.body}>
           {sectionTitles.map((sectionTitle: string) => (
             <Carousel
