@@ -6,8 +6,7 @@ import { QueryKey, useQuery } from "@tanstack/react-query";
 import { getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
 import { NavigationType } from "../types";
-import BannerCard from "../components/BannerCard";
-import {rem} from "../../constants/units";
+import  Banner  from "../components/Banner";
 
 type DashboardProps = {
   navigation: NavigationType;
@@ -15,7 +14,6 @@ type DashboardProps = {
 
 export const Dashboard = ({ navigation }: DashboardProps) => {
   const [nav] = useState(false);
-  const [banner, setBanner] = useState();
   const { host, userToken } = useAuthContext();
   const { data } = useQuery(
     ["getDashboardData"] as QueryKey,
@@ -24,18 +22,7 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
       enabled: userToken !== null && host !== "",
     }
   );
-  useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: userToken,
-      },
-    } as any;
-    fetch(`${host}/api/v1/dashboard/banner`, config)
-      .then((res) => res.json())
-      .then((res) => {
-        setBanner(res);
-      });
-  }, [host]);
+  
 
   const sectionTitles = Object.keys(data || {});
 
@@ -46,21 +33,7 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
   return (
     <>
       <View style={styles.HomePage}>
-        <View style={styles.banner}>
-        {banner && (
-          <BannerCard
-            backDrop={banner[0].backdrop}
-            title={banner[0].title}
-            year={banner[0].year}
-            genres={banner[0].genres}
-          />
-        )}
-        <View style={styles.bannerDots}>
-          {banner && banner.map((item, i) => {
-            return  <View key={i} style={i===0?styles.bannerDotOn:styles.bannerDotOff}></View>
-          })}
-        </View>
-        </View>
+        <Banner />
         <AuthNavBar
           title={"Dashboard"}
           navigation={navigation}
@@ -108,31 +81,5 @@ const styles = StyleSheet.create({
     marginTop: "10%",
     marginBottom: "10%",
   },
-  banner: {
-   marginBottom: rem
-  },
-  bannerDots:{
-    flexDirection: "row",
-    width:"100%",
-    justifyContent: "center",
-    marginTop:rem
-  },
-  bannerDotOff:{
-    width: 8,
-    height: 8,
-    borderRadius: 10,
-    backgroundColor: "black",
-    margin: 5,
-    borderWidth:2,
-    borderColor: "#666666"
-  },
-  bannerDotOn:{
-    width: 8,
-    height: 8,
-    borderRadius: 10,
-    backgroundColor: "white",
-    margin: 5,
-    borderWidth:2,
-    borderColor: "white"
-  }
+  
 });

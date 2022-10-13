@@ -1,7 +1,8 @@
 import { StyleSheet, Text, View, Image, Dimensions } from "react-native";
-import React from "react";
+import React,{useEffect} from "react";
 import { useAuthContext } from "../context/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
+import { rem } from "../../constants/units";
 
 const { width, height } = Dimensions.get("window");
 
@@ -12,22 +13,16 @@ type BannerProps = {
   genres: string[];
 };
 const BannerCard = ({ backDrop, title, year, genres }: BannerProps) => {
-  const { host, userToken } = useAuthContext();
-  console.log(backDrop, "backdrop");
+  const { host, userToken } = useAuthContext();  
   return (
     <View style={styles.container}>
       <Image source={{ uri: `${host}/${backDrop}` }} style={styles.image} />
       <LinearGradient
-        style={{
-          position: "absolute",
-          width: "100%",
-          height: "50%",
-          alignSelf: "baseline",
-        }}
+        style={styles.topGradient}
         colors={["black", "transparent"]}
       ></LinearGradient>
       <LinearGradient
-        style={styles.bannersBottom}
+        style={styles.bottomGradient}
         colors={["transparent", "black"]}
       >
         <View style={styles.genres}>
@@ -49,37 +44,50 @@ export default BannerCard;
 const styles = StyleSheet.create({
   container: {
     opacity: 1,
+    width,
+    aspectRatio: 1.3,
+  },
+  topGradient:{
+    width: "100%",
+    height: "50%",
+    alignSelf: "baseline",
   },
   image: {
     width,
     aspectRatio: 1.3,
-  },
-  shadow: {
     position: "absolute",
-    width,
-    aspectRatio: 1.3,
-    zIndex: 3,
-    backgroundColor: "rgba(0,0,0,0)",
-    borderTopWidth: 100,
-    borderTopColor: "rgba(0,0,0,0.1)",
   },
   title: {
     color: "white",
+    marginLeft:  rem,
+    fontSize:  rem*1.2,
+    fontWeight: "600",
+    marginBottom:  rem*.5,
   },
   year: {
     color: "white",
+    marginLeft:  rem,
+    fontWeight:"500",
+    fontSize:rem*.7,
+    marginBottom:rem*.5
+
   },
   genres: {
     flexDirection: "row",
+    marginLeft:rem*.5,
+    marginBottom:rem*.5
   },
   genre: {
     color: "white",
-    marginLeft: 5,
+    fontSize: 0.7 * rem,
+    fontWeight:"500",
+    marginLeft:  rem*.5,
+
   },
-  bannersBottom: {
-    position: "absolute",
-    flex: 1,
+  bottomGradient: {
+    width: "100%",
+    height: "50%",
     justifyContent: "flex-end",
-    alignItems: "flex-end",
+    alignItems: "flex-start",
   },
 });
