@@ -7,6 +7,7 @@ import { getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
 import { NavigationType } from "../types";
 import BannerCard from "../components/BannerCard";
+import {rem} from "../../constants/units";
 
 type DashboardProps = {
   navigation: NavigationType;
@@ -45,6 +46,7 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
   return (
     <>
       <View style={styles.HomePage}>
+        <View style={styles.banner}>
         {banner && (
           <BannerCard
             backDrop={banner[0].backdrop}
@@ -53,6 +55,12 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
             genres={banner[0].genres}
           />
         )}
+        <View style={styles.bannerDots}>
+          {banner && banner.map((item, i) => {
+            return  <View key={i} style={i===0?styles.bannerDotOn:styles.bannerDotOff}></View>
+          })}
+        </View>
+        </View>
         <AuthNavBar
           title={"Dashboard"}
           navigation={navigation}
@@ -100,4 +108,31 @@ const styles = StyleSheet.create({
     marginTop: "10%",
     marginBottom: "10%",
   },
+  banner: {
+   marginBottom: rem
+  },
+  bannerDots:{
+    flexDirection: "row",
+    width:"100%",
+    justifyContent: "center",
+    marginTop:rem
+  },
+  bannerDotOff:{
+    width: 8,
+    height: 8,
+    borderRadius: 10,
+    backgroundColor: "black",
+    margin: 5,
+    borderWidth:2,
+    borderColor: "#666666"
+  },
+  bannerDotOn:{
+    width: 8,
+    height: 8,
+    borderRadius: 10,
+    backgroundColor: "white",
+    margin: 5,
+    borderWidth:2,
+    borderColor: "white"
+  }
 });

@@ -49,8 +49,6 @@ export default BannerCard;
 const styles = StyleSheet.create({
   container: {
     opacity: 1,
-    backgroundColor: "red",
-    flex: 1,
   },
   image: {
     width,
