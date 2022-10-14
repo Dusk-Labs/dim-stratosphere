@@ -17,31 +17,44 @@ type BannerProps = {
   season?: number;
   episode?: number;
 };
-const BannerCard = ({ backDrop, title, year, genres,duration,delta,season,episode }: BannerProps) => {
+const BannerCard = ({
+  backDrop,
+  title,
+  year,
+  genres,
+  duration,
+  delta,
+  season,
+  episode,
+}: BannerProps) => {
   const { host, userToken } = useAuthContext();
   function handleDuration(duration: number) {
     const hours = Math.floor(duration / 3600);
     const minutes = Math.floor((duration - hours * 3600) / 60);
-    if(hours > 0){
-    return `${hours}h ${minutes}m`;
-    }else{
-      return `${Math.floor(duration/60)}m`;
+    if (hours > 0) {
+      return `${hours}h ${minutes}m`;
+    } else {
+      return `${Math.floor(duration / 60)}m`;
     }
   }
   function handleButtonText(delta: number) {
-    if(delta === 0) {
-      return "Play";   
-  }else{
-    return "Resume";
+    if (delta === 0) {
+      return "Play";
+    } else {
+      return "Resume";
+    }
   }
-}
- function handleTitle(title:string,season:number|undefined,episode:number|undefined){
-   if(season && episode){
-     return `${title} S${season}:E${episode}`;
-   }else{
-     return title;
-   }
- }
+  function handleTitle(
+    title: string,
+    season: number | undefined,
+    episode: number | undefined
+  ) {
+    if (season && episode) {
+      return `${title} S${season}:E${episode}`;
+    } else {
+      return title;
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -62,16 +75,20 @@ const BannerCard = ({ backDrop, title, year, genres,duration,delta,season,episod
               </Text>
             ))}
           </View>
-          <Text style={styles.title}>{handleTitle(title,season,episode)} {}</Text>
+          <Text style={styles.title}>
+            {handleTitle(title, season, episode)} {}
+          </Text>
           <View style={styles.info}>
-          <Text style={styles.year}>{year}</Text>
-          <Text style={styles.duration}>{handleDuration(duration)}</Text>
+            <Text style={styles.year}>{year}</Text>
+            <Text style={styles.duration}>{handleDuration(duration)}</Text>
           </View>
         </View>
         <View style={styles.bottomRight}>
           <View style={styles.buttons}>
             <TouchableOpacity style={styles.playButton}>
-              <Text style={{ color: "black", fontWeight: "500" }}>{handleButtonText(delta)}</Text>
+              <Text style={{ color: "black", fontWeight: "500" }}>
+                {handleButtonText(delta)}
+              </Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.dotsIcon}>
               <View style={styles.dot}></View>
@@ -182,10 +199,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: rem * 0.5,
   },
-  info:{
+  info: {
     flexDirection: "row",
     width: "100%",
-    justifyContent:"flex-start",
-    alignItems:"center"
-  }
+    justifyContent: "flex-start",
+    alignItems: "center",
+  },
 });
