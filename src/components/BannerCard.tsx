@@ -39,14 +39,14 @@ const BannerCard = ({ backDrop, title, year, genres }: BannerProps) => {
         </View>
         <View style={styles.bottomRight}>
           <View style={styles.buttons}>
-          <TouchableOpacity style={styles.playButton}>
-            <Text style={{color:"black",fontWeight:"500"}}>Play</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.dotsIcon  }>
-            <View style={styles.dot}></View>
-            <View style={styles.dot}></View>
-            <View style={styles.dot}></View>
-          </TouchableOpacity>
+            <TouchableOpacity style={styles.playButton}>
+              <Text style={{ color: "black", fontWeight: "500" }}>Play</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.dotsIcon}>
+              <View style={styles.dot}></View>
+              <View style={styles.dot}></View>
+              <View style={styles.dot}></View>
+            </TouchableOpacity>
           </View>
         </View>
       </LinearGradient>
@@ -104,44 +104,44 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     flexDirection: "row",
   },
-  bottomLeft:{
+  bottomLeft: {
     width: "60%",
     height: "100%",
-    justifyContent:"flex-end",
+    justifyContent: "flex-end",
   },
   bottomRight: {
     width: "40%",
     height: "100%",
-    justifyContent:"flex-start",
-    flexDirection:"row",
-    alignItems:"flex-end",
+    justifyContent: "flex-start",
+    flexDirection: "row",
+    alignItems: "flex-end",
   },
-  playButton:{
-    paddingRight:rem,
-    paddingLeft:rem,
-    paddingBottom:rem*0.5,
-    paddingTop:rem*0.5,
-    backgroundColor:"#EA963E",
-    color:"black",
-    borderRadius:10,
-    width:rem*5,
-    justifyContent:"center",
-    alignItems:"center",
+  playButton: {
+    paddingRight: rem,
+    paddingLeft: rem,
+    paddingBottom: rem * 0.5,
+    paddingTop: rem * 0.5,
+    backgroundColor: "#EA963E",
+    color: "black",
+    borderRadius: 10,
+    width: rem * 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  dotsIcon:{
-    marginLeft:rem*2,
+  dotsIcon: {
+    marginLeft: rem * 2,
   },
-  dot:{
-    width:rem*.3,
-    height:rem*.3,
-    borderRadius:10,
-    backgroundColor:"white",
-    margin:rem*0.2
+  dot: {
+    width: rem * 0.3,
+    height: rem * 0.3,
+    borderRadius: 10,
+    backgroundColor: "white",
+    margin: rem * 0.2,
   },
-  buttons:{
-    flexDirection:"row",
-    justifyContent:"center",
-    alignItems:"center",
-    marginBottom:rem*.5
-  }
+  buttons: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: rem * 0.5,
+  },
 });

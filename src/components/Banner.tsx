@@ -14,13 +14,14 @@ const Banner = () => {
         Authorization: userToken,
       },
     } as any;
-    if(host){
-    fetch(`${host}/api/v1/dashboard/banner`, config)
-      .then((res) => res.json())
-      .then((res) => {
-        setBanner(res);
-        console.log(res);
-      })};
+    if (host) {
+      fetch(`${host}/api/v1/dashboard/banner`, config)
+        .then((res) => res.json())
+        .then((res) => {
+          setBanner(res);
+          console.log(res);
+        });
+    }
   }, [host]);
 
   useEffect(() => {
