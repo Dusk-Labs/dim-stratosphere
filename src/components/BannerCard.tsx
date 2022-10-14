@@ -12,9 +12,37 @@ type BannerProps = {
   title: string;
   year: number;
   genres: string[];
+  duration?: number;
+  delta?: number;
+  season?: number;
+  episode?: number;
 };
-const BannerCard = ({ backDrop, title, year, genres }: BannerProps) => {
+const BannerCard = ({ backDrop, title, year, genres,duration,delta,season,episode }: BannerProps) => {
   const { host, userToken } = useAuthContext();
+  function handleDuration(duration: number) {
+    const hours = Math.floor(duration / 3600);
+    const minutes = Math.floor((duration - hours * 3600) / 60);
+    if(hours > 0){
+    return `${hours}h ${minutes}m`;
+    }else{
+      return `${Math.floor(duration/60)}m`;
+    }
+  }
+  function handleButtonText(delta: number) {
+    if(delta === 0) {
+      return "Play";   
+  }else{
+    return "Resume";
+  }
+}
+ function handleTitle(title:string,season:number|undefined,episode:number|undefined){
+   if(season && episode){
+     return `${title} S${season}:E${episode}`;
+   }else{
+     return title;
+   }
+ }
+
   return (
     <View style={styles.container}>
       <Image source={{ uri: `${host}/${backDrop}` }} style={styles.image} />
@@ -34,13 +62,16 @@ const BannerCard = ({ backDrop, title, year, genres }: BannerProps) => {
               </Text>
             ))}
           </View>
-          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.title}>{handleTitle(title,season,episode)} {}</Text>
+          <View style={styles.info}>
           <Text style={styles.year}>{year}</Text>
+          <Text style={styles.duration}>{handleDuration(duration)}</Text>
+          </View>
         </View>
         <View style={styles.bottomRight}>
           <View style={styles.buttons}>
             <TouchableOpacity style={styles.playButton}>
-              <Text style={{ color: "black", fontWeight: "500" }}>Play</Text>
+              <Text style={{ color: "black", fontWeight: "500" }}>{handleButtonText(delta)}</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles.dotsIcon}>
               <View style={styles.dot}></View>
@@ -80,6 +111,13 @@ const styles = StyleSheet.create({
     marginBottom: rem * 0.5,
   },
   year: {
+    color: "white",
+    marginLeft: rem,
+    fontWeight: "500",
+    fontSize: rem * 0.7,
+    marginBottom: rem * 0.5,
+  },
+  duration: {
     color: "white",
     marginLeft: rem,
     fontWeight: "500",
@@ -129,12 +167,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   dotsIcon: {
-    marginLeft: rem * 2,
+    marginLeft: rem * 1.5,
   },
   dot: {
-    width: rem * 0.3,
-    height: rem * 0.3,
-    borderRadius: 10,
+    width: 4,
+    height: 4,
+    borderRadius: 5,
     backgroundColor: "white",
     margin: rem * 0.2,
   },
@@ -144,4 +182,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: rem * 0.5,
   },
+  info:{
+    flexDirection: "row",
+    width: "100%",
+    justifyContent:"flex-start",
+    alignItems:"center"
+  }
 });

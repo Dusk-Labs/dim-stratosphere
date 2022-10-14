@@ -42,6 +42,10 @@ const Banner = () => {
           title={banner[index].title}
           year={banner[index].year}
           genres={banner[index].genres}
+          duration={banner[index].duration}
+          delta={banner[index].delta}
+          season={banner[index].season}
+          episode={banner[index].episode}
         />
       )}
       <View style={styles.bannerDots}>
