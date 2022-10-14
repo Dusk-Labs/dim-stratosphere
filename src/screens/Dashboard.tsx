@@ -6,7 +6,7 @@ import { QueryKey, useQuery } from "@tanstack/react-query";
 import { getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
 import { NavigationType } from "../types";
-import  Banner  from "../components/Banner";
+import Banner from "../components/Banner";
 
 type DashboardProps = {
   navigation: NavigationType;
@@ -22,7 +22,6 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
       enabled: userToken !== null && host !== "",
     }
   );
-  
 
   const sectionTitles = Object.keys(data || {});
 
@@ -81,5 +80,4 @@ const styles = StyleSheet.create({
     marginTop: "10%",
     marginBottom: "10%",
   },
-  
 });
