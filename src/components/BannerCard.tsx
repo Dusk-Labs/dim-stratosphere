@@ -29,13 +29,23 @@ const BannerCard = ({
 }: BannerProps) => {
   const { host, userToken } = useAuthContext();
   function handleDuration(duration: number) {
-    const hours = Math.floor(duration / 3600);
-    const minutes = Math.floor((duration - hours * 3600) / 60);
+    let hours = Math.floor(duration / 3600);
+    let minutes = Math.floor((duration - hours * 3600) / 60);
+    if(!delta){
     if (hours > 0) {
       return `${hours}h ${minutes}m`;
     } else {
       return `${Math.floor(duration / 60)}m`;
     }
+  }else{
+    hours = Math.floor((duration-delta) / 3600);
+    minutes = Math.floor((duration-delta - hours * 3600) / 60);
+    if (hours > 0) {
+      return `${hours}h ${minutes}m left`;
+    } else {
+      return `${Math.floor(duration / 60)}m left`;
+    }
+  }
   }
   function handleButtonText(delta: number) {
     if (delta === 0) {
@@ -76,7 +86,7 @@ const BannerCard = ({
             ))}
           </View>
           <Text style={styles.title}>
-            {handleTitle(title, season, episode)} {}
+            {handleTitle(title, season, episode)}
           </Text>
           <View style={styles.info}>
             <Text style={styles.year}>{year}</Text>
@@ -179,7 +189,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#EA963E",
     color: "black",
     borderRadius: 10,
-    width: rem * 5,
     justifyContent: "center",
     alignItems: "center",
   },
