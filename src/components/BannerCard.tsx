@@ -31,21 +31,21 @@ const BannerCard = ({
   function handleDuration(duration: number) {
     let hours = Math.floor(duration / 3600);
     let minutes = Math.floor((duration - hours * 3600) / 60);
-    if(!delta){
-    if (hours > 0) {
-      return `${hours}h ${minutes}m`;
+    if (!delta) {
+      if (hours > 0) {
+        return `${hours}h ${minutes}m`;
+      } else {
+        return `${Math.floor(duration / 60)}m`;
+      }
     } else {
-      return `${Math.floor(duration / 60)}m`;
+      hours = Math.floor((duration - delta) / 3600);
+      minutes = Math.floor((duration - delta - hours * 3600) / 60);
+      if (hours > 0) {
+        return `${hours}h ${minutes}m left`;
+      } else {
+        return `${Math.floor(duration / 60)}m left`;
+      }
     }
-  }else{
-    hours = Math.floor((duration-delta) / 3600);
-    minutes = Math.floor((duration-delta - hours * 3600) / 60);
-    if (hours > 0) {
-      return `${hours}h ${minutes}m left`;
-    } else {
-      return `${Math.floor(duration / 60)}m left`;
-    }
-  }
   }
   function handleButtonText(delta: number) {
     if (delta === 0) {
