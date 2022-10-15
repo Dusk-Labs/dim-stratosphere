@@ -4,6 +4,7 @@ import { useAuthContext } from "../context/AuthContext";
 import { LinearGradient } from "expo-linear-gradient";
 import { rem } from "../../constants/units";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import CircularProgressBar from "./icons/CircularProgressBar";
 
 const { width, height } = Dimensions.get("window");
 
@@ -65,6 +66,13 @@ const BannerCard = ({
       return title;
     }
   }
+  function handlePercent() {
+    if (delta) {
+      return Math.floor((delta / duration) * 100);
+    } else {
+      return 0;
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -91,6 +99,9 @@ const BannerCard = ({
           <View style={styles.info}>
             <Text style={styles.year}>{year}</Text>
             <Text style={styles.duration}>{handleDuration(duration)}</Text>
+            <View style={styles.progressBarContainer}>
+            {delta > 0 && <CircularProgressBar percent={handlePercent()} backColor={"#252525"} size={15} progressColor={"rgba(234, 150, 62, 1)"}/>}
+            </View>
           </View>
         </View>
         <View style={styles.bottomRight}>
@@ -150,6 +161,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: rem * 0.7,
     marginBottom: rem * 0.5,
+    marginRight: rem,
   },
   genres: {
     flexDirection: "row",
@@ -214,4 +226,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
   },
+  progressBarContainer: {
+    marginBottom: rem * 0.5,
+  }
 });

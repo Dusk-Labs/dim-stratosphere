@@ -19,7 +19,6 @@ const Banner = () => {
         .then((res) => res.json())
         .then((res) => {
           setBanner(res);
-          console.log(res);
         });
     }
   }, [host]);
