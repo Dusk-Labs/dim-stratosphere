@@ -100,7 +100,14 @@ const BannerCard = ({
             <Text style={styles.year}>{year}</Text>
             <Text style={styles.duration}>{handleDuration(duration)}</Text>
             <View style={styles.progressBarContainer}>
-            {delta > 0 && <CircularProgressBar percent={handlePercent()} backColor={"#252525"} size={15} progressColor={"rgba(234, 150, 62, 1)"}/>}
+              {delta > 0 && (
+                <CircularProgressBar
+                  percent={handlePercent()}
+                  backColor={"#252525"}
+                  size={15}
+                  progressColor={"rgba(234, 150, 62, 1)"}
+                />
+              )}
             </View>
           </View>
         </View>
@@ -228,5 +235,5 @@ const styles = StyleSheet.create({
   },
   progressBarContainer: {
     marginBottom: rem * 0.5,
-  }
+  },
 });

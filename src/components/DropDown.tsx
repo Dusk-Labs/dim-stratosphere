@@ -83,7 +83,9 @@ const DropDown = ({
       >
         <View
           style={
-            showContent && options.length > 1 ? styles.dropDownTitleContainerOpened : styles.dropDownTitleContainer
+            showContent && options.length > 1
+              ? styles.dropDownTitleContainerOpened
+              : styles.dropDownTitleContainer
           }
         >
           <Text style={styles.selected}>
@@ -114,7 +116,9 @@ const DropDown = ({
                 }}
               >
                 <Text style={styles.option}>
-                  {kind === "Season" ? "Season " + HandleAddZero(element) : element}
+                  {kind === "Season"
+                    ? "Season " + HandleAddZero(element)
+                    : element}
                 </Text>
               </TouchableOpacity>
             );
