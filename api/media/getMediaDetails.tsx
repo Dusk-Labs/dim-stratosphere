@@ -49,7 +49,7 @@ type MediaDetailsProps = {
   userToken: string | null;
 };
 
-export const fetchMediaDetails = async ({
+export const getMediaDetails = async ({
   id,
   host,
   userToken,

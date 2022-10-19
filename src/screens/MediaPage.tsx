@@ -13,43 +13,72 @@ import DropDown from "../components/DropDown";
 import ReadMoreIcon from "../components/icons/ReadMore";
 import DimIcon from "../components/icons/DimIcon";
 import { LinearGradient } from "expo-linear-gradient";
+import { QueryKey, useQuery } from "@tanstack/react-query";
+import { getMediaDetails, Media } from "../../api/media/getMediaDetails";
 
 export const MediaPage = ({ navigation, route }: any) => {
   const { name, id } = route.params;
   const { host, userToken } = useAuthContext();
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<Media>({
+    added: null,
+    backdrop_path: null,
+    description: null,
+    duration: 0,
+    genres: [],
+    id: 0,
+    library_id: 0,
+    media_type: "",
+    name: "",
+    progress: 0,
+  });
   const [season, setSeason] = useState(null);
-  const [episodes, setEpisodes] = useState(null);
+  const [episodes, setEpisodes] = useState([]);
   const [seasonNumber, setSeasonNumber] = useState(1);
   const [first, setFirst] = useState(true);
   const [isReadMoreActive, setIsreadMoreActive] = useState(false);
   const [episodesFiles, setEpisodesFiles] = useState([]);
 
-  useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: userToken,
-      },
-    } as any;
-    fetch(`${host}/api/v1/media/${id}`, config)
-      .then((response) => {
-        return response.json();
-      })
-      .then((data) => {
+  useQuery(
+    ["getMedia"] as QueryKey,
+    async () => await getMediaDetails({ id, host, userToken }),
+    {
+      enabled: id,
+      onSuccess: (data) => {
         setData(data);
-      });
-    setSeasonNumber(1);
-    setFirst(true);
-    setSeason(null);
-    setIsreadMoreActive(false);
-    setEpisodesFiles([]);
-  }, [id]);
+        setSeasonNumber(1);
+        setFirst(true);
+        setSeason(null);
+        setIsreadMoreActive(false);
+        setEpisodesFiles([]);
+      },
+    }
+  );
+
+  // useEffect(() => {
+  //   const config = {
+  //     headers: {
+  //       Authorization: userToken,
+  //     },
+  //   } as any;
+  //   fetch(`${host}/api/v1/media/${id}`, config)
+  //     .then((response) => {
+  //       return response.json();
+  //     })
+  //     .then((data) => {
+  //       setData(data);
+  //     });
+  //   setSeasonNumber(1);
+  //   setFirst(true);
+  //   setSeason(null);
+  //   setIsreadMoreActive(false);
+  //   setEpisodesFiles([]);
+  // }, [id]);
 
   useEffect(() => {
     if (data && data.media_type === "tv") {
       const config = {
         headers: {
-          Authorization:userToken,
+          Authorization: userToken,
         },
       } as any;
       fetch(`${host}/api/v1/tv/${id}/season`, config)
@@ -105,7 +134,7 @@ export const MediaPage = ({ navigation, route }: any) => {
             Authorization: userToken,
           },
         } as any;
-        const idArray = episodes.map((element) => {
+        const idArray = episodes.map((element: { id: number }) => {
           return element.id;
         });
         const requests = idArray.map((id) => {

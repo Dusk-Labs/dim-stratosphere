@@ -51,7 +51,7 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
               <TouchableOpacity
                 key={file.id}
                 onPress={() => {
-                  navigation.navigate("MediaPage", {
+                  navigation?.navigate("MediaPage", {
                     name: file.name,
                     id: file.id,
                   });
