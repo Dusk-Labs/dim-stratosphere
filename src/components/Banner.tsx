@@ -3,16 +3,17 @@ import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import BannerCard from "./BannerCard";
 import { rem } from "../../constants/units";
-import { useQuery,QueryKey } from "@tanstack/react-query";
+import { useQuery, QueryKey } from "@tanstack/react-query";
 import { getBannerData } from "../../api/GetBannerData";
 
 const Banner = () => {
   const { host, userToken } = useAuthContext();
   const [index, setIndex] = useState(0);
-  const {data}= useQuery(["getBannerData"] as QueryKey, 
-  () => getBannerData({ host, userToken }),
-   {enabled: userToken !== null && host !== ""},
-  )
+  const { data } = useQuery(
+    ["getBannerData"] as QueryKey,
+    () => getBannerData({ host, userToken }),
+    { enabled: userToken !== null && host !== "" }
+  );
 
   useEffect(() => {
     const myI = setInterval(() => {
