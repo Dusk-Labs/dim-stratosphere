@@ -7,7 +7,6 @@ import { getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
 import { NavigationType } from "../types";
 import Banner from "../components/Banner";
-import CircularProgressBar from "../components/icons/CircularProgressBar";
 
 type DashboardProps = {
   navigation: NavigationType;

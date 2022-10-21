@@ -3,53 +3,44 @@ import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import BannerCard from "./BannerCard";
 import { rem } from "../../constants/units";
+import { useQuery,QueryKey } from "@tanstack/react-query";
+import { getBannerData } from "../../api/GetBannerData";
 
 const Banner = () => {
-  const [banner, setBanner] = useState();
   const { host, userToken } = useAuthContext();
   const [index, setIndex] = useState(0);
-  useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: userToken,
-      },
-    } as any;
-    if (host) {
-      fetch(`${host}/api/v1/dashboard/banner`, config)
-        .then((res) => res.json())
-        .then((res) => {
-          setBanner(res);
-        });
-    }
-  }, [host]);
+  const {data}= useQuery(["getBannerData"] as QueryKey, 
+  () => getBannerData({ host, userToken }),
+   {enabled: userToken !== null && host !== ""},
+  )
 
   useEffect(() => {
     const myI = setInterval(() => {
-      if (index < banner?.length - 1) {
+      if (index < data?.length - 1) {
         setIndex(index + 1);
       } else {
         setIndex(0);
       }
     }, 5000);
     return () => clearInterval(myI);
-  }, [index, banner]);
+  }, [index, data]);
   return (
     <View style={styles.banner}>
-      {banner && (
+      {data && (
         <BannerCard
-          backDrop={banner[index].backdrop}
-          title={banner[index].title}
-          year={banner[index].year}
-          genres={banner[index].genres}
-          duration={banner[index].duration}
-          delta={banner[index].delta}
-          season={banner[index].season}
-          episode={banner[index].episode}
+          backDrop={data[index].backdrop}
+          title={data[index].title}
+          year={data[index].year}
+          genres={data[index].genres}
+          duration={data[index].duration}
+          delta={data[index].delta}
+          season={data[index].season}
+          episode={data[index].episode}
         />
       )}
       <View style={styles.bannerDots}>
-        {banner &&
-          banner.map((item, i) => {
+        {data &&
+          data.map((item, i) => {
             return (
               <View
                 key={i}
