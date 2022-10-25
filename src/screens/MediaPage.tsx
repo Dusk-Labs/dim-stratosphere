@@ -14,15 +14,19 @@ import ReadMoreIcon from "../components/icons/ReadMore";
 import DimIcon from "../components/icons/DimIcon";
 import { LinearGradient } from "expo-linear-gradient";
 import { QueryKey, useQuery } from "@tanstack/react-query";
-import { getMediaDetails, Media } from "../../api/media/getMediaDetails";
+import { getMediaDetails, Media } from "../../api/media/GetMediaDetails";
+import { Episode, getSeasonEpisodes } from "../../api/media/GetSeasonEpisodes";
+import { getSeasonData, Season } from "../../api/media/GetSeasonData";
+import { EpisodeFile } from "../types";
+import { getMultipleEpisodeFile } from "../../api/media/GetMultipleEpisodeFile";
 
 export const MediaPage = ({ navigation, route }: any) => {
   const { name, id } = route.params;
   const { host, userToken } = useAuthContext();
-  const [data, setData] = useState<Media>({
+  const [mediaData, setMediaData] = useState<Media>({
     added: null,
     backdrop_path: null,
-    description: null,
+    description: "",
     duration: 0,
     genres: [],
     id: 0,
@@ -31,20 +35,26 @@ export const MediaPage = ({ navigation, route }: any) => {
     name: "",
     progress: 0,
   });
-  const [season, setSeason] = useState(null);
-  const [episodes, setEpisodes] = useState([]);
+
+  const [season, setSeason] = useState<Season[] | null>(null);
+  const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [seasonNumber, setSeasonNumber] = useState(1);
   const [first, setFirst] = useState(true);
   const [isReadMoreActive, setIsreadMoreActive] = useState(false);
-  const [episodesFiles, setEpisodesFiles] = useState([]);
+  const [episodesFiles, setEpisodesFiles] = useState<EpisodeFile[]>([]);
+  const [fetchSeasonEpisodes, setFetchSeasonEpisodes] = useState(false);
+  const [thisSeason, setThisSeason] = useState(1);
+  const [fetchSeasonData, setFetchSeasonData] = useState(false);
+  const [fetchMultipleEpisodeFile, setFetchMultipleEpisodeFile] =
+    useState(false);
 
   useQuery(
-    ["getMedia"] as QueryKey,
+    ["getMedia", id] as QueryKey,
     async () => await getMediaDetails({ id, host, userToken }),
     {
-      enabled: id,
+      enabled: true,
       onSuccess: (data) => {
-        setData(data);
+        setMediaData(data);
         setSeasonNumber(1);
         setFirst(true);
         setSeason(null);
@@ -54,48 +64,66 @@ export const MediaPage = ({ navigation, route }: any) => {
     }
   );
 
-  // useEffect(() => {
-  //   const config = {
-  //     headers: {
-  //       Authorization: userToken,
-  //     },
-  //   } as any;
-  //   fetch(`${host}/api/v1/media/${id}`, config)
-  //     .then((response) => {
-  //       return response.json();
-  //     })
-  //     .then((data) => {
-  //       setData(data);
-  //     });
-  //   setSeasonNumber(1);
-  //   setFirst(true);
-  //   setSeason(null);
-  //   setIsreadMoreActive(false);
-  //   setEpisodesFiles([]);
-  // }, [id]);
+  useQuery(
+    ["getSeasonEpisodes", seasonNumber || season] as QueryKey,
+    async () =>
+      await getSeasonEpisodes({ season: thisSeason, host, userToken }),
+    {
+      enabled: fetchSeasonEpisodes,
+      onSuccess: (data) => {
+        setEpisodes(data);
+        setFetchSeasonEpisodes(false);
+      },
+    }
+  );
+
+  useQuery(
+    ["getSeasonData", id] as QueryKey,
+    async () => await getSeasonData({ id, host, userToken }),
+    {
+      enabled: fetchSeasonData,
+      onSuccess: (data) => {
+        setSeason(data);
+        setFetchSeasonData(false);
+      },
+    }
+  );
+
+  const idArray = episodes.map((element: { id: number }) => {
+    return element.id;
+  });
+
+  useQuery(
+    ["getEpisodesFiles", episodes] as QueryKey,
+    async () => await getMultipleEpisodeFile({ idArray, host, userToken }),
+    {
+      enabled: fetchMultipleEpisodeFile,
+      onSuccess: (data) => {
+        setEpisodesFiles(data);
+        setFetchMultipleEpisodeFile(false);
+      },
+    }
+  );
 
   useEffect(() => {
-    if (data && data.media_type === "tv") {
-      const config = {
-        headers: {
-          Authorization: userToken,
-        },
-      } as any;
-      fetch(`${host}/api/v1/tv/${id}/season`, config)
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          setSeason(data);
-        });
+    if (season) {
+      setThisSeason(handleRigthSeason(season));
+      setFetchSeasonEpisodes(true);
+    }
+  }, [season, seasonNumber]);
+
+  // brings seasons info if data.media_type is "tv"
+  useEffect(() => {
+    if (mediaData && mediaData.media_type === "tv") {
+      setFetchSeasonData(true);
     } else {
       setSeason(null);
-      setEpisodes(null);
+      setEpisodes([]);
       if (first) {
         setFirst(false);
       }
     }
-  }, [data]);
+  }, [mediaData]);
 
   function handleRigthSeason(seasons: Array<any>) {
     const filteredArray = seasons.filter(
@@ -109,47 +137,15 @@ export const MediaPage = ({ navigation, route }: any) => {
   }
 
   useEffect(() => {
-    if (season) {
-      const config = {
-        headers: {
-          Authorization: userToken,
-        },
-      } as any;
-      const thisSeason = handleRigthSeason(season);
-      fetch(`${host}/api/v1/season/${thisSeason}/episodes`, config)
-        .then((response) => {
-          return response.json();
-        })
-        .then((data) => {
-          setEpisodes(data);
-        });
-    }
-  }, [season, seasonNumber]);
-
-  useEffect(() => {
-    if (data?.media_type === "tv") {
+    if (mediaData?.media_type === "tv") {
       if (episodes) {
-        const config = {
-          headers: {
-            Authorization: userToken,
-          },
-        } as any;
-        const idArray = episodes.map((element: { id: number }) => {
-          return element.id;
-        });
-        const requests = idArray.map((id) => {
-          return fetch(`${host}/api/v1/media/${id}/files`, config);
-        });
-        Promise.all(requests)
-          .then((responses) => Promise.all(responses.map((res) => res.json())))
-          .then((final) => {
-            setEpisodesFiles(final);
-          });
+        setFetchMultipleEpisodeFile(true);
       }
     }
   }, [episodes]);
 
-  function handleDescription(description) {
+  // todo hanlde description = null
+  function handleDescription(description: string = "description mock") {
     if (isReadMoreActive) {
       return description;
     } else {
@@ -163,18 +159,20 @@ export const MediaPage = ({ navigation, route }: any) => {
   function handleReadMore() {
     setIsreadMoreActive(!isReadMoreActive);
   }
-  function handleDuration(id) {
-    let ans = 0;
-    episodesFiles.forEach((element) => {
-      if (element[0].media_id === id) {
-        ans = element[0].duration;
+  function handleDuration(id: number) {
+    let durationInSec = 0;
+    const flatArray = episodesFiles.flat();
+    flatArray.forEach((element: EpisodeFile) => {
+      if (element.media_id === id) {
+        durationInSec = element.duration;
       }
     });
-    return Math.round(ans / 60);
+    return Math.round(durationInSec / 60);
   }
+
   return (
     <ScrollView style={styles.mediaPage}>
-      {data && (
+      {mediaData && (
         <View style={styles.body}>
           <LinearGradient
             colors={["gray", "black"]}
@@ -184,7 +182,7 @@ export const MediaPage = ({ navigation, route }: any) => {
             <View style={styles.top}>
               <View style={styles.topLeft}>
                 <Image
-                  source={{ uri: `${host}/${data.poster_path}` }}
+                  source={{ uri: `${host}/${mediaData.poster_path}` }}
                   style={styles.poster}
                 />
               </View>
@@ -193,18 +191,21 @@ export const MediaPage = ({ navigation, route }: any) => {
                 <View style={styles.descriptionContainer}>
                   <Text style={{ ...styles.description, lineHeight: 16 }}>
                     <Text style={styles.InnerDescription}>
-                      {handleDescription(data.description)}
+                      {handleDescription(mediaData.description)}
                     </Text>
-                    {data.description.length > 200 && !first && (
-                      <View style={styles.readMoreButtonContainer}>
-                        <TouchableOpacity
-                          style={styles.readMoreButton}
-                          onPress={handleReadMore}
-                        >
-                          <ReadMoreIcon color={"rgba(173, 173, 173,.34)"} />
-                        </TouchableOpacity>
-                      </View>
-                    )}
+                    {mediaData.description &&
+                      mediaData.description.length > 200 &&
+                      !first && (
+                        <View style={styles.readMoreButtonContainer}>
+                          <TouchableOpacity
+                            style={styles.readMoreButton}
+                            onPress={handleReadMore}
+                          >
+                            <ReadMoreIcon color={"rgba(173, 173, 173,.34)"} />
+                          </TouchableOpacity>
+                        </View>
+                        // eslint-disable-next-line indent
+                      )}
                   </Text>
                 </View>
                 <TouchableOpacity style={styles.playtBtn}>
@@ -229,7 +230,7 @@ export const MediaPage = ({ navigation, route }: any) => {
               <View style={{ width: "45%", marginBottom: 16 }}>
                 <DropDown
                   kind={"Season"}
-                  options={season.map((element) => {
+                  options={season.map((element: any) => {
                     return element.season_number;
                   })}
                   setOption={setSeasonNumber}
@@ -240,7 +241,7 @@ export const MediaPage = ({ navigation, route }: any) => {
               </View>
               <View style={styles.episodes}>
                 {episodes &&
-                  episodes.map((element) => {
+                  episodes.map((element: any) => {
                     return (
                       <TouchableOpacity
                         style={styles.episodePresentation}

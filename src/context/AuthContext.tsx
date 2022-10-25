@@ -48,8 +48,6 @@ export const AuthContextProvider = ({ children }: AuthProviderProps) => {
     userToken: string;
     host: string;
   }) => {
-    console.log("userToken: ", userToken);
-    console.log("host: ", host);
     await AsyncStorage.setItem("userToken", userToken).then(() => {
       setUserToken(JSON.parse(userToken));
       setIsLoggedIn(true);

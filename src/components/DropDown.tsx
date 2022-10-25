@@ -34,11 +34,11 @@ const DropDown = ({
   useEffect(() => {
     if (first) {
       if (kind === "Season") {
-        setSelected(season[0].season_number);
+        season && setSelected(season[0].season_number);
       } else {
         setSelected("Any");
       }
-      setFirst(false);
+      setFirst && setFirst(false);
     }
   }, [first]);
 
@@ -62,7 +62,7 @@ const DropDown = ({
     outputRange: [0, 50],
   });
 
-  function handlePress(element) {
+  function handlePress(element: any) {
     setOption(element);
     setSelected(element);
     toggleListItem();

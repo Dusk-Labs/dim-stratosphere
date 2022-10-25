@@ -24,7 +24,7 @@ export interface Media {
   added: string | null;
   backdrop_path: string | null;
   chapters?: Chapters;
-  description: string | null;
+  description: string | undefined;
   duration: number;
   episode?: number;
   genres: string[];
