@@ -121,9 +121,6 @@ export const MediaPage = ({ navigation, route }: any) => {
       } else if (mediaData.media_type === "movie") {
         setSeason(null);
         setEpisodes([]);
-        if (first) {
-          setFirst(false);
-        }
         console.log("pelicula....");
       }
     }
