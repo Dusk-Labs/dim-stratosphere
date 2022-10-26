@@ -105,13 +105,13 @@ export const MediaPage = ({ navigation, route }: any) => {
     }
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     setSeasonNumber(1);
     setFirst(true);
     setSeason(null);
     setIsreadMoreActive(false);
     setEpisodesFiles([]);
-  },[id])
+  }, [id]);
 
   useEffect(() => {
     if (season) {
@@ -129,7 +129,7 @@ export const MediaPage = ({ navigation, route }: any) => {
         setSeason(null);
         setEpisodes([]);
         setFirst(false);
-        //console.log(first)
+        // console.log(first)
       }
     }
   }, [mediaData]);
@@ -197,7 +197,7 @@ export const MediaPage = ({ navigation, route }: any) => {
               </View>
 
               <View style={styles.topRigth}>
-               <View style={styles.descriptionContainer}>
+                <View style={styles.descriptionContainer}>
                   <Text style={{ ...styles.description, lineHeight: 16 }}>
                     <Text style={styles.InnerDescription}>
                       {handleDescription(mediaData.description)}
