@@ -32,13 +32,16 @@ const DropDown = ({
   const transition = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    console.log(first,"first");
     if (first) {
+      console.log(kind,"kind");
       if (kind === "Season") {
-        setSelected(season[0].season_number);
+        season && setSelected(season[0].season_number);
       } else {
         setSelected("Any");
+        console.log("hola Any");
       }
-      setFirst(false);
+      setFirst && setFirst(false);
     }
   }, [first]);
 
@@ -62,7 +65,7 @@ const DropDown = ({
     outputRange: [0, 50],
   });
 
-  function handlePress(element) {
+  function handlePress(element: any) {
     setOption(element);
     setSelected(element);
     toggleListItem();
