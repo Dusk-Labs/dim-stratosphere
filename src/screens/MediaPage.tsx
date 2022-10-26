@@ -105,13 +105,13 @@ export const MediaPage = ({ navigation, route }: any) => {
     }
   );
 
-  useEffect(() => {
+  useEffect(()=>{
     setSeasonNumber(1);
     setFirst(true);
     setSeason(null);
     setIsreadMoreActive(false);
     setEpisodesFiles([]);
-  }, [id]);
+  },[id])
 
   useEffect(() => {
     if (season) {
@@ -129,7 +129,7 @@ export const MediaPage = ({ navigation, route }: any) => {
         setSeason(null);
         setEpisodes([]);
         setFirst(false);
-        // console.log(first)
+        //console.log(first)
       }
     }
   }, [mediaData]);
@@ -197,28 +197,26 @@ export const MediaPage = ({ navigation, route }: any) => {
               </View>
 
               <View style={styles.topRigth}>
-                {(first || !first) && (
-                  <View style={styles.descriptionContainer}>
-                    <Text style={{ ...styles.description, lineHeight: 16 }}>
-                      <Text style={styles.InnerDescription}>
-                        {handleDescription(mediaData.description)}
-                      </Text>
-                      {mediaData.description &&
-                        mediaData.description.length > 200 &&
-                        !first && (
-                          <View style={styles.readMoreButtonContainer}>
-                            <TouchableOpacity
-                              style={styles.readMoreButton}
-                              onPress={handleReadMore}
-                            >
-                              <ReadMoreIcon color={"rgba(173, 173, 173,.34)"} />
-                            </TouchableOpacity>
-                          </View>
-                          // eslint-disable-next-line indent
-                        )}
+               <View style={styles.descriptionContainer}>
+                  <Text style={{ ...styles.description, lineHeight: 16 }}>
+                    <Text style={styles.InnerDescription}>
+                      {handleDescription(mediaData.description)}
                     </Text>
-                  </View>
-                )}
+                    {mediaData.description &&
+                      mediaData.description.length > 200 &&
+                      !first && (
+                        <View style={styles.readMoreButtonContainer}>
+                          <TouchableOpacity
+                            style={styles.readMoreButton}
+                            onPress={handleReadMore}
+                          >
+                            <ReadMoreIcon color={"rgba(173, 173, 173,.34)"} />
+                          </TouchableOpacity>
+                        </View>
+                        // eslint-disable-next-line indent
+                      )}
+                  </Text>
+                </View>
                 <TouchableOpacity style={styles.playtBtn}>
                   <Text
                     style={{ color: "black", fontWeight: "500", fontSize: 12 }}
