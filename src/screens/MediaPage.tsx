@@ -55,11 +55,11 @@ export const MediaPage = ({ navigation, route }: any) => {
       enabled: true,
       onSuccess: (data) => {
         setMediaData(data);
-        setSeasonNumber(1);
+        /* setSeasonNumber(1);
         setFirst(true);
         setSeason(null);
         setIsreadMoreActive(false);
-        setEpisodesFiles([]);
+        setEpisodesFiles([]); */
       },
     }
   );
@@ -105,6 +105,14 @@ export const MediaPage = ({ navigation, route }: any) => {
     }
   );
 
+  useEffect(()=>{
+    setSeasonNumber(1);
+    setFirst(true);
+    setSeason(null);
+    setIsreadMoreActive(false);
+    setEpisodesFiles([]);
+  },[id])
+
   useEffect(() => {
     if (season) {
       setThisSeason(handleRigthSeason(season));
@@ -117,11 +125,11 @@ export const MediaPage = ({ navigation, route }: any) => {
     if (mediaData) {
       if (mediaData.media_type === "tv") {
         setFetchSeasonData(true);
-        console.log("serie....");
       } else if (mediaData.media_type === "movie") {
         setSeason(null);
         setEpisodes([]);
-        console.log("pelicula....");
+        setFirst(false);
+        //console.log(first)
       }
     }
   }, [mediaData]);
@@ -189,7 +197,7 @@ export const MediaPage = ({ navigation, route }: any) => {
               </View>
 
               <View style={styles.topRigth}>
-                <View style={styles.descriptionContainer}>
+               {(first||!first)&&<View style={styles.descriptionContainer}>
                   <Text style={{ ...styles.description, lineHeight: 16 }}>
                     <Text style={styles.InnerDescription}>
                       {handleDescription(mediaData.description)}
@@ -208,7 +216,7 @@ export const MediaPage = ({ navigation, route }: any) => {
                         // eslint-disable-next-line indent
                       )}
                   </Text>
-                </View>
+                </View>}
                 <TouchableOpacity style={styles.playtBtn}>
                   <Text
                     style={{ color: "black", fontWeight: "500", fontSize: 12 }}
