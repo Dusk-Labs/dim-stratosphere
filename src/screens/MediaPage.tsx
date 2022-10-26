@@ -114,19 +114,19 @@ export const MediaPage = ({ navigation, route }: any) => {
 
   // brings seasons info if data.media_type is "tv"
   useEffect(() => {
-    if(mediaData){
-    if (mediaData.media_type === "tv") {
-      setFetchSeasonData(true);
-      console.log("serie....")
-    } else if(mediaData.media_type === "movie"){
-      setSeason(null);
-      setEpisodes([]);
+    if (mediaData) {
+      if (mediaData.media_type === "tv") {
+        setFetchSeasonData(true);
+        console.log("serie....");
+      } else if (mediaData.media_type === "movie") {
+        setSeason(null);
+        setEpisodes([]);
         if (first) {
-        setFirst(false);
-      } 
-      console.log("pelicula....")
+          setFirst(false);
+        }
+        console.log("pelicula....");
+      }
     }
-  }
   }, [mediaData]);
 
   function handleRigthSeason(seasons: Array<any>) {

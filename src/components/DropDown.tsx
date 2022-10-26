@@ -32,9 +32,9 @@ const DropDown = ({
   const transition = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    console.log(first,"first");
+    console.log(first, "first");
     if (first) {
-      console.log(kind,"kind");
+      console.log(kind, "kind");
       if (kind === "Season") {
         season && setSelected(season[0].season_number);
       } else {
