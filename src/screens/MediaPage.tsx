@@ -5,6 +5,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
@@ -14,11 +15,14 @@ import ReadMoreIcon from "../components/icons/ReadMore";
 import DimIcon from "../components/icons/DimIcon";
 import { LinearGradient } from "expo-linear-gradient";
 import { QueryKey, useQuery } from "@tanstack/react-query";
-import { getMediaDetails, Media } from "../../api/media/getMediaDetails";
-import { Episode, getSeasonEpisodes } from "../../api/media/GetSeasonEpisodes";
-import { getSeasonData, Season } from "../../api/media/GetSeasonData";
+import { getMediaDetails, Media } from "./../../api/media/GetMediaDetails";
+import {
+  Episode,
+  getSeasonEpisodes,
+} from "./../../api/media/GetSeasonEpisodes";
+import { getSeasonData, Season } from "./../../api/media/GetSeasonData";
 import { EpisodeFile } from "../types";
-import { getMultipleEpisodeFile } from "../../api/media/GetMultipleEpisodeFile";
+import { getMultipleEpisodeFile } from "./../../api/media/GetMultipleEpisodeFile";
 
 export const MediaPage = ({ navigation, route }: any) => {
   const { name, id } = route.params;
@@ -48,7 +52,7 @@ export const MediaPage = ({ navigation, route }: any) => {
   const [fetchMultipleEpisodeFile, setFetchMultipleEpisodeFile] =
     useState(false);
 
-  useQuery(
+  const { isLoading: isMediaLoading } = useQuery(
     ["getMedia", id] as QueryKey,
     async () => await getMediaDetails({ id, host, userToken }),
     {
@@ -64,7 +68,7 @@ export const MediaPage = ({ navigation, route }: any) => {
     }
   );
 
-  useQuery(
+  const { isLoading: isSeasonEpisodesLoading } = useQuery(
     ["getSeasonEpisodes", seasonNumber || season] as QueryKey,
     async () =>
       await getSeasonEpisodes({ season: thisSeason, host, userToken }),
@@ -77,7 +81,7 @@ export const MediaPage = ({ navigation, route }: any) => {
     }
   );
 
-  useQuery(
+  const { isLoading: isSeasonDataLoading } = useQuery(
     ["getSeasonData", id] as QueryKey,
     async () => await getSeasonData({ id, host, userToken }),
     {
@@ -93,7 +97,7 @@ export const MediaPage = ({ navigation, route }: any) => {
     return element.id;
   });
 
-  useQuery(
+  const { isLoading: isEpisodesFilesLoading } = useQuery(
     ["getEpisodesFiles", episodes] as QueryKey,
     async () => await getMultipleEpisodeFile({ idArray, host, userToken }),
     {
@@ -181,122 +185,140 @@ export const MediaPage = ({ navigation, route }: any) => {
 
   return (
     <ScrollView style={styles.mediaPage}>
-      {mediaData && (
-        <View style={styles.body}>
-          <LinearGradient
-            colors={["gray", "black"]}
-            style={styles.topAndNavBar}
-          >
-            <AuthNavBar title={name} navigation={navigation} />
-            <View style={styles.top}>
-              <View style={styles.topLeft}>
-                <Image
-                  source={{ uri: `${host}/${mediaData.poster_path}` }}
-                  style={styles.poster}
-                />
-              </View>
+      {isMediaLoading ||
+      isSeasonDataLoading ||
+      isSeasonEpisodesLoading ||
+      isEpisodesFilesLoading ? (
+        <View style={styles.loading}>
+          <ActivityIndicator size="large" color="#fff" />
+        </View>
+      ) : (
+        <>
+          {mediaData && (
+            <View style={styles.body}>
+              <LinearGradient
+                colors={["gray", "black"]}
+                style={styles.topAndNavBar}
+              >
+                <AuthNavBar title={name} navigation={navigation} />
+                <View style={styles.top}>
+                  <View style={styles.topLeft}>
+                    <Image
+                      source={{ uri: `${host}/${mediaData.poster_path}` }}
+                      style={styles.poster}
+                    />
+                  </View>
 
-              <View style={styles.topRigth}>
-                <View style={styles.descriptionContainer}>
-                  <Text style={{ ...styles.description, lineHeight: 16 }}>
-                    <Text style={styles.InnerDescription}>
-                      {handleDescription(mediaData.description)}
-                    </Text>
-                    {mediaData.description &&
-                      mediaData.description.length > 200 &&
-                      !first && (
-                        <View style={styles.readMoreButtonContainer}>
-                          <TouchableOpacity
-                            style={styles.readMoreButton}
-                            onPress={handleReadMore}
-                          >
-                            <ReadMoreIcon color={"rgba(173, 173, 173,.34)"} />
-                          </TouchableOpacity>
-                        </View>
-                        // eslint-disable-next-line indent
-                      )}
-                  </Text>
-                </View>
-                <TouchableOpacity style={styles.playtBtn}>
-                  <Text
-                    style={{ color: "black", fontWeight: "500", fontSize: 12 }}
-                  >
-                    Play
-                  </Text>
-                </TouchableOpacity>
-                {/*   <TouchableOpacity style={styles.DownloadSeasonBtn}>
+                  <View style={styles.topRigth}>
+                    <View style={styles.descriptionContainer}>
+                      <Text style={{ ...styles.description, lineHeight: 16 }}>
+                        <Text style={styles.InnerDescription}>
+                          {handleDescription(mediaData.description)}
+                        </Text>
+                        {mediaData.description &&
+                          mediaData.description.length > 200 &&
+                          !first && (
+                            <View style={styles.readMoreButtonContainer}>
+                              <TouchableOpacity
+                                style={styles.readMoreButton}
+                                onPress={handleReadMore}
+                              >
+                                <ReadMoreIcon
+                                  color={"rgba(173, 173, 173,.34)"}
+                                />
+                              </TouchableOpacity>
+                            </View>
+                            // eslint-disable-next-line indent
+                          )}
+                      </Text>
+                    </View>
+                    <TouchableOpacity style={styles.playtBtn}>
+                      <Text
+                        style={{
+                          color: "black",
+                          fontWeight: "500",
+                          fontSize: 12,
+                        }}
+                      >
+                        Play
+                      </Text>
+                    </TouchableOpacity>
+                    {/*   <TouchableOpacity style={styles.DownloadSeasonBtn}>
                   <View style={{ height: 20, width: 20, marginRight: 8 }}><DownloadIcon color="white" /></View>
                   <Text style={{ color: "white", fontWeight: "500", fontSize: 12 }}>
                     Download Season
                   </Text>
                   <View style={{ height: 20, width: 20, position: "absolute", right: "0%", marginRight: 8 }}><SettingsIcon color="#949494" /></View>
                 </TouchableOpacity> */}
-              </View>
-            </View>
-          </LinearGradient>
-          {episodes && season && (
-            <View style={styles.seasonElection}>
-              <View style={{ width: "45%", marginBottom: 16 }}>
-                <DropDown
-                  kind={"Season"}
-                  options={season.map((element: any) => {
-                    return element.season_number;
-                  })}
-                  setOption={setSeasonNumber}
-                  first={first}
-                  setFirst={setFirst}
-                  season={season}
-                />
-              </View>
-              <View style={styles.episodes}>
-                {episodes &&
-                  episodes.map((element: any) => {
-                    return (
-                      <TouchableOpacity
-                        style={styles.episodePresentation}
-                        key={element.id}
-                      >
-                        <View style={styles.episodePosterContainer}>
-                          {element.thumbnail_url ? (
-                            <Image
-                              source={{
-                                uri: `${host}/${element.thumbnail_url}`,
-                              }}
-                              style={styles.episodePoster}
-                            />
-                          ) : (
-                            <View style={styles.episodePosterFailed}>
-                              <DimIcon color="white" />
+                  </View>
+                </View>
+              </LinearGradient>
+              {episodes && season && (
+                <View style={styles.seasonElection}>
+                  <View style={{ width: "45%", marginBottom: 16 }}>
+                    <DropDown
+                      kind={"Season"}
+                      options={season.map((element: any) => {
+                        return element.season_number;
+                      })}
+                      setOption={setSeasonNumber}
+                      first={first}
+                      setFirst={setFirst}
+                      season={season}
+                    />
+                  </View>
+                  <View style={styles.episodes}>
+                    {episodes &&
+                      episodes.map((element: any) => {
+                        return (
+                          <TouchableOpacity
+                            style={styles.episodePresentation}
+                            key={element.id}
+                          >
+                            <View style={styles.episodePosterContainer}>
+                              {element.thumbnail_url ? (
+                                <Image
+                                  source={{
+                                    uri: `${host}/${element.thumbnail_url}`,
+                                  }}
+                                  style={styles.episodePoster}
+                                />
+                              ) : (
+                                <View style={styles.episodePosterFailed}>
+                                  <DimIcon color="white" />
+                                </View>
+                              )}
                             </View>
-                          )}
-                        </View>
-                        <View
-                          style={{
-                            flexDirection: "row",
-                            justifyContent: "space-between",
-                          }}
-                        >
-                          <View>
-                            <Text style={styles.episodeTitle}>
-                              {element.name}
-                            </Text>
-                            <Text style={styles.episodeNumber}>
-                              Episode {element.episode}
-                            </Text>
-                          </View>
-                          {episodesFiles && (
-                            <Text style={styles.duration}>
-                              {handleDuration(element.id)}m
-                            </Text>
-                          )}
-                        </View>
-                      </TouchableOpacity>
-                    );
-                  })}
-              </View>
+                            <View
+                              style={{
+                                flexDirection: "row",
+                                justifyContent: "space-between",
+                              }}
+                            >
+                              <View>
+                                <Text style={styles.episodeTitle}>
+                                  {element.name}
+                                </Text>
+                                <Text style={styles.episodeNumber}>
+                                  Episode {element.episode}
+                                </Text>
+                              </View>
+                              {episodesFiles && (
+                                <Text style={styles.duration}>
+                                  {handleDuration(element.id)}m
+                                </Text>
+                              )}
+                            </View>
+                          </TouchableOpacity>
+                        );
+                      })}
+                  </View>
+                </View>
+              )}
             </View>
           )}
-        </View>
+        </>
+        // eslint-disable-next-line indent
       )}
     </ScrollView>
   );
@@ -420,5 +442,10 @@ const styles = StyleSheet.create({
     color: "#7E7E7E",
     fontWeight: "400",
     fontSize: 14,
+  },
+  loading: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
