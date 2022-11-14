@@ -112,7 +112,7 @@ export const Nav = ({ ...props }: NavProps) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    props.navigation.navigate("Movies", {
+                    props.navigation.navigate("Library", {
                       name: library.name,
                       id: library.id,
                     });

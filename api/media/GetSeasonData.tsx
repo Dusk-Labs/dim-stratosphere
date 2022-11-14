@@ -1,7 +1,7 @@
 type SeasonDataProps = {
   host: string;
   userToken: string | null;
-  id: number;
+  showId: number;
 };
 
 export type Season = {
@@ -13,11 +13,11 @@ export type Season = {
 };
 
 export const getSeasonData = async ({
-  id,
+  showId,
   host,
   userToken,
 }: SeasonDataProps): Promise<Season[]> => {
-  const url = `${host}/api/v1/tv/${id}/season`;
+  const url = `${host}/api/v1/tv/${showId}/season`;
   const options = {
     method: "GET",
     headers: {

@@ -14,33 +14,21 @@ type DropDownProps = {
   kind: string;
   options: Array<string>;
   setOption: Dispatch<SetStateAction<number>>;
-  first?: boolean;
-  setFirst?: Dispatch<SetStateAction<boolean>>;
   season?: Array<any>;
 };
 
-const DropDown = ({
-  kind,
-  options,
-  setOption,
-  first,
-  setFirst,
-  season,
-}: DropDownProps) => {
+const DropDown = ({ kind, options, setOption, season }: DropDownProps) => {
   const [showContent, setShowContent] = useState(false);
   const [selected, setSelected] = useState("Any");
   const transition = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
-    if (first) {
-      if (kind === "Season") {
-        season && setSelected(season[0].season_number);
-      } else {
-        setSelected("Any");
-      }
-      setFirst && setFirst(false);
+    if (kind === "Season") {
+      season && setSelected(season[0].season_number);
+    } else {
+      setSelected("Any");
     }
-  }, [first]);
+  }, []);
 
   const toggleListItem = () => {
     Animated.timing(transition, {

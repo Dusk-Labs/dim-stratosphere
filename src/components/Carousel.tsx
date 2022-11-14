@@ -54,6 +54,7 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
                   navigation?.navigate("MediaPage", {
                     name: file.name,
                     id: file.id,
+                    comesFromLibrary: true,
                   });
                 }}
               >
