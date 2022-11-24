@@ -63,6 +63,7 @@ export const MediaPage = ({ navigation, route }: any) => {
       ) : (
         <Movie
           movieId={id}
+          isLoading={isLoading}
           movieName={name}
           navigation={navigation}
           movieData={mediaData}
