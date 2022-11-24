@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useAuthContext } from "../context/AuthContext";
 import BannerCard from "./BannerCard";
@@ -8,16 +8,18 @@ import { getBannerData } from "../../api/GetBannerData";
 
 const Banner = () => {
   const { host, userToken } = useAuthContext();
-  const [index, setIndex] = useState(0);
+  const [index, setIndex] = useState<number>(0);
   const { data } = useQuery(
     ["getBannerData"] as QueryKey,
     () => getBannerData({ host, userToken }),
     { enabled: userToken !== null && host !== "" }
   );
+  const dataIsArray = Array.isArray(data);
+  const bannerDataLength: number = Array.isArray(data) ? data?.length : 0;
 
   useEffect(() => {
     const myI = setInterval(() => {
-      if (index < data?.length - 1) {
+      if (index < bannerDataLength - 1) {
         setIndex(index + 1);
       } else {
         setIndex(0);
@@ -25,9 +27,10 @@ const Banner = () => {
     }, 5000);
     return () => clearInterval(myI);
   }, [index, data]);
+
   return (
     <View style={styles.banner}>
-      {data && (
+      {data && dataIsArray && (
         <BannerCard
           backDrop={data[index].backdrop}
           title={data[index].title}
@@ -41,6 +44,7 @@ const Banner = () => {
       )}
       <View style={styles.bannerDots}>
         {data &&
+          dataIsArray &&
           data.map((item, i) => {
             return (
               <View
