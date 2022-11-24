@@ -1,4 +1,4 @@
-import { StyleSheet, View, ScrollView } from "react-native";
+import { StyleSheet, View, ScrollView, Dimensions } from "react-native";
 import { Carousel } from "../components/Carousel";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
@@ -6,6 +6,7 @@ import { QueryKey, useQuery } from "@tanstack/react-query";
 import { getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
 import { NavigationType } from "../types";
+import Banner from "../components/Banner";
 
 type DashboardProps = {
   navigation: NavigationType;
@@ -14,7 +15,6 @@ type DashboardProps = {
 export const Dashboard = ({ navigation }: DashboardProps) => {
   const [nav] = useState(false);
   const { host, userToken } = useAuthContext();
-
   const { data } = useQuery(
     ["getDashboardData"] as QueryKey,
     () => getDashboardData({ host, userToken }),
@@ -32,7 +32,12 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
   return (
     <>
       <View style={styles.HomePage}>
-        <AuthNavBar title={"Dashboard"} navigation={navigation} />
+        <Banner />
+        <AuthNavBar
+          title={"Dashboard"}
+          navigation={navigation}
+          position={"absolute"}
+        />
         <ScrollView style={styles.body}>
           {sectionTitles.map((sectionTitle: string) => (
             <Carousel
@@ -42,7 +47,6 @@ export const Dashboard = ({ navigation }: DashboardProps) => {
             />
           ))}
         </ScrollView>
-        {/* <TabMenu nav={nav} /> */}
       </View>
     </>
   );
