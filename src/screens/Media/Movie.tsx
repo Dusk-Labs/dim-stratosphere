@@ -7,6 +7,7 @@ type MovieProps = {
   navigation: any;
   movieData: Media;
   movieId: number;
+  isLoading: boolean;
 };
 
 export const Movie = ({
@@ -15,6 +16,7 @@ export const Movie = ({
   movieName,
   navigation,
   movieData,
+  isLoading = true,
 }: MovieProps) => {
   return (
     <>
@@ -22,6 +24,7 @@ export const Movie = ({
         name={movieName}
         navigation={navigation}
         mediaData={movieData}
+        isLoading={isLoading}
       />
     </>
   );
