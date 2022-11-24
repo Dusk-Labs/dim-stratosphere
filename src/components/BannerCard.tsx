@@ -13,7 +13,7 @@ type BannerProps = {
   title: string;
   year: number;
   genres: string[];
-  duration?: number;
+  duration: number;
   delta?: number;
   season?: number;
   episode?: number;
@@ -24,7 +24,7 @@ const BannerCard = ({
   year,
   genres,
   duration,
-  delta,
+  delta = 0,
   season,
   episode,
 }: BannerProps) => {
@@ -67,7 +67,7 @@ const BannerCard = ({
     }
   }
   function handlePercent() {
-    if (delta) {
+    if (delta !== 0) {
       return Math.floor((delta / duration) * 100);
     } else {
       return 0;
