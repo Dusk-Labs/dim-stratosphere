@@ -45,7 +45,7 @@ export const MediaPage = ({ navigation, route }: any) => {
   if (isLoading) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator size="large" color="#fff" />
+        <ActivityIndicator size="large" />
       </View>
     );
   }
@@ -196,5 +196,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "black",
   },
 });
