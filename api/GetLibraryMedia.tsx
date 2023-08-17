@@ -1,10 +1,14 @@
-type GetMoviesProps = {
+type GetLibraryMediaProps = {
   host: string;
   id: string;
   userToken: string | null;
 };
 
-export const getMovies = async ({ host, id, userToken }: GetMoviesProps) => {
+export const getLibraryMedia = async ({
+  host,
+  id,
+  userToken,
+}: GetLibraryMediaProps) => {
   const moviesUrl = `${host}/api/v1/library/${id}/media`;
   const options = {
     method: "GET",

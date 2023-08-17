@@ -1,7 +1,12 @@
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TouchableOpacity,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { MovieContainer } from "./MovieContainer";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { QueryKey, useQuery } from "@tanstack/react-query";
 import { FileProps, getDashboardData } from "../../api/GetDashboardData";
 import { useAuthContext } from "../context/AuthContext";
@@ -35,15 +40,22 @@ export const Carousel = ({ sectionTitle, navigation }: CarouselProps) => {
       <View style={styles.titleSection}>
         <Text style={styles.sectionTitle}>{sectionTitle}</Text>
       </View>
-
-      <ScrollView style={styles.moviesSection} horizontal={true}>
+      <ScrollView
+        style={styles.moviesSection}
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+      >
         {dashboardData &&
           dashboardData?.map((file: FileProps) => {
             return (
               <TouchableOpacity
                 key={file.id}
                 onPress={() => {
-                  alert(file.name);
+                  navigation?.navigate("MediaPage", {
+                    name: file.name,
+                    id: file.id,
+                    comesFromLibrary: true,
+                  });
                 }}
               >
                 <MovieContainer

@@ -13,10 +13,12 @@ import * as NavigationBar from "expo-navigation-bar";
 
 function App() {
   const { isLoggedIn } = useAuthContext();
+  const greyBackgroundColor = () =>
+    NavigationBar.setBackgroundColorAsync("rgba(37, 37, 37, 1)");
+  const blackBackgroundColor = () =>
+    NavigationBar.setBackgroundColorAsync("rgba(14, 13, 11, 1)");
 
-  isLoggedIn
-    ? NavigationBar.setBackgroundColorAsync("rgba(37, 37, 37, 1)")
-    : NavigationBar.setBackgroundColorAsync("rgba(14, 13, 11, 1)");
+  isLoggedIn ? greyBackgroundColor() : blackBackgroundColor();
 
   const renderStack = () => {
     return isLoggedIn ? (

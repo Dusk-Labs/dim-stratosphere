@@ -24,7 +24,7 @@ export interface Media {
   added: string | null;
   backdrop_path: string | null;
   chapters?: Chapters;
-  description: string | null;
+  description: string | undefined;
   duration: number;
   episode?: number;
   genres: string[];
@@ -49,7 +49,7 @@ type MediaDetailsProps = {
   userToken: string | null;
 };
 
-export const fetchMediaDetails = async ({
+export const getMediaDetails = async ({
   id,
   host,
   userToken,
