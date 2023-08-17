@@ -112,7 +112,7 @@ export const Nav = ({ ...props }: NavProps) => {
               return (
                 <TouchableOpacity
                   onPress={() => {
-                    props.navigation.navigate("Movies", {
+                    props.navigation.navigate("Library", {
                       name: library.name,
                       id: library.id,
                     });
@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignContent: "center",
     alignItems: "center",
-    marginRight: rem,
+    marginRight: 16,
     backgroundColor: "#de9636",
   },
   header: {

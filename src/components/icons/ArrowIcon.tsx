@@ -10,12 +10,17 @@ const paths = [
 const DashdoardIcon: FC<IconInteface> = ({ color }) => {
   return (
     <View style={styles.layer}>
-      <Svg width="18" height="10" viewBox="0 0 18 10" fill="none">
+      <Svg
+        width="18"
+        height="10"
+        viewBox="0 0 18 10"
+        fill="rgba(53, 52, 51, 1)"
+      >
         {paths.map((d, key) => (
           <Path
             d={d}
             key={key}
-            stroke="white"
+            stroke={color}
             stroke-width="1.5"
             stroke-linecap="round"
             stroke-linejoin="round"

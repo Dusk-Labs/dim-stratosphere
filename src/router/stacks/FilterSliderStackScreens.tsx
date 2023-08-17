@@ -15,11 +15,7 @@ export const FilterSliderStackScreens = () => {
   const [isSliderEnabled, setIsSliderEnabled] = useState<boolean>(false);
 
   useEffect(() => {
-    if (route === "Movies") {
-      setIsSliderEnabled(true);
-    } else {
-      setIsSliderEnabled(false);
-    }
+    route === "Library" ? setIsSliderEnabled(true) : setIsSliderEnabled(false);
   }, [route]);
 
   return (

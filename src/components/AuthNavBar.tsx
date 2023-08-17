@@ -17,6 +17,13 @@ export const AuthNavBar = ({
   navigation,
   moviesOrShows,
 }: AuthNavBarProps) => {
+  function handleTitle(title: string) {
+    let newTitle = title;
+    if (title.length > 25) {
+      newTitle = title.slice(0, 25) + "...";
+    }
+    return newTitle;
+  }
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -27,7 +34,7 @@ export const AuthNavBar = ({
       >
         <Image source={navIcon} style={styles.navIcon} />
       </TouchableOpacity>
-      <Text style={styles.title}>{title}</Text>
+      <Text style={styles.title}>{handleTitle(title)}</Text>
       {moviesOrShows && (
         <TouchableOpacity
           style={styles.filterButton}

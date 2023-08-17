@@ -1,30 +1,29 @@
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import { AuthNavBar } from "../components/AuthNavBar";
 import { useAuthContext } from "../context/AuthContext";
 import { MovieContainer } from "../components/MovieContainer";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { QueryKey, useQuery } from "@tanstack/react-query";
-import { getMovies } from "../../api/GetMovies";
+import { getLibraryMedia } from "../../api/GetLibraryMedia";
 
-export const Movies = ({ route, navigation }: any) => {
+export const Library = ({ route, navigation }: any) => {
   const { name, id } = route.params;
   const { host, userToken } = useAuthContext();
-  const [movies, setMovies] = useState();
+  const [libraryMedia, setLibraryMedia] = useState();
 
   const { refetch } = useQuery(
-    ["getMovies"] as QueryKey,
-    async () => await getMovies({ host, id, userToken }),
+    ["getLibraryMedia"] as QueryKey,
+    async () => await getLibraryMedia({ host, id, userToken }),
     {
       onSuccess: (data) => {
-        setMovies(data[name]);
+        setLibraryMedia(data[name]);
       },
     }
   );
 
   useEffect(() => {
     refetch().then((data: any) => {
-      setMovies(data[name]);
+      setLibraryMedia(data[name]);
     });
   }, [id]);
 
@@ -33,12 +32,17 @@ export const Movies = ({ route, navigation }: any) => {
       <AuthNavBar title={name} navigation={navigation} moviesOrShows={true} />
       <View style={styles.body}>
         <FlatList
-          data={movies}
+          data={libraryMedia}
           keyExtractor={(element) => element.id}
+          // item -> media
           renderItem={({ item }) => (
             <TouchableOpacity
               onPress={() => {
-                alert(item.name);
+                navigation.navigate("MediaPage", {
+                  name: item.name,
+                  id: item.id,
+                  comesFromLibrary: true,
+                });
               }}
             >
               <MovieContainer
@@ -52,9 +56,9 @@ export const Movies = ({ route, navigation }: any) => {
           )}
           numColumns={3}
           columnWrapperStyle={{
-            paddingRight: 8,
-            paddingLeft: 8,
             justifyContent: "space-between",
+            paddingLeft: 4,
+            paddingRight: 4,
           }}
         />
       </View>
